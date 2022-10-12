@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">TopTop</string>
+    <string name="hint_edtPhone">Enter your number phone</string>
+    <string name="hint_edtOtp">OTP with 6 digits</string>
+    <string name="error_PhoneAuth">Invalid phone number</string>
+    <string name="otp_sent">OTP has been sent</string>
+    <string name="error_Otp">Please 6 digits OTP</string>
 </resources>
