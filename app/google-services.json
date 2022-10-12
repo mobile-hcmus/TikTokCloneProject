@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:398191591772:android:4d9197a9c49aba55ef0199",
+        "mobilesdk_app_id": "1:398191591772:android:424521bf8f5068c4ef0199",
         "android_client_info": {
-          "package_name": "com.android.application"
+          "package_name": "com.example.tiktokcloneproject"
         }
       },
       "oauth_client": [
