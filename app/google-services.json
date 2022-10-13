@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "398191591772",
+    "firebase_url": "https://toptop-android-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "toptop-android",
     "storage_bucket": "toptop-android.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "398191591772-sd6l1nvpgqud79upo7c0arn2vsi3e9j6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tiktokcloneproject",
+            "certificate_hash": "3c67e76dcc03c703717571cac61360edd421758a"
+          }
+        },
         {
           "client_id": "398191591772-2gj7h81fnet4shgit5nams0mm0mdv8np.apps.googleusercontent.com",
           "client_type": 3

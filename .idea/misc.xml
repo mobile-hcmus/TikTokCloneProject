@@ -3,9 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Mobile/Final_project/app/src/main/res/drawable/btn_login_shape.xml" value="0.176" />
+        <entry key="..\:/Mobile/Final_project/app/src/main/res/drawable/btn_shape.xml" value="0.11" />
         <entry key="..\:/Mobile/Final_project/app/src/main/res/layout/activity_delete_account.xml" value="0.1" />
         <entry key="..\:/Mobile/Final_project/app/src/main/res/layout/activity_main.xml" value="0.14130434782608695" />
-        <entry key="..\:/Mobile/Final_project/app/src/main/res/layout/activity_phone_login.xml" value="0.14130434782608695" />
+        <entry key="..\:/Mobile/Final_project/app/src/main/res/layout/activity_phone_login.xml" value="0.1" />
         <entry key="..\:/Mobile/Final_project/app/src/main/res/layout/activity_phone_register.xml" value="0.14130434782608695" />
       </map>
     </option>

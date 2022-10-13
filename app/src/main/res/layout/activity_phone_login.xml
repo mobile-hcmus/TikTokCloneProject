@@ -8,20 +8,61 @@
     android:background="@color/tiktok_black"
     android:orientation="vertical"
     tools:context=".PhoneLoginActivity"
-    android:id="@+id/llPhoneLogin">
+    android:id="@+id/llLoginPage">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/llChoice"
+        android:gravity="center"
+        android:visibility="gone">
 
+        <Button
+            android:id="@+id/btnChoicePhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_login_shape"
+            android:textColor="@color/tiktok_black"
+            android:text="@string/btnChoicePhone"/>
+        <Button
+            android:id="@+id/btnChoiceEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btnChoiceEmail"/>
+        <Button
+            android:id="@+id/btnChoiceFacebook"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btnChoiceFacebook"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/llWait"
+        android:gravity="center"
+        android:visibility="visible">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"/>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/llPhone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
         <EditText
             android:id="@+id/edtPhone"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:inputType="phone"
             android:drawableLeft="@drawable/ic_phone"
             android:padding="8dp"
@@ -33,7 +74,8 @@
         <Button
             android:id="@+id/btnPhone"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            />
 
 
     </LinearLayout>

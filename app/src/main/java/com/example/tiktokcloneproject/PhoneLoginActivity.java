@@ -1,7 +1,6 @@
 package com.example.tiktokcloneproject;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -20,20 +19,18 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.concurrent.TimeUnit;
 
-public class PhoneLoginActivity extends Activity {
+public class PhoneLoginActivity extends Activity implements View.OnClickListener {
 
-    View llPhoneLogin;
-    LinearLayout llPhone;
-    EditText edtPhone;
-    LinearLayout llOtp;
-    EditText edtOtp;
-    Button btnPhone;
-    Button btnOtp;
-
-
+    LinearLayout llLoginPage, llChoice, llPhone, llOtp, llWait;
+    EditText edtPhone, edtOtp;
+    Button btnPhone, btnOtp, btnChoicePhone, btnChoiceEmail, btnChoiceFacebook;
+    final int VISIBLE = View.VISIBLE;
+    final int GONE = View.GONE;
     ////////////firebase///////////////
     String mVerificationId;
     PhoneAuthProvider.ForceResendingToken mResendToken;
@@ -45,13 +42,28 @@ public class PhoneLoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_login);
 
-        llPhoneLogin = findViewById(R.id.llPhoneLogin);
-        llPhone = (LinearLayout) llPhoneLogin.findViewById(R.id.llPhone);
-        llOtp = (LinearLayout) llPhoneLogin.findViewById(R.id.llOtp);
-        edtPhone = (EditText) llPhoneLogin.findViewById(R.id.edtPhone);
-        edtOtp = (EditText) llPhoneLogin.findViewById(R.id.edtOtp);
-        btnPhone = (Button) llPhoneLogin.findViewById(R.id.btnPhone);
-        btnOtp = (Button) llPhoneLogin.findViewById(R.id.btnOtp);
+        llLoginPage = (LinearLayout) findViewById(R.id.llLoginPage);
+        llPhone = (LinearLayout) llLoginPage.findViewById(R.id.llPhone);
+        llOtp = (LinearLayout) llLoginPage.findViewById(R.id.llOtp);
+        llChoice = (LinearLayout) llLoginPage.findViewById(R.id.llChoice);
+        llWait = (LinearLayout) llLoginPage.findViewById(R.id.llWait);
+        edtPhone = (EditText) llLoginPage.findViewById(R.id.edtPhone);
+        edtOtp = (EditText) llLoginPage.findViewById(R.id.edtOtp);
+        btnPhone = (Button) llLoginPage.findViewById(R.id.btnPhone);
+        btnOtp = (Button) llLoginPage.findViewById(R.id.btnOtp);
+        btnChoicePhone = (Button) llLoginPage.findViewById(R.id.btnChoicePhone);
+        btnChoiceEmail = (Button) llLoginPage.findViewById(R.id.btnChoiceEmail);
+        btnChoiceFacebook = (Button) llLoginPage.findViewById(R.id.btnChoiceFacebook);
+
+        setVisibilityLayouts(VISIBLE, GONE, GONE, GONE);
+        btnPhone.setText(getString(R.string.ic_btnLogin) + getString(R.string.ic_btnLogin));
+        btnOtp.setText(getString(R.string.ic_btnLogin) + getString(R.string.ic_btnLogin));
+
+
+
+
+
+
 
         mAuth = FirebaseAuth.getInstance();
         //////callbacks//////
@@ -69,16 +81,14 @@ public class PhoneLoginActivity extends Activity {
             @Override
             public void onVerificationFailed(@NonNull FirebaseException e) {
                 Toast.makeText(PhoneLoginActivity.this, getString(R.string.error_PhoneAuth), Toast.LENGTH_SHORT).show();
-                llPhone.setVisibility(View.VISIBLE);
-                llOtp.setVisibility(View.GONE);
+                setVisibilityLayouts(GONE, VISIBLE, GONE, GONE);
             }
 
             @Override
             public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 super.onCodeSent(s, forceResendingToken);
                 Toast.makeText(PhoneLoginActivity.this, getString(R.string.otp_sent), Toast.LENGTH_SHORT).show();
-                llPhone.setVisibility(View.GONE);
-                llOtp.setVisibility(View.VISIBLE);
+                setVisibilityLayouts(GONE, GONE, VISIBLE, GONE);
             }
         }; // end callbacks
 
@@ -89,7 +99,6 @@ public class PhoneLoginActivity extends Activity {
             else {
                 PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, edtOtp.getText().toString());
                 signInWithPhoneAuthCredential(credential);
-                btnOtp.setVisibility(View.GONE);
             }
         });
 
@@ -99,11 +108,18 @@ public class PhoneLoginActivity extends Activity {
 
             } else {
                 login();
-                btnPhone.setVisibility(View.GONE);
+                setVisibilityLayouts(GONE, GONE, GONE, VISIBLE);
             }
         });
-
+        btnChoicePhone.setOnClickListener(this);
     } // end onCreate
+
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == btnChoicePhone.getId()) {
+            setVisibilityLayouts(GONE, VISIBLE, GONE, GONE);
+        }
+    }
 
     private void login() {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
@@ -125,14 +141,22 @@ public class PhoneLoginActivity extends Activity {
                             Intent intent = new Intent(PhoneLoginActivity.this, MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
+
+
                             finish();
                         } else {
-                            llPhone.setVisibility(View.VISIBLE);
-                            llOtp.setVisibility(View.GONE);
+                            setVisibilityLayouts(GONE, VISIBLE, GONE, GONE);
 
                         }
 
                     }
                 });
+    }
+
+    private void setVisibilityLayouts(int l1, int l2, int l3, int l4) {
+        llChoice.setVisibility(l1);
+        llPhone.setVisibility(l2);
+        llOtp.setVisibility(l3);
+        llWait.setVisibility(l4);
     }
 }// end PhoneLoginActivity class
