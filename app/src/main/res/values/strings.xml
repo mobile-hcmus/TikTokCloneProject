@@ -14,6 +14,7 @@
         and start with a alphabet character</string>
     <string name="error_existedPhone">Account with this phone has existed</string>
     <string name="error_confirm">Confirm password is not correct</string>
+    <string name="error_verify">Verify Failed. Try again!</string>
     <string name="otp_sent">OTP has been sent</string>
     <string name="error_Otp">Please 6 digits OTP</string>
 

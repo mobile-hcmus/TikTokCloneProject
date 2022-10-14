@@ -109,7 +109,7 @@ public class PhoneSignupActivity extends Activity implements View.OnClickListene
 
             @Override
             public void onVerificationFailed(@NonNull FirebaseException e) {
-                Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_PhoneAuth), Toast.LENGTH_SHORT).show();
+                Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_verify), Toast.LENGTH_SHORT).show();
                 setVisibleVisibility(llPhone.getId());
             }
 
@@ -164,8 +164,8 @@ public class PhoneSignupActivity extends Activity implements View.OnClickListene
                 edtPhone.setText(formattedPhone);
                 isExistedPhone = false;
                 CollectionReference usersRef = db.collection("users");
-                Query queryUsersByName = usersRef.whereEqualTo("phone", formattedPhone);
-                queryUsersByName.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                Query queryUsersByPhone = usersRef.whereEqualTo("phone", formattedPhone);
+                queryUsersByPhone.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
