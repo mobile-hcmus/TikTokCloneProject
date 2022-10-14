@@ -7,8 +7,8 @@
     android:layout_height="match_parent"
     android:background="@color/tiktok_black"
     android:orientation="vertical"
-    tools:context=".PhoneLoginActivity"
-    android:id="@+id/llLoginPage">
+    tools:context=".PhoneSignupActivity"
+    android:id="@+id/llSignupPage">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,7 +44,7 @@
         android:orientation="vertical"
         android:id="@+id/llWait"
         android:gravity="center"
-        android:visibility="visible">
+        android:visibility="gone">
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
         android:id="@+id/llPhone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
+        android:visibility="visible"
         android:orientation="vertical"
         android:gravity="center"
         >
@@ -67,6 +67,30 @@
             android:drawableLeft="@drawable/ic_phone"
             android:padding="8dp"
             android:hint="@string/hint_edtPhone"
+            android:textColor="@color/tiktok_black"
+            android:textColorHint="@color/hint"
+            android:background="@color/tiktok_white"
+            />
+        <EditText
+            android:id="@+id/edtPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:drawableLeft="@drawable/ic_phone"
+            android:padding="8dp"
+            android:hint="@string/hint_edtPassword"
+            android:textColor="@color/tiktok_black"
+            android:textColorHint="@color/hint"
+            android:background="@color/tiktok_white"
+            />
+        <EditText
+            android:id="@+id/edtConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:drawableLeft="@drawable/ic_phone"
+            android:padding="8dp"
+            android:hint="@string/hint_edtConfirm"
             android:textColor="@color/tiktok_black"
             android:textColorHint="@color/hint"
             android:background="@color/tiktok_white"

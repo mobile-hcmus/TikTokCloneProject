@@ -14,7 +14,7 @@
         android:theme="@style/Theme.TikTokCloneProject"
         tools:targetApi="31">
         <activity
-            android:name=".PhoneLoginActivity"
+            android:name=".PhoneSignupActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

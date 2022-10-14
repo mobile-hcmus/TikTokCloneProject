@@ -4,10 +4,16 @@
     <string name="hint_edtPhone">Enter your number phone</string>
     <string name="ic_btnLogin">\u3e</string>
     <string name="hint_edtOtp">OTP with 6 digits</string>
+    <string name="hint_edtPassword">Enter your password</string>
+    <string name="hint_edtConfirm">Confirm your password</string>
     <string name="btnChoicePhone">Using phone number</string>
     <string name="btnChoiceEmail">Using email address</string>
     <string name="btnChoiceFacebook">Using facebook account</string>
     <string name="error_PhoneAuth">Invalid phone number</string>
+    <string name="error_Password">Password only include alphabet character and number
+        and start with a alphabet character</string>
+    <string name="error_existedPhone">Account with this phone has existed</string>
+    <string name="error_confirm">Confirm password is not correct</string>
     <string name="otp_sent">OTP has been sent</string>
     <string name="error_Otp">Please 6 digits OTP</string>
 
