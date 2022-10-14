@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.tiktokcloneproject">
+    package="com.example.tiktokcloneproject" >
 
     <application
         android:allowBackup="true"
@@ -12,13 +12,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TikTokCloneProject"
-        tools:targetApi="31">
+        tools:targetApi="31" >
+        <!-- HomeScreenActivity   PhoneSignupActivity  MainActivity -->
+        <activity
+            android:name=".HomeScreenActivity"
+            android:exported="false" >
+
+        </activity>
         <activity
             android:name=".PhoneSignupActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

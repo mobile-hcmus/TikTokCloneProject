@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">TopTop</string>
-<!--///////////////// Login Activity /////////////////////    -->
+    <!--///////////////// Login Activity /////////////////////    -->
     <string name="hint_edtPhone">Enter your number phone</string>
     <string name="ic_btnLogin">\u3e</string>
     <string name="hint_edtOtp">OTP with 6 digits</string>
@@ -17,6 +17,9 @@
     <string name="error_verify">Verify Failed. Try again!</string>
     <string name="otp_sent">OTP has been sent</string>
     <string name="error_Otp">Please 6 digits OTP</string>
+    <string name="title_activity_home_screen">HomeScreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
-<!--   //////////////////////////////////////////////////////////   -->
+    <!--   //////////////////////////////////////////////////////////   -->
 </resources>
