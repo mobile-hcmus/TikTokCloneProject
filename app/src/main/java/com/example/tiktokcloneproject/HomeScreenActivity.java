@@ -11,14 +11,21 @@ import android.widget.Button;
 public class HomeScreenActivity extends Activity implements View.OnClickListener{
 
     private Button btnProfile;
-
+    private Button btnSearch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+
+
         btnProfile = (Button) findViewById(R.id.btnProfile);
+        btnSearch=(Button) findViewById(R.id.btnSearch);
 
         btnProfile.setOnClickListener(this);
+        btnSearch.setOnClickListener(this);
+
+
+
     }
 
     @Override
@@ -30,7 +37,21 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 
             finish();
         }
+
+        if (view.getId() == btnSearch.getId())
+        {
+            Intent intent = new Intent(HomeScreenActivity.this, SearchActivity.class);
+            startActivity(intent);
+
+            finish();
+        }
+
+
+
+
     }
+
+
 
 
 }
