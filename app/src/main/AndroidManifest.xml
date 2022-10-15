@@ -39,10 +39,17 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
+<<<<<<< HEAD
             android:exported="false" />
         <activity
             android:name=".SearchActivity"
             android:exported="false" />
+=======
+            android:exported="false" >
+        </activity>
+        <activity android:name=".SearchActivity"
+            android:exported="true" />
+>>>>>>> 795821a4a22e3c45311a5f8e3d024bffdce438c5
     </application>
 
 </manifest>
