@@ -48,7 +48,7 @@
 
     </LinearLayout>
     <TextView
-        android:id="@+id/fullscreen_content"
+        android:id="@+id/tvVideo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"

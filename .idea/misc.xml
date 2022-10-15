@@ -4,8 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/drawable/btn_login_shape.xml" value="0.1765" />
+        <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_delete_account.xml" value="0.16770833333333332" />
+        <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_email_log_in.xml" value="0.16770833333333332" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_home_screen.xml" value="0.2" />
+        <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_login_options.xml" value="0.16770833333333332" />
+        <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_main.xml" value="0.14722222222222223" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_phone_signup.xml" value="0.16770833333333332" />
+        <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_profile.xml" value="0.16770833333333332" />
         <entry key="..\:/Mobile/Final_project/app/src/main/res/drawable/btn_login_shape.xml" value="0.176" />
         <entry key="..\:/Mobile/Final_project/app/src/main/res/drawable/btn_shape.xml" value="0.11" />
         <entry key="..\:/Mobile/Final_project/app/src/main/res/layout/activity_delete_account.xml" value="0.1" />
