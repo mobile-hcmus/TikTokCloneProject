@@ -68,20 +68,8 @@ public class PhoneSignupActivity extends Activity implements View.OnClickListene
     FirebaseFirestore db;
     /////Thread//////////
     String msg;
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message _msg) {
-            String returnedValue = (String) _msg.obj;
-//do something with the value sent by the background thread here
-            if (returnedValue.equals("FALSE")) {
+    Handler handler = new Handler();
 
-                signUp();
-            } else if (returnedValue.equals("TRUE")) {
-                Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_existedPhone), Toast.LENGTH_SHORT).show();
-                setVisibleVisibility(llPhone.getId());
-            }
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,7 +187,14 @@ public class PhoneSignupActivity extends Activity implements View.OnClickListene
                                         Log.d("TAG", "Error getting documents: ", task.getException());
                                     }
 
-                                    handler.sendMessage(handler.obtainMessage(1, msg));
+
+                                    if(msg.equals("FALSE")) {
+                                        handler.post(this::signUp);
+                                    } else {
+                                        Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_existedPhone), Toast.LENGTH_SHORT).show();
+                                        setVisibleVisibility(llPhone.getId());
+                                    }
+
 
                                 });
                 setVisibleVisibility(llWait.getId());
@@ -218,7 +213,6 @@ public class PhoneSignupActivity extends Activity implements View.OnClickListene
                         .setCallbacks(callbacks)          // OnVerificationStateChangedCallbacks
                         .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
-
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
