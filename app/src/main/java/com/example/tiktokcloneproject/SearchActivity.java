@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+//import android.widget.SearchView;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -75,6 +76,23 @@ public class SearchActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main_menu,menu);
         SearchManager searchManager=(SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView= (SearchView) menu.findItem(R.id.item_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+//        searchView.getMaxWidth(Integer.MAX_VALUE);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                userAdapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                userAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+
 
         return true;
     }
