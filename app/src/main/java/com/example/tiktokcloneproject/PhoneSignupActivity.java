@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -64,6 +66,22 @@ public class PhoneSignupActivity extends Activity implements View.OnClickListene
     FirebaseAuth mAuth;
     DatabaseReference mDatabase;
     FirebaseFirestore db;
+    /////Thread//////////
+    String msg;
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message _msg) {
+            String returnedValue = (String) _msg.obj;
+//do something with the value sent by the background thread here
+            if (returnedValue.equals("FALSE")) {
+
+                signUp();
+            } else if (returnedValue.equals("TRUE")) {
+                Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_existedPhone), Toast.LENGTH_SHORT).show();
+                setVisibleVisibility(llPhone.getId());
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +110,7 @@ public class PhoneSignupActivity extends Activity implements View.OnClickListene
         mDatabase = FirebaseDatabase.getInstance().getReference();
         db = FirebaseFirestore.getInstance();
 
-        final String TAG = "TEST";
+
 
         mAuth = FirebaseAuth.getInstance();
         //////callbacks//////
@@ -162,30 +180,30 @@ public class PhoneSignupActivity extends Activity implements View.OnClickListene
 
                 String formattedPhone = "+84" + phone.substring(phone.length() - 9) ;
                 edtPhone.setText(formattedPhone);
-                isExistedPhone = false;
-                CollectionReference usersRef = db.collection("users");
-                Query queryUsersByPhone = usersRef.whereEqualTo("phone", formattedPhone);
-                queryUsersByPhone.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (DocumentSnapshot document : task.getResult()) {
-                                if (document.exists()) {
-                                    Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_existedPhone), Toast.LENGTH_SHORT).show();
-                                    llPhone.setVisibility(llPhone.getId());
-                                    isExistedPhone = true;
-                                    break;
-                                }
-                            }
-                            if(!isExistedPhone) {
-                                setVisibleVisibility(llWait.getId());
-                                signUp();
-                            }
-                        } else {
-                            Log.d("TAG", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
+                        db.collection("users")
+                        .whereEqualTo("phone", formattedPhone)
+                        .get().addOnCompleteListener(task -> {
+                                    msg = "FALSE";
+                                    if (task.isSuccessful()) {
+
+                                        for (DocumentSnapshot document : task.getResult()) {
+                                            if (document.exists()) {
+
+                                                msg = "TRUE";
+
+                                                break;
+                                            }
+                                        }
+
+                                    } else {
+                                        Log.d("TAG", "Error getting documents: ", task.getException());
+                                    }
+
+                                    handler.sendMessage(handler.obtainMessage(1, msg));
+
+                                });
+                setVisibleVisibility(llWait.getId());
+
 
             }
         }
@@ -213,10 +231,10 @@ public class PhoneSignupActivity extends Activity implements View.OnClickListene
                             FirebaseUser firebaseUser = task.getResult().getUser();
 
 
-                            User user = new User(firebaseUser.getUid().toString(), edtPhone.getText().toString(), null, null, edtPassword.getText().toString());
+                            User user = new User("" + firebaseUser.getUid(), edtPhone.getText().toString(), null, null, edtPassword.getText().toString());
                             writeNewUser(user);
 
-                            moveToAnotherActivity(MainActivity.class);
+                            moveToAnotherActivity(HomeScreenActivity.class);
 
                         } else {
                             setVisibleVisibility(llPhone.getId());
