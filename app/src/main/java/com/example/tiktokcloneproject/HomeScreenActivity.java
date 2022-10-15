@@ -35,7 +35,7 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
             Intent intent = new Intent(HomeScreenActivity.this, MainActivity.class);
             startActivity(intent);
 
-            finish();
+
         }
 
         if (view.getId() == btnSearch.getId())
@@ -43,7 +43,7 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
             Intent intent = new Intent(HomeScreenActivity.this, SearchActivity.class);
             startActivity(intent);
 
-            finish();
+
         }
 
 
