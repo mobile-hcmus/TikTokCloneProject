@@ -12,10 +12,15 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
     }
 
-    public void loginPage(View v) {
+    public void signUpPage(View v) {
         Intent intent = new Intent(MainActivity.this, PhoneSignupActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
+    }
+
+    public void signInPage(View v) {
+        Intent intent = new Intent(MainActivity.this, LoginOptionsActivity.class);
+        startActivity(intent);
     }
 }
