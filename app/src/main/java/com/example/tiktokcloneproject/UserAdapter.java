@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,7 +17,7 @@ import java.util.Locale;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.userItems> implements Filterable {
     private List<User> listUser;
-    private List<User> listUserOlld;
+    private List<User> listUserOld;
 
 
 
@@ -24,7 +25,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.userItems> imp
     {
 
         this.listUser=listUser;
-        this.listUserOlld=listUser;
+        this.listUserOld=listUser;
     }
 
 
@@ -44,7 +45,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.userItems> imp
             return;
         }
         holder.text_Username.setText(user.getId());
-
+        holder.layout_items.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Go to User Profie
+            }
+        });
     }
 
     @Override
@@ -59,11 +65,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.userItems> imp
 
     public class userItems extends RecyclerView.ViewHolder{
         private TextView text_Username;
+        private LinearLayout layout_items;
 
 
         public userItems(@NonNull View itemView) {
             super(itemView);
             text_Username=(TextView) itemView.findViewById(R.id.text_Username);
+            layout_items=(LinearLayout) itemView.findViewById(R.id.layout_items);
+
         }
     }
     @Override
@@ -73,12 +82,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.userItems> imp
             protected FilterResults performFiltering(CharSequence charSequence) {
                 String srtSearch=charSequence.toString();
                 if (srtSearch.isEmpty()) {
-                    listUser=listUserOlld;
+                    listUser=listUserOld;
 
                 }
                 else {
                     List<User> list=new ArrayList<>();
-                    for (User user : listUserOlld){
+                    for (User user : listUserOld){
                         if (user.getId().toLowerCase().contains(srtSearch.toLowerCase())){
                             list.add(user);
                         }

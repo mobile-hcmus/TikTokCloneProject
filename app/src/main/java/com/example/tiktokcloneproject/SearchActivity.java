@@ -65,6 +65,7 @@ public class SearchActivity extends AppCompatActivity {
         list.add(new User("bb","12","ADa","ada","ada"));
         list.add(new User("cc","12","ADa","ada","ada"));
         list.add(new User("dd","12","ADa","ada","ada"));
+        list.add(new User("aa","12","ADa","ada","ada"));
 
 
         return list;
@@ -95,5 +96,15 @@ public class SearchActivity extends AppCompatActivity {
 
 
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!searchView.isIconified()){
+            searchView.setIconified(true);
+            return;
+        }
+        super.onBackPressed();
+
     }
 }
