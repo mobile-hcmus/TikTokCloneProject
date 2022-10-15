@@ -51,7 +51,6 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
     public void onClick(View view) {
         if (view.getId() == btnProfile.getId())
         {
-<<<<<<< HEAD
             if (user!=null)
             {
                 Intent intent = new Intent(HomeScreenActivity.this, ProfileActivity.class);
@@ -62,23 +61,12 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
                 Intent intent = new Intent(HomeScreenActivity.this, MainActivity.class);
                 startActivity(intent);
             }
-=======
-            Intent intent = new Intent(HomeScreenActivity.this, MainActivity.class);
-            startActivity(intent);
-
-
->>>>>>> 795821a4a22e3c45311a5f8e3d024bffdce438c5
         }
 
         if (view.getId() == btnSearch.getId())
         {
             Intent intent = new Intent(HomeScreenActivity.this, SearchActivity.class);
             startActivity(intent);
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 795821a4a22e3c45311a5f8e3d024bffdce438c5
         }
     }
 
