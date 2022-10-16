@@ -1,14 +1,11 @@
 package com.example.tiktokcloneproject;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -21,8 +18,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.FirebaseError;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,19 +25,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,12 +38,12 @@ import java.util.regex.Pattern;
 
 public class PhoneSignupActivity extends Activity implements View.OnClickListener {
 
-    LinearLayout llSignupPage, llChoice, llPhone, llOtp, llWait;
-    EditText edtPhone, edtOtp, edtPassword, edtConfirm;
-    Button btnPhone, btnOtp, btnChoicePhone, btnChoiceEmail, btnChoiceFacebook;
-    final int VISIBLE = View.VISIBLE;
-    final int GONE = View.GONE;
-    boolean isExistedPhone;
+    private LinearLayout llSignupPage, llChoice, llPhone, llOtp, llWait;
+    private EditText edtPhone, edtOtp, edtPassword, edtConfirm;
+    private Button btnPhone, btnOtp, btnChoicePhone, btnChoiceEmail, btnChoiceFacebook, btnBackToHomeScreen,
+            btnBackToChoice;
+    private final int VISIBLE = View.VISIBLE;
+    private final int GONE = View.GONE;
 
     ////////////firebase///////////////
     String mVerificationId;
@@ -65,9 +51,9 @@ public class PhoneSignupActivity extends Activity implements View.OnClickListene
     PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks;
     FirebaseAuth mAuth;
     DatabaseReference mDatabase;
-    FirebaseFirestore db;
+    private FirebaseFirestore db;
     /////Thread//////////
-    String msg;
+    private String msg;
     Handler handler = new Handler();
 
 
@@ -90,6 +76,8 @@ public class PhoneSignupActivity extends Activity implements View.OnClickListene
         btnChoicePhone = (Button) llSignupPage.findViewById(R.id.btnChoicePhone);
         btnChoiceEmail = (Button) llSignupPage.findViewById(R.id.btnChoiceEmail);
         btnChoiceFacebook = (Button) llSignupPage.findViewById(R.id.btnChoiceFacebook);
+        btnBackToHomeScreen = (Button) llSignupPage.findViewById(R.id.btnBackToHomeScreen);
+        btnBackToChoice = (Button) llSignupPage.findViewById(R.id.btnBackToChoice);
 
         setVisibleVisibility(llChoice.getId());
         btnPhone.setText(getString(R.string.ic_btnLogin) + getString(R.string.ic_btnLogin));
@@ -131,18 +119,11 @@ public class PhoneSignupActivity extends Activity implements View.OnClickListene
             }
         }; // end callbacks
 
-        btnOtp.setOnClickListener(v -> {
-            if(TextUtils.isEmpty(edtOtp.getText().toString()) || edtOtp.getText().toString().length() != 6) {
-                Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_Otp), Toast.LENGTH_SHORT).show();
-            }
-            else {
-                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, edtOtp.getText().toString());
-                signInWithPhoneAuthCredential(credential);
-            }
-        });
-
         btnChoicePhone.setOnClickListener(this);
         btnPhone.setOnClickListener(this);
+        btnOtp.setOnClickListener(this);
+        btnBackToChoice.setOnClickListener(this);
+        btnBackToHomeScreen.setOnClickListener(this);
     } // end onCreate
 
     @Override
@@ -151,57 +132,24 @@ public class PhoneSignupActivity extends Activity implements View.OnClickListene
             setVisibleVisibility(llPhone.getId());
         }
         if(v.getId() == btnPhone.getId()) {
-            String phone = edtPhone.getText().toString();
-            String password = edtPassword.getText().toString();
-            String confirm = edtConfirm.getText().toString();
-
-
-            if( phone.isEmpty() || !isValidPhone(phone)) {
-                Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_PhoneAuth), Toast.LENGTH_SHORT).show();
-            } else if (password.isEmpty() || !isValidPassword(password)) {
-                Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_Password), Toast.LENGTH_SHORT).show();
-            } else if (!password.equals(confirm)) {
-                Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_confirm), Toast.LENGTH_SHORT).show();
+            handleBtnPhoneClick();
+        }
+        if(v.getId() == btnOtp.getId()) {
+            if(TextUtils.isEmpty(edtOtp.getText().toString()) || edtOtp.getText().toString().length() != 6) {
+                Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_Otp), Toast.LENGTH_SHORT).show();
             }
             else {
-
-
-                String formattedPhone = "+84" + phone.substring(phone.length() - 9) ;
-                edtPhone.setText(formattedPhone);
-                        db.collection("users")
-                        .whereEqualTo("phone", formattedPhone)
-                        .get().addOnCompleteListener(task -> {
-                                    msg = "FALSE";
-                                    if (task.isSuccessful()) {
-
-                                        for (DocumentSnapshot document : task.getResult()) {
-                                            if (document.exists()) {
-
-                                                msg = "TRUE";
-
-                                                break;
-                                            }
-                                        }
-
-                                    } else {
-                                        Log.d("TAG", "Error getting documents: ", task.getException());
-                                    }
-
-
-                                    if(msg.equals("FALSE")) {
-                                        handler.post(this::signUp);
-                                    } else {
-                                        Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_existedPhone), Toast.LENGTH_SHORT).show();
-                                        setVisibleVisibility(llPhone.getId());
-                                    }
-
-
-                                });
-                setVisibleVisibility(llWait.getId());
-
-
+                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, edtOtp.getText().toString());
+                signInWithPhoneAuthCredential(credential);
             }
         }
+        if(v.getId() == btnBackToHomeScreen.getId()) {
+            moveToAnotherActivity(HomeScreenActivity.class);
+        }
+        if(v.getId() == btnBackToChoice.getId()) {
+            setVisibleVisibility(llChoice.getId());
+        }
+
     }
 
     private void signUp() {
@@ -288,6 +236,48 @@ public class PhoneSignupActivity extends Activity implements View.OnClickListene
         startActivity(intent);
 
         finish();
+    }
+
+    private void handleBtnPhoneClick() {
+        String phone = edtPhone.getText().toString();
+        String password = edtPassword.getText().toString();
+        String confirm = edtConfirm.getText().toString();
+
+
+        if (phone.isEmpty() || !isValidPhone(phone)) {
+            Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_PhoneAuth), Toast.LENGTH_SHORT).show();
+        } else if (password.isEmpty() || !isValidPassword(password)) {
+            Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_Password), Toast.LENGTH_SHORT).show();
+        } else if (!password.equals(confirm)) {
+            Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_confirm), Toast.LENGTH_SHORT).show();
+        } else {
+            String formattedPhone = "+84" + phone.substring(phone.length() - 9);
+            edtPhone.setText(formattedPhone);
+            db.collection("users")
+                    .whereEqualTo("phone", formattedPhone)
+                    .get().addOnCompleteListener(task -> {
+                        msg = "FALSE";
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+                                if (document.exists()) {
+                                    msg = "TRUE";
+                                    break;
+                                }
+                            }
+
+                        } else {
+                            Log.d("TAG", "Error getting documents: ", task.getException());
+                        }
+
+                        if (msg.equals("FALSE")) {
+                            handler.post(PhoneSignupActivity.this::signUp);
+                        } else {
+                            Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_existedPhone), Toast.LENGTH_SHORT).show();
+                            setVisibleVisibility(llPhone.getId());
+                        }
+                    });
+            setVisibleVisibility(llWait.getId());
+        }
     }
 
 }// end PhoneLoginActivity class

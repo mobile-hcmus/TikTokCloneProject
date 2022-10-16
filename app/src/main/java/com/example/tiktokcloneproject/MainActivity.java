@@ -20,7 +20,7 @@ public class MainActivity extends Activity {
     }
 
     public void signInPage(View v) {
-        Intent intent = new Intent(MainActivity.this, LoginOptionsActivity.class);
+        Intent intent = new Intent(MainActivity.this, SigninPage.class);
         startActivity(intent);
     }
 }
