@@ -10,6 +10,7 @@
     <string name="btnChoicePhone">Using phone number</string>
     <string name="btnChoiceEmail">Using email address</string>
     <string name="btnChoiceFacebook">Using facebook account</string>
+    <string name="btn_signout">Đăng xuất</string>
     <string name="error_PhoneAuth">Invalid phone number</string>
     <string name="error_Password">Password only include alphabet character and number
         and start with a alphabet character</string>
