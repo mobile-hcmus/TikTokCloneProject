@@ -53,7 +53,10 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
         {
             if (user!=null)
             {
+                Bundle bundle = new Bundle();
+                bundle.putString("id", user.getUid());
                 Intent intent = new Intent(HomeScreenActivity.this, ProfileActivity.class);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
             else

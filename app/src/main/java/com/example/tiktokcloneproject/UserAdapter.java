@@ -1,5 +1,8 @@
 package com.example.tiktokcloneproject;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +21,7 @@ import java.util.Locale;
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.userItems> implements Filterable {
     private List<User> listUser;
     private List<User> listUserOld;
+    private Context mainContext;
 
 
 
@@ -33,8 +37,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.userItems> imp
     @NonNull
     @Override
     public userItems onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        mainContext = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user,parent,false);
-
         return new userItems(view);
     }
 
@@ -48,7 +52,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.userItems> imp
         holder.layout_items.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Go to User Profie
+                Bundle bundle = new Bundle();
+                bundle.putString("id", user.getId());
+                Intent intent = new Intent(mainContext, ProfileActivity.class);
+                intent.putExtras(bundle);
+                mainContext.startActivity(intent);
             }
         });
     }

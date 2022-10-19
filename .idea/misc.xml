@@ -3,6 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/C3MCJ/Mobile/Android/TikTokCloneProject/app/src/main/res/layout/activity_home_screen.xml" value="0.25" />
+        <entry key="..\:/C3MCJ/Mobile/Android/TikTokCloneProject/app/src/main/res/layout/activity_login_options.xml" value="0.25" />
+        <entry key="..\:/C3MCJ/Mobile/Android/TikTokCloneProject/app/src/main/res/layout/activity_phone_signup.xml" value="0.25" />
+        <entry key="..\:/C3MCJ/Mobile/Android/TikTokCloneProject/app/src/main/res/layout/activity_profile.xml" value="0.1" />
+        <entry key="..\:/C3MCJ/Mobile/Android/TikTokCloneProject/app/src/main/res/layout/activity_searching.xml" value="0.10989583333333333" />
+        <entry key="..\:/C3MCJ/Mobile/Android/TikTokCloneProject/app/src/main/res/layout/activity_signin_page.xml" value="0.25" />
         <entry key="..\:/Mobile/Final_project/app/src/main/res/drawable/btn_login_shape.xml" value="0.176" />
         <entry key="..\:/Mobile/Final_project/app/src/main/res/drawable/btn_shape.xml" value="0.11" />
         <entry key="..\:/Mobile/Final_project/app/src/main/res/layout/activity_delete_account.xml" value="0.1" />
