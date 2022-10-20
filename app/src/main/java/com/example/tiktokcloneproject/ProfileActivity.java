@@ -62,6 +62,15 @@ public class ProfileActivity extends Activity {
     public void onClick(View v) {
         if (v.getId() == R.id.text_sign_out) {
             signOut(v);
+            return;
+        }
+
+        if (v.getId() == R.id.image_avatar) {
+            Bundle bundle = new Bundle();
+            bundle.putString("id", user.getUid());
+            Intent intent = new Intent(ProfileActivity.this, ShareAccountActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
     }
 

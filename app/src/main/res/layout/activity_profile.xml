@@ -27,10 +27,13 @@
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/image_avatar"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
-        android:background="#AABBCC"></ImageView>
+        android:background="#AABBCC"
+        android:onClick="onClick"
+        android:clickable="true"></ImageView>
     <TextView
         android:id="@+id/txv_username"
         android:layout_width="wrap_content"
