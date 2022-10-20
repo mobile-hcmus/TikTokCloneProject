@@ -11,8 +11,19 @@
         android:id="@+id/top_menu_bar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:gravity="right"
         >
-
+        <TextView
+            android:id="@+id/text_sign_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign Out"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:textAlignment="gravity"
+            android:onClick="onClick"
+            android:clickable="true"
+            ></TextView>
     </LinearLayout>
 
     <ImageView
@@ -20,11 +31,20 @@
         android:layout_height="100dp"
         android:layout_gravity="center"
         android:background="#AABBCC"></ImageView>
+    <TextView
+        android:id="@+id/txv_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\@"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:textSize="18dp"
+        android:textStyle="bold"></TextView>
     <LinearLayout
         android:id="@+id/info"
         android:layout_margin="15dp"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_horizontal">
         <LinearLayout
@@ -33,7 +53,7 @@
             android:orientation="vertical"
             android:gravity="center_horizontal">
             <TextView
-                android:id="@+id/following"
+                android:id="@+id/text_following"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
@@ -51,7 +71,7 @@
             android:orientation="vertical"
             android:gravity="center_horizontal">
             <TextView
-                android:id="@+id/followers"
+                android:id="@+id/text_followers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
@@ -69,7 +89,7 @@
             android:orientation="vertical"
             android:gravity="center_horizontal">
             <TextView
-                android:id="@+id/likes"
+                android:id="@+id/text_likes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
@@ -78,8 +98,24 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="likes"
+                android:text="Likes"
                 android:textSize="14dp"></TextView>
         </LinearLayout>
     </LinearLayout>
+    <Button
+        android:id="@+id/button_follow"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:text="Follow"
+        android:textAllCaps="false"
+        android:visibility="gone"></Button>
+    <Button
+        android:id="@+id/button_edit_profile"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:text="Edit profile"
+        android:textAllCaps="false"
+        android:visibility="gone"></Button>
 </LinearLayout>
