@@ -5,6 +5,8 @@
       <map>
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/drawable/btn_login_shape.xml" value="0.1765" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/drawable/dialog_bg.xml" value="0.2985" />
+        <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/drawable/ic_phone.xml" value="0.2985" />
+        <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_account_setting.xml" value="0.34479166666666666" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_delete_account.xml" value="0.16770833333333332" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_email_log_in.xml" value="0.16770833333333332" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_home_screen.xml" value="0.2" />
@@ -13,6 +15,7 @@
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_phone_signup.xml" value="0.16770833333333332" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_profile.xml" value="0.33" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_settings_and_privacy.xml" value="0.34479166666666666" />
+        <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_sign_in_to_delete.xml" value="0.34479166666666666" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_signin_page.xml" value="0.16770833333333332" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.33" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/item_user.xml" value="0.16770833333333332" />

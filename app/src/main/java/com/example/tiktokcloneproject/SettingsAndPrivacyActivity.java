@@ -3,9 +3,16 @@ package com.example.tiktokcloneproject;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 public class SettingsAndPrivacyActivity extends AppCompatActivity {
+
+    private ImageView imvBackToProfile;
+    private FrameLayout flAccountOption, flPrivacyOption, flShareProfileOption;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,5 +22,28 @@ public class SettingsAndPrivacyActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.hide();
         }
+
+        imvBackToProfile = (ImageView) findViewById(R.id.imvBackToProfile);
+        flAccountOption = (FrameLayout) findViewById(R.id.flAccountOption);
+        flPrivacyOption = (FrameLayout) findViewById(R.id.flPrivacyOption);
+        flShareProfileOption = (FrameLayout) findViewById(R.id.flShareProfileOption);
+
+        imvBackToProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SettingsAndPrivacyActivity.this, ProfileActivity.class);
+                startActivity(intent);
+
+                finish();
+            }
+        });
+
+        flAccountOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SettingsAndPrivacyActivity.this, AccountSettingActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

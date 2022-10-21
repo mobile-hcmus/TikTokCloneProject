@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_arrow_back_24"
         android:layout_margin="5dp"
-        />
+        android:contentDescription="Go back to ProfileActivity" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,12 +30,12 @@
         android:text="Account"
         android:layout_margin="20dp"/>
     <FrameLayout
+        android:id="@+id/flAccountOption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/tiktok_white"
         android:padding="15dp">
         <LinearLayout
-            android:id="@+id/llAccountOption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -61,12 +61,12 @@
                 android:layout_gravity="end" />
     </FrameLayout>
     <FrameLayout
+        android:id="@+id/flPrivacyOption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/tiktok_white"
         android:padding="15dp">
         <LinearLayout
-            android:id="@+id/llPrivacyOption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -92,12 +92,12 @@
                 android:layout_gravity="end" />
     </FrameLayout>
     <FrameLayout
+        android:id="@+id/flShareProfileOption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/tiktok_white"
         android:padding="15dp">
         <LinearLayout
-            android:id="@+id/llShareProfileOption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
