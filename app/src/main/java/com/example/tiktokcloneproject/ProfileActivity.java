@@ -3,9 +3,16 @@ package com.example.tiktokcloneproject;
 import androidx.annotation.NonNull;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.view.View;
 
@@ -60,8 +67,8 @@ public class ProfileActivity extends Activity {
     }
 
     public void onClick(View v) {
-        if (v.getId() == R.id.text_sign_out) {
-            signOut(v);
+        if (v.getId() == R.id.text_menu) {
+            showDialog();
             return;
         }
 
@@ -74,17 +81,47 @@ public class ProfileActivity extends Activity {
         }
     }
 
-    public void signOut(View v)
-    {
-        FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent(ProfileActivity.this, HomeScreenActivity.class);
-        startActivity(intent);
+    private void showDialog() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.bottom_sheet_layout);
 
-        finish();
+        LinearLayout llSetting = dialog.findViewById(R.id.llSetting);
+        LinearLayout llSignOut = dialog.findViewById(R.id.llSignOut);
+
+        llSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProfileActivity.this, DeleteAccountActivity.class);
+                startActivity(intent);
+            }
+        });
+        llSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signOut(view);
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+
     }
 
+    public void signOut (View v)
+        {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(ProfileActivity.this, HomeScreenActivity.class);
+            startActivity(intent);
 
-    // NOTE (Quang): These buttons below belong to Setting and Privacy activity
+            finish();
+        }
+
+
+        // NOTE (Quang): These buttons below belong to Setting and Privacy activity
 //    public void privacyPage(View view) {
 //        Intent intent = new Intent(ProfileActivity.this, DeleteAccountActivity.class);
 //        startActivity(intent);

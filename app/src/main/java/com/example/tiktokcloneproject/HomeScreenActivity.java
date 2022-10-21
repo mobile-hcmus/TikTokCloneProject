@@ -1,6 +1,7 @@
 package com.example.tiktokcloneproject;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -33,9 +34,22 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 
         btnProfile.setOnClickListener(this);
         btnSearch.setOnClickListener(this);
-
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+
+//        FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                user = firebaseAuth.getCurrentUser();
+//                if (user != null) {
+//                    tvVideo.setText("Đã Đăng Nhập");
+//                }
+//                else
+//                {
+//                    tvVideo.setText("Chưa Đăng Nhập");
+//                }
+//            }
+//        });
 
         if (user != null)
         {
@@ -45,6 +59,7 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
         {
             tvVideo.setText("Chưa Đăng Nhập");
         }
+
     }
 
     @Override

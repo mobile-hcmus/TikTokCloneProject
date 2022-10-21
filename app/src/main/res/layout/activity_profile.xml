@@ -13,17 +13,18 @@
         android:layout_height="50dp"
         android:gravity="right"
         >
+
         <TextView
-            android:id="@+id/text_sign_out"
+            android:id="@+id/text_menu"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sign Out"
+            android:layout_height="26dp"
             android:layout_gravity="center"
             android:layout_margin="10dp"
-            android:textAlignment="gravity"
-            android:onClick="onClick"
             android:clickable="true"
-            ></TextView>
+            android:onClick="onClick"
+            android:text="&#9776;"
+            android:textAlignment="gravity"
+            android:textSize="20sp"></TextView>
     </LinearLayout>
 
     <ImageView
