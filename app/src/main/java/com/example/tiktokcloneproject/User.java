@@ -31,6 +31,17 @@ public class User {
         return result;
     }
 
+    public Map<String, Object> toMapProfile() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("username", getId());
+        result.put("following", 0);
+        result.put("followers", 0);
+        result.put("totalLikes", 0);
+        result.put("isPrivate", false);
+
+        return result;
+    }
+
     public String getId() {
         return id;
     }

@@ -175,6 +175,7 @@ public class PhoneSignupActivity extends Activity implements View.OnClickListene
 
                             User user = new User("" + firebaseUser.getUid(), edtPhone.getText().toString(), null, null, edtPassword.getText().toString());
                             writeNewUser(user);
+                            writeNewProfile(user);
 
                             moveToAnotherActivity(HomeScreenActivity.class);
 
@@ -198,6 +199,7 @@ public class PhoneSignupActivity extends Activity implements View.OnClickListene
 
     private void writeNewUser(User user) {
 
+        // Basic sign-in info:
         Map<String, Object> userValues = user.toMap();
         final String TAG = "ADD";
         Map<String, Object> childUpdates = new HashMap<>();
@@ -216,6 +218,28 @@ public class PhoneSignupActivity extends Activity implements View.OnClickListene
                     }
                 });
 
+    }
+
+    private void writeNewProfile(User user) {
+
+        // Basic sign-in info:
+        Map<String, Object> userValues = user.toMapProfile();
+        final String TAG = "ADD";
+        Map<String, Object> childUpdates = new HashMap<>();
+        db.collection("profiles").document(user.id)
+                .set(userValues)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
     }
 
     public static boolean isValidPhone(String phone) {
