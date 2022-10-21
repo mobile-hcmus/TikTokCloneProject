@@ -14,6 +14,9 @@
         android:theme="@style/Theme.TikTokCloneProject"
         tools:targetApi="31">
         <activity
+            android:name=".SettingsAndPrivacyActivity"
+            android:exported="false" />
+        <activity
             android:name=".SigninPage"
             android:exported="false" />
         <activity
@@ -48,8 +51,8 @@
             android:exported="false" />
         <activity
             android:name=".ShareAccountActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
     </application>
 
 </manifest>

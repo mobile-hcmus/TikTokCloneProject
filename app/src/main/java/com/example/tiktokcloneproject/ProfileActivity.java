@@ -92,7 +92,7 @@ public class ProfileActivity extends Activity {
         llSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ProfileActivity.this, DeleteAccountActivity.class);
+                Intent intent = new Intent(ProfileActivity.this, SettingsAndPrivacyActivity.class);
                 startActivity(intent);
             }
         });
