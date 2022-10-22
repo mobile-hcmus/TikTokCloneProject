@@ -51,9 +51,12 @@
              android:layout_margin="5dp"
              android:clickable="true">
              <ImageView
+                 android:id="@+id/image_copy_link"
                  android:layout_width="50dp"
                  android:layout_height="50dp"
-                 android:background="#AABBCC"></ImageView>
+                 android:background="#AABBCC"
+                 android:clickable="true"
+                 android:onClick="onClick"></ImageView>
              <TextView
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"

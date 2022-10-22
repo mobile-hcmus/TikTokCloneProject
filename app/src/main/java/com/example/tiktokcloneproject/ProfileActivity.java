@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.List;
+
 public class ProfileActivity extends Activity {
     private TextView txvFollowing, txvFollowers, txvLikes, txvUserName;
     private Button btn;
@@ -35,7 +38,16 @@ public class ProfileActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        String userId = getIntent().getStringExtra("id");
+        Intent intent = getIntent();
+        String userId;
+        if (intent.hasExtra("id")) {
+            userId = intent.getStringExtra("id");
+        } else {
+            String action = intent.getAction();
+            Uri data = intent.getData();
+            List<String> segmentsList = data.getPathSegments();
+            userId = segmentsList.get(segmentsList.size() - 1);
+        }
         setContentView(R.layout.activity_profile);
         txvFollowing = (TextView)findViewById(R.id.text_following);
         txvFollowers = (TextView)findViewById(R.id.text_followers);
