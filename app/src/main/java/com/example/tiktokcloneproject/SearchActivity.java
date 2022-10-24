@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.common.api.Api;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
@@ -59,6 +60,10 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searching);
+
+
+
+
 
 
         userDB = FirebaseFirestore.getInstance();
@@ -106,7 +111,11 @@ public class SearchActivity extends AppCompatActivity {
 //        });
 
 
+
         userDB.collection("users")
+//                .orderBy("userName")
+//                .startAt(cc)
+//                .endAt(cc+"\uf8ff")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -153,7 +162,11 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                Toast.makeText(SearchActivity.this,newText,
+                        Toast.LENGTH_LONG).show();
                 userAdapter.getFilter().filter(newText);
+
+
                 return false;
             }
         });
