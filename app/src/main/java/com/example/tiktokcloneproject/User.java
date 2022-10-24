@@ -6,23 +6,34 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class User {
-    String id;
+
+    String userName;
     String phone;
+
+    public User(String userName) {
+        this.userName = userName;
+    }
+
     String birthdate;
     String email;
     String password;
 
-    User(String id, @Nullable String phone, @Nullable String birthdate, @Nullable String email, String password) {
-        this.id = id;
+    User(String userName, @Nullable String phone, @Nullable String birthdate, @Nullable String email, @Nullable String password) {
+        this.userName = userName;
         this.phone = phone;
         this.birthdate = birthdate;
         this.email = email;
         this.password = password;
     }
 
+
+
+
+
+
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("uid", id);
+        result.put("userName", userName);
         result.put("phone", phone);
         result.put("birthdate", birthdate);
         result.put("email", email);
@@ -33,7 +44,7 @@ public class User {
 
     public Map<String, Object> toMapProfile() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("username", getId());
+        result.put("username", getuserName());
         result.put("following", 0);
         result.put("followers", 0);
         result.put("totalLikes", 0);
@@ -42,12 +53,12 @@ public class User {
         return result;
     }
 
-    public String getId() {
-        return id;
+    public String getuserName() {
+        return userName;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setuserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPhone() {

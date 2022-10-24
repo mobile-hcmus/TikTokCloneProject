@@ -10,6 +10,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,15 +49,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.userItems> imp
         if (user ==null) {
             return;
         }
-        holder.text_Username.setText(user.getId());
+        holder.text_Username.setText(user.getuserName());
         holder.layout_items.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putString("id", user.getId());
-                Intent intent = new Intent(mainContext, ProfileActivity.class);
-                intent.putExtras(bundle);
-                mainContext.startActivity(intent);
+//                Bundle bundle = new Bundle();
+//                bundle.putString("id", user.getId());
+//                Intent intent = new Intent(mainContext, ProfileActivity.class);
+//                intent.putExtras(bundle);
+//                mainContext.startActivity(intent);
+                Toast.makeText(view.getContext(), user.getuserName(),
+                        Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -96,7 +99,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.userItems> imp
                 else {
                     List<User> list=new ArrayList<>();
                     for (User user : listUserOld){
-                        if (user.getId().toLowerCase().contains(srtSearch.toLowerCase())){
+                        if (user.getuserName().toLowerCase().contains(srtSearch.toLowerCase())){
                             list.add(user);
                         }
                     }

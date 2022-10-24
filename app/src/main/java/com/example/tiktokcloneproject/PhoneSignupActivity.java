@@ -203,7 +203,7 @@ public class PhoneSignupActivity extends Activity implements View.OnClickListene
         Map<String, Object> userValues = user.toMap();
         final String TAG = "ADD";
         Map<String, Object> childUpdates = new HashMap<>();
-        db.collection("users").document(user.id)
+        db.collection("users").document(user.userName)
                 .set(userValues)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -226,7 +226,7 @@ public class PhoneSignupActivity extends Activity implements View.OnClickListene
         Map<String, Object> userValues = user.toMapProfile();
         final String TAG = "ADD";
         Map<String, Object> childUpdates = new HashMap<>();
-        db.collection("profiles").document(user.id)
+        db.collection("profiles").document(user.userName)
                 .set(userValues)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
