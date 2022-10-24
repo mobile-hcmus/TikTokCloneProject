@@ -64,20 +64,44 @@ public class SearchActivity extends AppCompatActivity {
         userDB = FirebaseFirestore.getInstance();
 
 
-        userDB.collection("test")
+//        DocumentReference docRef = userDB.collection("test").document("q5oJ1TSUn9n56r3jFSaa");
+//        docRef.get().addOnCompleteListener(task -> {
+//            if (task.isSuccessful()) {
+//                DocumentSnapshot document = task.getResult();
+//                if (document.exists()) {
+//
+//                } else { }
+//            } else { }
+//        });
 
+
+        userDB.collection("users")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Toast.makeText(SearchActivity.this,"da ket noi!2 "+document.getData().toString(),
-                                        Toast.LENGTH_LONG).show();
+                            Toast.makeText(SearchActivity.this,"da ket noi!2 ",
+                                    Toast.LENGTH_LONG).show();
 
+
+
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if (document.exists())
+                                Toast.makeText(SearchActivity.this,document.getData().toString(),
+                                        Toast.LENGTH_LONG).show();
+                                else
+                                    Toast.makeText(SearchActivity.this,"khong ton tai",
+                                            Toast.LENGTH_LONG).show();
 
                             };
 
+
+                            Integer n;
+                            n=task.getResult().size();
+                            Toast.makeText(SearchActivity.this,"kich thuoc la " +n.toString(),
+                                    Toast.LENGTH_LONG).show();
                         } else {
 
                             Toast.makeText(SearchActivity.this,"Loi ket noi voi Server!2",
