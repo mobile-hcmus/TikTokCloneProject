@@ -27,6 +27,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -57,7 +59,38 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searching);
+
+
         userDB = FirebaseFirestore.getInstance();
+
+
+        userDB.collection("test")
+
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Toast.makeText(SearchActivity.this,"da ket noi!2 "+document.getData().toString(),
+                                        Toast.LENGTH_LONG).show();
+
+
+                            };
+
+                        } else {
+
+                            Toast.makeText(SearchActivity.this,"Loi ket noi voi Server!2",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
+
+
+
+
+
 
 
         rcv_users=(RecyclerView) findViewById(R.id.rcv_users);
@@ -69,7 +102,7 @@ public class SearchActivity extends AppCompatActivity {
 
 
 
-        getData();
+//        getData();
         userArrayList.add(new User("aa"));
         userAdapter=new UserAdapter(userArrayList);
 
@@ -77,14 +110,6 @@ public class SearchActivity extends AppCompatActivity {
 
         RecyclerView.ItemDecoration itemDecoration= new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
         rcv_users.addItemDecoration(itemDecoration);
-
-
-
-
-
-
-
-
 
 
     }
@@ -121,10 +146,40 @@ public class SearchActivity extends AppCompatActivity {
 //                .whereEqualTo("userName", true)
 
 //        CollectionReference cities = userDB.collection("test");
-//
+
 //        Map<String, Object> data1 = new HashMap<>();
 //        data1.put("name", "San Francisco");
 //        cities.document("SF").set(data1);
+
+
+        DocumentReference docRef = userDB.collection("test").document("SF");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    Toast.makeText(SearchActivity.this,"da ket noi!1",
+                            Toast.LENGTH_LONG).show();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        Toast.makeText(SearchActivity.this,document.getData().toString(),Toast.LENGTH_LONG).show();
+
+
+
+
+                    } else {
+                        Toast.makeText(SearchActivity.this,"khong ton tai",
+                                Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(SearchActivity.this,"khong ket noi den server!1",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+
+
 
         userDB.collection("test")
 
@@ -136,17 +191,15 @@ public class SearchActivity extends AppCompatActivity {
                             Integer aa=7;
                             aa=task.getResult().size();
 
-
-
-
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
                             };
-                            Toast.makeText(SearchActivity.this,"getttttt tgabg  la"+aa.toString() ,
+                            Toast.makeText(SearchActivity.this,"da ket noi!2",
                                     Toast.LENGTH_LONG).show();
+
                         } else {
 
-                            Toast.makeText(SearchActivity.this,"Loi ket noi voi Server!",
+                            Toast.makeText(SearchActivity.this,"Loi ket noi voi Server!2",
                             Toast.LENGTH_LONG).show();
                         }
                     }
