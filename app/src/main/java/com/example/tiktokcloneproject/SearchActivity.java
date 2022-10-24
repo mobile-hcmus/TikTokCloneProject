@@ -48,7 +48,7 @@ public class SearchActivity extends AppCompatActivity {
      RecyclerView rcv_users;
      UserAdapter userAdapter;
      SearchView searchView;
-     TextView textView;
+
     final String TAG = "ADD";
      ArrayList <User> userArrayList=new ArrayList<User>();;
 
@@ -64,74 +64,17 @@ public class SearchActivity extends AppCompatActivity {
         userDB = FirebaseFirestore.getInstance();
 
 
-//        DocumentReference docRef = userDB.collection("test").document("q5oJ1TSUn9n56r3jFSaa");
-//        docRef.get().addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                DocumentSnapshot document = task.getResult();
-//                if (document.exists()) {
-//
-//                } else { }
-//            } else { }
-//        });
-
-
-        userDB.collection("users")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(SearchActivity.this,"da ket noi!2 ",
-                                    Toast.LENGTH_LONG).show();
-
-
-
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                if (document.exists())
-                                Toast.makeText(SearchActivity.this,document.getData().toString(),
-                                        Toast.LENGTH_LONG).show();
-                                else
-                                    Toast.makeText(SearchActivity.this,"khong ton tai",
-                                            Toast.LENGTH_LONG).show();
-
-                            };
-
-
-                            Integer n;
-                            n=task.getResult().size();
-                            Toast.makeText(SearchActivity.this,"kich thuoc la " +n.toString(),
-                                    Toast.LENGTH_LONG).show();
-                        } else {
-
-                            Toast.makeText(SearchActivity.this,"Loi ket noi voi Server!2",
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-
-
-
-
-
-
-
 
         rcv_users=(RecyclerView) findViewById(R.id.rcv_users);
-        textView= (TextView) findViewById(R.id.txt_v);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
         rcv_users.setLayoutManager(linearLayoutManager);
 
 
-
-
-//        getData();
-        userArrayList.add(new User("aa"));
+        getData();
         userAdapter=new UserAdapter(userArrayList);
-
         rcv_users.setAdapter(userAdapter);
-
         RecyclerView.ItemDecoration itemDecoration= new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
         rcv_users.addItemDecoration(itemDecoration);
 
@@ -140,6 +83,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private void getData() {
 //        userDB.collection("users").orderBy("userName", Query.Direction.ASCENDING)
+//                .whereEqualTo("userName", true)
 //                .addSnapshotListener(new EventListener<QuerySnapshot>() {
 //            @Override
 //            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -155,84 +99,41 @@ public class SearchActivity extends AppCompatActivity {
 //                for (DocumentChange dc : value.getDocumentChanges()){
 //                        userArrayList.add(dc.getDocument().toObject(User.class));
 //
-//
-//
-//
-//
 //                }
 //                userAdapter.notifyDataSetChanged();
-//
-//
 //
 //            }
 //        });
 
-//                .whereEqualTo("userName", true)
 
-//        CollectionReference cities = userDB.collection("test");
-
-//        Map<String, Object> data1 = new HashMap<>();
-//        data1.put("name", "San Francisco");
-//        cities.document("SF").set(data1);
-
-
-        DocumentReference docRef = userDB.collection("test").document("SF");
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    Toast.makeText(SearchActivity.this,"da ket noi!1",
-                            Toast.LENGTH_LONG).show();
-                    if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        Toast.makeText(SearchActivity.this,document.getData().toString(),Toast.LENGTH_LONG).show();
-
-
-
-
-                    } else {
-                        Toast.makeText(SearchActivity.this,"khong ton tai",
-                                Toast.LENGTH_LONG).show();
-                    }
-                } else {
-                    Toast.makeText(SearchActivity.this,"khong ket noi den server!1",
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-
-
-
-        userDB.collection("test")
-
+        userDB.collection("users")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            Integer aa=7;
-                            aa=task.getResult().size();
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-
-                            };
-                            Toast.makeText(SearchActivity.this,"da ket noi!2",
+                            Toast.makeText(SearchActivity.this,"da ket noi!2 ",
                                     Toast.LENGTH_LONG).show();
 
-                        } else {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                userArrayList.add(new User(document.getString("userName")));
 
+
+
+                                Toast.makeText(SearchActivity.this,document.getString("userName"),
+                                        Toast.LENGTH_LONG).show();
+                            };
+                            userAdapter.notifyDataSetChanged();
+                        } else {
                             Toast.makeText(SearchActivity.this,"Loi ket noi voi Server!2",
-                            Toast.LENGTH_LONG).show();
+                                    Toast.LENGTH_LONG).show();
                         }
                     }
                 });
+
+
+
     }
-
-
-
-
 
 
 
