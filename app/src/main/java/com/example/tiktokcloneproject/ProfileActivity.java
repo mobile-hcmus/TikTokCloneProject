@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,9 +28,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
-public class ProfileActivity extends Activity {
+public class ProfileActivity extends Activity implements View.OnClickListener{
     private TextView txvFollowing, txvFollowers, txvLikes, txvUserName;
-    private Button btn;
+    private Button btn, btnEditProfile;
     FirebaseFirestore db;
     FirebaseAuth mAuth;
     FirebaseUser user;
@@ -53,6 +54,7 @@ public class ProfileActivity extends Activity {
         txvFollowers = (TextView)findViewById(R.id.text_followers);
         txvLikes = (TextView)findViewById(R.id.text_likes);
         txvUserName = (TextView)findViewById(R.id.txv_username);
+        btnEditProfile =(Button)findViewById(R.id.button_edit_profile);
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
@@ -76,7 +78,10 @@ public class ProfileActivity extends Activity {
                 } else { }
             } else { }
         });
-    }
+
+
+        btnEditProfile.setOnClickListener(this);
+    }//on create
 
     public void onClick(View v) {
         if (v.getId() == R.id.text_menu) {
@@ -90,6 +95,10 @@ public class ProfileActivity extends Activity {
             Intent intent = new Intent(ProfileActivity.this, ShareAccountActivity.class);
             intent.putExtras(bundle);
             startActivity(intent);
+        }
+        if(v.getId() == btnEditProfile.getId()) {
+//            Toast.makeText(this, "YYY", Toast.LENGTH_SHORT).show();
+            moveToAnotherActivity(EditProfileActivity.class);
         }
     }
 
@@ -132,7 +141,13 @@ public class ProfileActivity extends Activity {
             finish();
         }
 
+    private void moveToAnotherActivity(Class<?> cls) {
+        Intent intent = new Intent(ProfileActivity.this, cls);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
 
+    }
         // NOTE (Quang): These buttons below belong to Setting and Privacy activity
 //    public void privacyPage(View view) {
 //        Intent intent = new Intent(ProfileActivity.this, DeleteAccountActivity.class);

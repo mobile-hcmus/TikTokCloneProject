@@ -68,6 +68,9 @@
             android:name=".ShareAccountActivity"
             android:exported="false"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+        <activity
+            android:name=".EditProfileActivity"
+            android:exported="false" />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
