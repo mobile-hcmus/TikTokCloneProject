@@ -3,9 +3,10 @@ package com.example.tiktokcloneproject;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,9 +19,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class EditProfileActivity extends Activity{
-    private TextView tvName, tvUsername, tvPhone, tvEmail, tvBirthdate;
-    private Button btnEdit, btnPhoto;
+public class EditProfileActivity extends Activity implements View.OnClickListener {
+    private EditText edtName, edtUsername, edtPhone, edtEmail, edtBirthdate;
+    private Button btnEdit, btnPhoto, btnApply;
     private LinearLayout llEditProfile;
     private FirebaseFirestore db;
 
@@ -31,11 +32,18 @@ public class EditProfileActivity extends Activity{
         setContentView(R.layout.activity_edit_profile);
 
         llEditProfile=(LinearLayout) findViewById(R.id.llEditProfile);
-        tvName=(TextView) llEditProfile.findViewById(R.id.tvName);
-        tvUsername=(TextView) llEditProfile.findViewById(R.id.tvUsername);
-        tvPhone=(TextView) llEditProfile.findViewById(R.id.tvPhone);
-        tvEmail=(TextView) llEditProfile.findViewById(R.id.tvEmail);
-        tvBirthdate=(TextView) llEditProfile.findViewById(R.id.tvBirthdate);
+        edtName =(EditText) llEditProfile.findViewById(R.id.edtName);
+        edtUsername =(EditText) llEditProfile.findViewById(R.id.edtUsername);
+        edtPhone =(EditText) llEditProfile.findViewById(R.id.edtPhone);
+        edtEmail =(EditText) llEditProfile.findViewById(R.id.edtEmail);
+        edtBirthdate =(EditText) llEditProfile.findViewById(R.id.edtBirthdate);
+        btnEdit = (Button) llEditProfile.findViewById(R.id.btnEditProfile);
+        btnPhoto = (Button) llEditProfile.findViewById(R.id.btnPhoto);
+        btnApply = (Button) llEditProfile.findViewById(R.id.btnApply);
+
+        setEnableEdt(false);
+        btnApply.setVisibility(View.GONE);
+        btnEdit.setOnClickListener(this);
 
         db = FirebaseFirestore.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -49,11 +57,12 @@ public class EditProfileActivity extends Activity{
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            tvUsername.setText(getData(document.get("userName")));
-                            tvPhone.setText(getData(document.get("phone")));
-                            tvEmail.setText(getData(document.get("email")));
-                            tvBirthdate.setText(getData(document.get("birthdate")));
-//                            Log.d(TAG, "DocumentSnapshot data: " + document.get("following"));
+                            Toast.makeText(EditProfileActivity.this, "success", Toast.LENGTH_SHORT).show();
+                            edtUsername.setText(getData(document.get("userName")));
+                            edtPhone.setText(getData(document.get("phone")));
+                            edtEmail.setText(getData(document.get("email")));
+                            edtBirthdate.setText(getData(document.get("birthdate")));
+                            Log.d(TAG, "DocumentSnapshot data: " + document.get("following"));
                         } else {
                             Log.d(TAG, "No such document");
                         }
@@ -67,5 +76,25 @@ public class EditProfileActivity extends Activity{
 
     private String getData(Object data) {
         return data == null ? "" : data.toString();
+    }
+
+    @Override
+    public void onClick(View v)
+    {
+        if (v.getId()==btnEdit.getId())
+        {
+            setEnableEdt(true);
+            btnApply.setVisibility(View.VISIBLE);
+            btnEdit.setVisibility(View.GONE);
+            btnPhoto.setVisibility(View.GONE);
+        }
+    }
+
+    private void setEnableEdt(boolean value) {
+        edtName.setEnabled(value);
+        edtUsername.setEnabled(value);
+        edtPhone.setEnabled(value);
+        edtEmail.setEnabled(value);
+        edtBirthdate.setEnabled(value);
     }
 }
