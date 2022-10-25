@@ -25,6 +25,7 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="action_search">Search...</string>
+    <string name="title_activity_fullscreen_avatar">FullscreenAvatarActivity</string>
 
     <!--   //////////////////////////////////////////////////////////   -->
 </resources>

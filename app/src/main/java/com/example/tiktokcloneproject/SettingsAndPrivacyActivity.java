@@ -31,9 +31,9 @@ public class SettingsAndPrivacyActivity extends AppCompatActivity {
         imvBackToProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SettingsAndPrivacyActivity.this, ProfileActivity.class);
-                startActivity(intent);
-
+//                Intent intent = new Intent(SettingsAndPrivacyActivity.this, ProfileActivity.class);
+//                startActivity(intent);
+                onBackPressed();
                 finish();
             }
         });
@@ -43,6 +43,8 @@ public class SettingsAndPrivacyActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(SettingsAndPrivacyActivity.this, AccountSettingActivity.class);
                 startActivity(intent);
+
+                finish();
             }
         });
     }

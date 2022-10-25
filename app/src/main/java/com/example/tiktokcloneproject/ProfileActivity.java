@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -13,9 +16,11 @@ import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -26,6 +31,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
+import java.util.Set;
 
 public class ProfileActivity extends Activity {
     private TextView txvFollowing, txvFollowers, txvLikes, txvUserName;
@@ -85,12 +91,58 @@ public class ProfileActivity extends Activity {
         }
 
         if (v.getId() == R.id.image_avatar) {
-            Bundle bundle = new Bundle();
-            bundle.putString("id", user.getUid());
-            Intent intent = new Intent(ProfileActivity.this, ShareAccountActivity.class);
-            intent.putExtras(bundle);
-            startActivity(intent);
+//            Bundle bundle = new Bundle();
+//            bundle.putString("id", user.getUid());
+//            Intent intent = new Intent(ProfileActivity.this, ShareAccountActivity.class);
+//            intent.putExtras(bundle);
+//            startActivity(intent);
+
+            showShareAccountDialog();
+            return;
         }
+    }
+
+    private void showShareAccountDialog() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.share_account_layout);
+
+        TextView txvUsernameInSharedPlace = dialog.findViewById(R.id.txvUsernameInSharedPlace);
+        ImageView imvAvatarInSharedPlace = dialog.findViewById(R.id.imvAvatarInSharedPlace);
+        Button btnCopyURL = dialog.findViewById(R.id.btnCopyURL);
+        TextView txvCancelInSharedPlace = dialog.findViewById(R.id.txvCancelInSharedPlace);
+
+        txvUsernameInSharedPlace.setText("@" + user.getUid().toString());
+
+        btnCopyURL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("toptop-link", "http://toptoptoptop.com/" + user.getUid().toString());
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(ProfileActivity.this, "Profile link has been saved to clipboard", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        imvAvatarInSharedPlace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProfileActivity.this, FullScreenAvatarActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        txvCancelInSharedPlace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+            }
+        });
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
     private void showDialog() {
@@ -112,6 +164,8 @@ public class ProfileActivity extends Activity {
             @Override
             public void onClick(View view) {
                 signOut(view);
+
+                finish();
             }
         });
 
