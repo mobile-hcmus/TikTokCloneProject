@@ -196,9 +196,9 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
 
     private void moveToAnotherActivity(Class<?> cls) {
         Intent intent = new Intent(ProfileActivity.this, cls);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
         startActivity(intent);
-        finish();
+
 
     }
         // NOTE (Quang): These buttons below belong to Setting and Privacy activity
