@@ -1,6 +1,7 @@
 package com.example.tiktokcloneproject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -45,6 +46,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
     private FirebaseStorage storage;
     private StorageReference storageReference;
 
+    FirebaseUser user;
 
     enum Flag {
         USERNAME,
@@ -81,7 +83,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
 
         setOnTextChanged();
         db = FirebaseFirestore.getInstance();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user != null) {
             String TAG = "LOG";
@@ -127,12 +129,20 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
     }
 
     private void uploadAvatar() {
-        StorageReference upload = storageReference.child("test/test.jpg");
+
+        ProgressDialog progress = new ProgressDialog(EditProfileActivity.this);
+        progress.setTitle("Loading");
+        progress.setMessage("Please Wait...");
+        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+        progress.show();
+
+        StorageReference upload = storageReference.child(user.getUid().toString());
 
         upload.putFile(avatarUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        progress.dismiss();
                         Toast.makeText(EditProfileActivity.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
                     }
                 })
