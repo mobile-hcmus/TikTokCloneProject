@@ -1,5 +1,7 @@
 package com.example.tiktokcloneproject;
 
+import android.net.Uri;
+
 import androidx.annotation.Nullable;
 
 import java.util.HashMap;
@@ -17,6 +19,7 @@ public class User {
     String birthdate;
     String email;
     String password;
+
 
     User(String userName, @Nullable String phone, @Nullable String birthdate, @Nullable String email, @Nullable String password) {
         this.userName = userName;
@@ -88,4 +91,6 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+
 }

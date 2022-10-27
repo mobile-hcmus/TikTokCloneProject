@@ -1,7 +1,11 @@
 package com.example.tiktokcloneproject;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,8 +17,11 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,6 +29,9 @@ import com.google.firebase.database.collection.LLRBNode;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 public class EditProfileActivity extends Activity implements View.OnClickListener {
     private EditText edtName, edtUsername, edtPhone, edtEmail, edtBirthdate;
@@ -29,6 +39,12 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
     private LinearLayout llEditProfile;
     private FirebaseFirestore db;
     private Validator validator;
+    private Uri avatarUri;
+    private final int SELECT_IMAGE_CODE = 10;
+
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+
 
     enum Flag {
         USERNAME,
@@ -42,6 +58,9 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
 
         llEditProfile = (LinearLayout) findViewById(R.id.llEditProfile);
         edtName = (EditText) llEditProfile.findViewById(R.id.edtName);
@@ -90,10 +109,40 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         }
 
 
+
     }//on create
 
     private String getData(Object data) {
         return data == null ? "" : data.toString();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SELECT_IMAGE_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+//            ((GlobalVariable) this.getApplication()).setAvatarUri(data.getData());
+            avatarUri = data.getData();
+            uploadAvatar();
+        }
+    }
+
+    private void uploadAvatar() {
+        StorageReference upload = storageReference.child("test/test.jpg");
+
+        upload.putFile(avatarUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Toast.makeText(EditProfileActivity.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(EditProfileActivity.this, "Image Failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
     }
 
     @Override
@@ -112,7 +161,13 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
 //            else{
 //                //do nothing
             setOnTextChanged();
+        }
 
+        if (v.getId() == btnPhoto.getId()) {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Title"), SELECT_IMAGE_CODE);
 
         }
     }//on click

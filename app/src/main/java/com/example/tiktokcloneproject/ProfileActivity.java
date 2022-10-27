@@ -36,6 +36,8 @@ import java.util.Set;
 public class ProfileActivity extends Activity implements View.OnClickListener{
     private TextView txvFollowing, txvFollowers, txvLikes, txvUserName;
     private Button btn, btnEditProfile;
+    ImageView imvAvatarProfile;
+    Uri avatarUri;
     FirebaseFirestore db;
     FirebaseAuth mAuth;
     FirebaseUser user;
@@ -60,6 +62,10 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
         txvLikes = (TextView)findViewById(R.id.text_likes);
         txvUserName = (TextView)findViewById(R.id.txv_username);
         btnEditProfile =(Button)findViewById(R.id.button_edit_profile);
+        imvAvatarProfile = (ImageView) findViewById(R.id.imvAvatarProfile);
+//        avatarUri = getIntent().getParcelableExtra("uri");
+
+        imvAvatarProfile.setImageURI(avatarUri);
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
@@ -88,13 +94,15 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
         btnEditProfile.setOnClickListener(this);
     }//on create
 
+
+
     public void onClick(View v) {
         if (v.getId() == R.id.text_menu) {
             showDialog();
             return;
         }
 
-        if (v.getId() == R.id.image_avatar) {
+        if (v.getId() == R.id.imvAvatarProfile) {
 //            Bundle bundle = new Bundle();
 //            bundle.putString("id", user.getUid());
 //            Intent intent = new Intent(ProfileActivity.this, ShareAccountActivity.class);
@@ -107,6 +115,8 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
         if(v.getId() == btnEditProfile.getId()) {
 //            Toast.makeText(this, "YYY", Toast.LENGTH_SHORT).show();
             moveToAnotherActivity(EditProfileActivity.class);
+
+
         }
     }
 
@@ -119,6 +129,8 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
         ImageView imvAvatarInSharedPlace = dialog.findViewById(R.id.imvAvatarInSharedPlace);
         Button btnCopyURL = dialog.findViewById(R.id.btnCopyURL);
         TextView txvCancelInSharedPlace = dialog.findViewById(R.id.txvCancelInSharedPlace);
+
+//        imvAvatarInSharedPlace.setImageURI(avatarUri);
 
         txvUsernameInSharedPlace.setText("@" + user.getUid().toString());
 

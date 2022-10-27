@@ -9,17 +9,21 @@ import android.widget.ImageView;
 
 public class FullScreenAvatarActivity extends AppCompatActivity{
 
-    ImageView imvfullScreen;
+    ImageView imvFullScreen;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_screen_avatar);
         ActionBar actionBar = getSupportActionBar();
+
         if (actionBar!=null) {
             actionBar.hide();
         }
-        imvfullScreen = (ImageView) findViewById(R.id.imvFullscreen);
-        imvfullScreen.setOnClickListener(new View.OnClickListener() {
+
+        imvFullScreen = (ImageView) findViewById(R.id.imvFullscreen);
+//        imvFullScreen.setImageURI(((GlobalVariable) this.getApplication()).getAvatarUri());
+
+        imvFullScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();

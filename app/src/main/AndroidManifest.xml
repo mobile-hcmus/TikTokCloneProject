@@ -15,12 +15,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TikTokCloneProject"
+        android:name=".GlobalVariable"
         tools:targetApi="31">
         <activity
             android:name=".FullScreenAvatarActivity"
-            android:exported="false" />
-        <activity
-            android:name=".FullScreeenAvatarActivity"
             android:exported="false" />
         <activity
             android:name=".SignInToDeleteActivity"
