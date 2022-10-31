@@ -24,23 +24,22 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ChangePasswordActivity extends FragmentActivity implements View.OnClickListener {
 
-    private LinearLayout llChangePassword, llOldPassword, llNewPassword;
-   private FragmentTransaction ft;
-   private FragmentManager fm;
-   Fragment fragmentWaiting;
-    private EditText edtOldPassword, edtNewPassword, edtConfirmPassword;
-    private Button btnOldPassword, btnNewPassword;
     final Integer GONE = View.GONE;
     final Integer VISIBLE = View.VISIBLE;
+    Fragment fragmentWaiting;
     Validator validator;
     FirebaseFirestore db;
     FirebaseAuth mAuth;
     FirebaseUser user;
-
     Handler handler = new Handler();
     String phone;
     String password;
     String msg;
+    private LinearLayout llChangePassword, llOldPassword, llNewPassword;
+    private FragmentTransaction ft;
+    private FragmentManager fm;
+    private EditText edtOldPassword, edtNewPassword, edtConfirmPassword;
+    private Button btnOldPassword, btnNewPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +62,7 @@ public class ChangePasswordActivity extends FragmentActivity implements View.OnC
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
-        fm= getSupportFragmentManager();
+        fm = getSupportFragmentManager();
 
         addShowHideListener(fragmentWaiting);
 
@@ -91,9 +90,9 @@ public class ChangePasswordActivity extends FragmentActivity implements View.OnC
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == btnOldPassword.getId()) {
+        if (view.getId() == btnOldPassword.getId()) {
             password = edtOldPassword.getText().toString();
-            if(password.isEmpty() || !validator.isValidPassword(password)) {
+            if (password.isEmpty() || !validator.isValidPassword(password)) {
                 Toast.makeText(ChangePasswordActivity.this, getString(R.string.error_Password), Toast.LENGTH_SHORT).show();
             } else {
                 phone = user.getPhoneNumber().toString();
@@ -126,12 +125,12 @@ public class ChangePasswordActivity extends FragmentActivity implements View.OnC
                 addShowHideListener(fragmentWaiting);
             }
         }
-        if(view.getId() == btnNewPassword.getId()) {
+        if (view.getId() == btnNewPassword.getId()) {
             String newPassword = edtNewPassword.getText().toString();
-            String confirm =  edtConfirmPassword.getText().toString();
-            if(newPassword.isEmpty() || !validator.isValidPassword(newPassword)) {
+            String confirm = edtConfirmPassword.getText().toString();
+            if (newPassword.isEmpty() || !validator.isValidPassword(newPassword)) {
                 Toast.makeText(this, getString(R.string.error_Password), Toast.LENGTH_SHORT).show();
-            } else if(!confirm.equals(newPassword)) {
+            } else if (!confirm.equals(newPassword)) {
                 Toast.makeText(this, getString(R.string.error_confirm), Toast.LENGTH_SHORT).show();
             } else {
                 db.collection("users").document(user.getUid()).update("password", newPassword);
@@ -142,17 +141,15 @@ public class ChangePasswordActivity extends FragmentActivity implements View.OnC
     }
 
     void addShowHideListener(final Fragment fragment) {
-
-
-                ft = fm.beginTransaction();
-                ft.setCustomAnimations(android.R.animator.fade_in,
-                        android.R.animator.fade_out);
-                if (fragment.isHidden()) {
-                    ft.show(fragment);
-                } else {
-                    ft.hide(fragment);
-                }
-                ft.commit();
+        ft = fm.beginTransaction();
+        ft.setCustomAnimations(android.R.animator.fade_in,
+                android.R.animator.fade_out);
+        if (fragment.isHidden()) {
+            ft.show(fragment);
+        } else {
+            ft.hide(fragment);
+        }
+        ft.commit();
 
     }
 }

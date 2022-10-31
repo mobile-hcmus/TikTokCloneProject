@@ -33,10 +33,16 @@
         <entry key="..\:/Mobile/Final_project/app/src/main/res/layout/activity_phone_login.xml" value="0.1" />
         <entry key="..\:/Mobile/Final_project/app/src/main/res/layout/activity_phone_register.xml" value="0.14130434782608695" />
         <entry key="..\:/Mobile/Final_project/app/src/main/res/layout/activity_phone_signup.xml" value="0.1" />
+        <entry key="..\:/Mobile/TikTokCloneProject/app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.1" />
+        <entry key="..\:/Mobile/TikTokCloneProject/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.1" />
+        <entry key="..\:/Mobile/TikTokCloneProject/app/src/main/res/drawable/ic_baseline_keyboard_arrow_right_24.xml" value="0.1" />
+        <entry key="..\:/Mobile/TikTokCloneProject/app/src/main/res/drawable/ic_baseline_lock_24.xml" value="0.1" />
+        <entry key="..\:/Mobile/TikTokCloneProject/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/Mobile/TikTokCloneProject/app/src/main/res/layout/activity_account_setting.xml" value="0.1" />
         <entry key="..\:/Mobile/TikTokCloneProject/app/src/main/res/layout/activity_change_password.xml" value="0.17552083333333332" />
         <entry key="..\:/Mobile/TikTokCloneProject/app/src/main/res/layout/activity_edit_profile.xml" value="0.17552083333333332" />
         <entry key="..\:/Mobile/TikTokCloneProject/app/src/main/res/layout/activity_login_options.xml" value="0.1078125" />
+        <entry key="..\:/Mobile/TikTokCloneProject/app/src/main/res/layout/activity_phone_signup.xml" value="0.1" />
         <entry key="..\:/Mobile/TikTokCloneProject/app/src/main/res/layout/activity_signin_page.xml" value="0.1078125" />
         <entry key="..\:/Mobile/TikTokCloneProject/app/src/main/res/layout/fragment_waiting.xml" value="0.1" />
       </map>

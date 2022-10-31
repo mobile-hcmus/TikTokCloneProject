@@ -1,6 +1,10 @@
 package com.example.tiktokcloneproject;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -36,12 +40,15 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PhoneSignupActivity extends Activity implements View.OnClickListener {
+public class PhoneSignupActivity extends FragmentActivity implements View.OnClickListener {
 
     private LinearLayout llSignupPage, llChoice, llPhone, llOtp, llWait;
     private EditText edtPhone, edtOtp, edtPassword, edtConfirm;
     private Button btnPhone, btnOtp, btnChoicePhone, btnChoiceEmail, btnChoiceFacebook, btnBackToHomeScreen,
             btnBackToChoice;
+    private Fragment waitingFragment;
+    private FragmentTransaction ft;
+    private FragmentManager fm;
     private final int VISIBLE = View.VISIBLE;
     private final int GONE = View.GONE;
 
@@ -66,7 +73,7 @@ public class PhoneSignupActivity extends Activity implements View.OnClickListene
         llPhone = (LinearLayout) llSignupPage.findViewById(R.id.llPhone);
         llOtp = (LinearLayout) llSignupPage.findViewById(R.id.llOtp);
         llChoice = (LinearLayout) llSignupPage.findViewById(R.id.llChoice);
-        llWait = (LinearLayout) llSignupPage.findViewById(R.id.llWait);
+//        llWait = (LinearLayout) llSignupPage.findViewById(R.id.llWait);
         edtPhone = (EditText) llSignupPage.findViewById(R.id.edtPhone);
         edtOtp = (EditText) llSignupPage.findViewById(R.id.edtOtp);
         edtPassword = (EditText) llSignupPage.findViewById(R.id.edtPassword);
@@ -78,6 +85,11 @@ public class PhoneSignupActivity extends Activity implements View.OnClickListene
         btnChoiceFacebook = (Button) llSignupPage.findViewById(R.id.btnChoiceFacebook);
         btnBackToHomeScreen = (Button) llSignupPage.findViewById(R.id.btnBackToHomeScreen);
         btnBackToChoice = (Button) llSignupPage.findViewById(R.id.btnBackToChoice);
+
+        fm= getSupportFragmentManager();
+        waitingFragment = fm.findFragmentById(R.id.fragWaiting);
+
+        addShowHideListener(waitingFragment);
 
         setVisibleVisibility(llChoice.getId());
         btnPhone.setText(getString(R.string.ic_btnLogin) + getString(R.string.ic_btnLogin));
@@ -180,6 +192,7 @@ public class PhoneSignupActivity extends Activity implements View.OnClickListene
                             moveToAnotherActivity(HomeScreenActivity.class);
 
                         } else {
+                            addShowHideListener(waitingFragment);
                             setVisibleVisibility(llPhone.getId());
 
                         }
@@ -192,7 +205,7 @@ public class PhoneSignupActivity extends Activity implements View.OnClickListene
         llChoice.setVisibility(GONE);
         llPhone.setVisibility(GONE);
         llOtp.setVisibility(GONE);
-        llWait.setVisibility(GONE);
+//        llWait.setVisibility(GONE);
 
         findViewById(id).setVisibility(VISIBLE);
     }
@@ -296,12 +309,26 @@ public class PhoneSignupActivity extends Activity implements View.OnClickListene
                         if (msg.equals("FALSE")) {
                             handler.post(PhoneSignupActivity.this::signUp);
                         } else {
+                            addShowHideListener(waitingFragment);
                             Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_existedPhone), Toast.LENGTH_SHORT).show();
                             setVisibleVisibility(llPhone.getId());
                         }
                     });
-            setVisibleVisibility(llWait.getId());
+            addShowHideListener(waitingFragment);
         }
+    }
+
+    void addShowHideListener(final Fragment fragment) {
+        ft = fm.beginTransaction();
+        ft.setCustomAnimations(android.R.animator.fade_in,
+                android.R.animator.fade_out);
+        if (fragment.isHidden()) {
+            ft.show(fragment);
+        } else {
+            ft.hide(fragment);
+        }
+        ft.commit();
+
     }
 
 }// end PhoneLoginActivity class
