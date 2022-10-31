@@ -38,7 +38,8 @@
         android:layout_height="wrap_content"
         android:background="@color/tiktok_white"
         android:padding="15dp"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="30dp"
+        >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -51,6 +52,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
-            android:layout_gravity="end" />
+            android:layout_gravity="end"
+            />
+
+
     </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/txvChangePassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Change password"
+            android:layout_gravity="start"
+            android:textColor="@color/black"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textStyle="bold"
+            android:drawableRight="@drawable/ic_baseline_keyboard_arrow_right_24"/>
+
+    </LinearLayout>
 </LinearLayout>

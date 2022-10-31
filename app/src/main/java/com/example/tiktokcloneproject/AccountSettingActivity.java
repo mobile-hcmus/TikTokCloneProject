@@ -8,17 +8,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-public class AccountSettingActivity extends AppCompatActivity {
+public class AccountSettingActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView imvBackToSettings;
     private FrameLayout flDeleteAccountOption;
+    private TextView txvChangePassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_setting);
 
+        txvChangePassword = (TextView) findViewById(R.id.txvChangePassword);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar!=null)
         {
@@ -45,5 +48,16 @@ public class AccountSettingActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        txvChangePassword.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == txvChangePassword.getId()) {
+            Intent intent = new Intent(AccountSettingActivity.this, ChangePasswordActivity.class);
+            startActivity(intent);
+        }
+
     }
 }

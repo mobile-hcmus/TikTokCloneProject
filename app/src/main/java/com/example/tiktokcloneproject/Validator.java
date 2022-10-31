@@ -67,4 +67,10 @@ public class Validator {
         return isValidDate(birthdate);
     }
 
+    public boolean isValidPassword(String password) {
+       pattern = Pattern.compile("^[a-zA-Z][a-zA-z|0-9]*$");//. represents single character
+        matcher = pattern.matcher(password);
+        return matcher.matches();
+    }
+
 }

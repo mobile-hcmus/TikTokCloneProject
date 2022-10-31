@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".GlobalVariable"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -15,8 +16,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TikTokCloneProject"
-        android:name=".GlobalVariable"
         tools:targetApi="31">
+        <activity
+            android:name=".WaitingFragment"
+            android:exported="false" />
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:exported="false" />
         <activity
             android:name=".FullScreenAvatarActivity"
             android:exported="false" />
@@ -67,7 +73,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".PhoneSignupActivity"
             android:exported="false" />
@@ -81,7 +86,6 @@
             android:name=".ShareAccountActivity"
             android:exported="false"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
-
     </application>
 
 </manifest>
