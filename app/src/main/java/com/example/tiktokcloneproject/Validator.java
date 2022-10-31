@@ -14,6 +14,7 @@ public class Validator {
     private final String regexPhone = "^(0|\\+84)\\d{9}$";
     private final String regexEmail = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
     private  final  String regexUsername = "^[a-zA-Z_][a-zA-Z_0-9]{2,}$";
+    private final String regexPassword = "^[a-zA-Z0-9]{2,}$";
     private final String regexBirthdate = "";
     private Validator() {
 
@@ -68,7 +69,7 @@ public class Validator {
     }
 
     public boolean isValidPassword(String password) {
-       pattern = Pattern.compile("^[a-zA-Z][a-zA-z|0-9]*$");//. represents single character
+       pattern = Pattern.compile(regexPassword);//. represents single character
         matcher = pattern.matcher(password);
         return matcher.matches();
     }

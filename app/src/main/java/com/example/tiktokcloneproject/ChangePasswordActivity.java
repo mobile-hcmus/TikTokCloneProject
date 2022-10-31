@@ -29,7 +29,7 @@ public class ChangePasswordActivity extends FragmentActivity implements View.OnC
    private FragmentManager fm;
    Fragment fragmentWaiting;
     private EditText edtOldPassword, edtNewPassword, edtConfirmPassword;
-    private Button btnOldPassword;
+    private Button btnOldPassword, btnNewPassword;
     final Integer GONE = View.GONE;
     final Integer VISIBLE = View.VISIBLE;
     Validator validator;
@@ -54,6 +54,7 @@ public class ChangePasswordActivity extends FragmentActivity implements View.OnC
         edtNewPassword = (EditText) llChangePassword.findViewById(R.id.edtNewPassword);
         edtConfirmPassword = (EditText) llChangePassword.findViewById(R.id.edtConfirmPassword);
         btnOldPassword = (Button) llChangePassword.findViewById(R.id.btnOldPassword);
+        btnNewPassword = (Button) llChangePassword.findViewById(R.id.btnNewPassword);
 
         fragmentWaiting = (Fragment) getSupportFragmentManager().findFragmentById(R.id.fragWaiting);
 
@@ -64,18 +65,19 @@ public class ChangePasswordActivity extends FragmentActivity implements View.OnC
 
         fm= getSupportFragmentManager();
 
-       addShowHideListener(fragmentWaiting);
+        addShowHideListener(fragmentWaiting);
 
         setVisibleVisibility(llOldPassword.getId());
         btnOldPassword.setText(getString(R.string.ic_btnLogin) + getString(R.string.ic_btnLogin));
+        btnNewPassword.setText(getString(R.string.ic_btnLogin) + getString(R.string.ic_btnLogin));
         btnOldPassword.setOnClickListener(this);
+        btnNewPassword.setOnClickListener(this);
     }
 
     private void moveToAnotherActivity(Class<?> cls) {
         Intent intent = new Intent(ChangePasswordActivity.this, cls);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-
         finish();
     }
 
@@ -122,6 +124,19 @@ public class ChangePasswordActivity extends FragmentActivity implements View.OnC
                             }
                         });
                 addShowHideListener(fragmentWaiting);
+            }
+        }
+        if(view.getId() == btnNewPassword.getId()) {
+            String newPassword = edtNewPassword.getText().toString();
+            String confirm =  edtConfirmPassword.getText().toString();
+            if(newPassword.isEmpty() || !validator.isValidPassword(newPassword)) {
+                Toast.makeText(this, getString(R.string.error_Password), Toast.LENGTH_SHORT).show();
+            } else if(!confirm.equals(newPassword)) {
+                Toast.makeText(this, getString(R.string.error_confirm), Toast.LENGTH_SHORT).show();
+            } else {
+                db.collection("users").document(user.getUid()).update("password", newPassword);
+                Toast.makeText(this, getString(R.string.successful_changePassword), Toast.LENGTH_SHORT).show();
+                moveToAnotherActivity(AccountSettingActivity.class);
             }
         }
     }
