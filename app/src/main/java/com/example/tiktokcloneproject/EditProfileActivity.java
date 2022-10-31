@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+
+
+
 public class EditProfileActivity extends Activity implements View.OnClickListener {
     private EditText edtName, edtUsername, edtPhone, edtEmail, edtBirthdate;
     private Button btnEdit, btnPhoto, btnApply;
@@ -42,6 +46,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
     private Validator validator;
     private Uri avatarUri;
     private final int SELECT_IMAGE_CODE = 10;
+    private ProgressBar progressbar;
 
     private FirebaseStorage storage;
     private StorageReference storageReference;
@@ -61,6 +66,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
+
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
@@ -73,6 +79,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         btnEdit = (Button) llEditProfile.findViewById(R.id.btnEditProfile);
         btnPhoto = (Button) llEditProfile.findViewById(R.id.btnPhoto);
         btnApply = (Button) llEditProfile.findViewById(R.id.btnApply);
+        progressbar = findViewById(R.id.progressBar);
 
         validator = Validator.getInstance();
         setEnableEdt(false);
@@ -84,6 +91,8 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         setOnTextChanged();
         db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
+
+        progressbar.setVisibility(View.VISIBLE);
 
         if (user != null) {
             String TAG = "LOG";
@@ -109,7 +118,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
                 }
             });
         }
-
+        progressbar.setVisibility(View.GONE);
 
 
     }//on create
@@ -164,12 +173,6 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
             btnPhoto.setVisibility(View.GONE);
         }
         if (v.getId() == btnApply.getId()) {
-//            setOnTextChanged(edt);
-//            if (!validator.isValidUsername(edtUsername.getText().toString())){
-//                Toast.makeText(this, "Invalid, please try again.", Toast.LENGTH_SHORT).show();
-//            }
-//            else{
-//                //do nothing
             setOnTextChanged();
         }
 
