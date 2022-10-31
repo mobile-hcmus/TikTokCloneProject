@@ -51,7 +51,7 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
     private FragmentManager fm;
     private final int VISIBLE = View.VISIBLE;
     private final int GONE = View.GONE;
-
+    private Validator validator;
     ////////////firebase///////////////
     String mVerificationId;
     PhoneAuthProvider.ForceResendingToken mResendToken;
@@ -86,6 +86,7 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
         btnBackToHomeScreen = (Button) llSignupPage.findViewById(R.id.btnBackToHomeScreen);
         btnBackToChoice = (Button) llSignupPage.findViewById(R.id.btnBackToChoice);
 
+        validator = Validator.getInstance();
         fm= getSupportFragmentManager();
         waitingFragment = fm.findFragmentById(R.id.fragWaiting);
 
@@ -255,17 +256,6 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
                 });
     }
 
-    public static boolean isValidPhone(String phone) {
-        Pattern pattern = Pattern.compile("^(0|(\\+84))\\d{9}$");//. represents single character
-        Matcher matcher = pattern.matcher(phone);
-        return matcher.matches();
-    }
-
-    public static boolean isValidPassword(String password) {
-        Pattern pattern = Pattern.compile("^[a-zA-Z][a-zA-z|0-9]*$");//. represents single character
-        Matcher matcher = pattern.matcher(password);
-        return matcher.matches();
-    }
 
     private void moveToAnotherActivity(Class<?> cls) {
         Intent intent = new Intent(PhoneSignupActivity.this, cls);
@@ -281,9 +271,9 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
         String confirm = edtConfirm.getText().toString();
 
 
-        if (phone.isEmpty() || !isValidPhone(phone)) {
+        if (phone.isEmpty() || !validator.isValidPhone(phone)) {
             Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_PhoneAuth), Toast.LENGTH_SHORT).show();
-        } else if (password.isEmpty() || !isValidPassword(password)) {
+        } else if (password.isEmpty() || !validator.isValidPassword(password)) {
             Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_Password), Toast.LENGTH_SHORT).show();
         } else if (!password.equals(confirm)) {
             Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_confirm), Toast.LENGTH_SHORT).show();

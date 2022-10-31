@@ -12,8 +12,7 @@
     <string name="btnChoiceFacebook">Using facebook account</string>
     <string name="btn_signout">Đăng xuất</string>
     <string name="error_PhoneAuth">Invalid phone number</string>
-    <string name="error_Password">Password only include alphabet character and number
-        and start with a alphabet character</string>
+    <string name="error_Password">Password only include alphabet character and number</string>
     <string name="error_existedPhone">Account with this phone has existed</string>
     <string name="error_confirm">Confirm password is not correct</string>
     <string name="error_verify">Verify Failed. Try again!</string>

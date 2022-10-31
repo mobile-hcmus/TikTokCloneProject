@@ -10,6 +10,12 @@
     tools:context=".PhoneSignupActivity"
     android:id="@+id/llSigninPage">
 
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragWaiting"
+        android:name="com.example.tiktokcloneproject.WaitingFragment"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -44,18 +50,7 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/llWait"
-        android:gravity="center"
-        android:visibility="gone">
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"/>
-    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/llPhone"
