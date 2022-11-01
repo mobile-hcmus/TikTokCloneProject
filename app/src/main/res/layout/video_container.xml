@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/tiktok_black">
+
+    <VideoView
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:id="@+id/videoView"
+        android:layout_centerVertical="true"
+        />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
+
+    <TextView
+        android:id="@+id/videoTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingEnd="5dp"
+        android:paddingStart="5dp"
+        android:layout_above="@id/videoDescription"
+        android:textColor="@color/tiktok_white"
+        android:textSize="25sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/videoDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingEnd="5dp"
+        android:paddingStart="5dp"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/tiktok_white"
+        android:textSize="15sp"
+        android:textStyle="italic"/>
+
+</RelativeLayout>

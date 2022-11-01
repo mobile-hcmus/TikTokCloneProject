@@ -45,6 +45,9 @@
         <entry key="..\:/Mobile/TikTokCloneProject/app/src/main/res/layout/activity_phone_signup.xml" value="0.1" />
         <entry key="..\:/Mobile/TikTokCloneProject/app/src/main/res/layout/activity_signin_page.xml" value="0.1078125" />
         <entry key="..\:/Mobile/TikTokCloneProject/app/src/main/res/layout/fragment_waiting.xml" value="0.1" />
+        <entry key="..\:/TikTok/app/src/main/res/layout/activity_home_screen.xml" value="0.17552083333333332" />
+        <entry key="..\:/TikTok/app/src/main/res/layout/activity_swipe_video.xml" value="0.17552083333333332" />
+        <entry key="..\:/TikTok/app/src/main/res/layout/video_container.xml" value="0.17447916666666666" />
       </map>
     </option>
   </component>
