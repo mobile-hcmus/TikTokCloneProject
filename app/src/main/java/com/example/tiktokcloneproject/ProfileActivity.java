@@ -57,13 +57,20 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
         setContentView(R.layout.activity_profile);
         Intent intent = getIntent();
         String userId;
-        if (intent.hasExtra("id")) {
-            userId = intent.getStringExtra("id");
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
+        if (intent.getExtras() != null) {
+            if (intent.hasExtra("id")) {
+                userId = intent.getStringExtra("id");
+            } else {
+                String action = intent.getAction();
+                Uri data = intent.getData();
+                List<String> segmentsList = data.getPathSegments();
+                userId = segmentsList.get(segmentsList.size() - 1);
+            }
         } else {
-            String action = intent.getAction();
-            Uri data = intent.getData();
-            List<String> segmentsList = data.getPathSegments();
-            userId = segmentsList.get(segmentsList.size() - 1);
+            userId =  user.getUid();
         }
         setContentView(R.layout.activity_profile);
         txvFollowing = (TextView)findViewById(R.id.text_following);
@@ -76,8 +83,6 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
 
         imvAvatarProfile.setImageURI(avatarUri);
 
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
@@ -124,10 +129,14 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
             showShareAccountDialog();
             return;
         }
+        if (v.getId() == R.id.btn_temporary) {
+            Intent intent = new Intent(ProfileActivity.this, HomeScreenActivity.class);
+            startActivity(intent);
+            return;
+        }
         if(v.getId() == btnEditProfile.getId()) {
 //            Toast.makeText(this, "YYY", Toast.LENGTH_SHORT).show();
             moveToAnotherActivity(EditProfileActivity.class);
-
 
         }
     }

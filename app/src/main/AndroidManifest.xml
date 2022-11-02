@@ -17,9 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TikTokCloneProject"
         tools:targetApi="31">
-        <activity
-            android:name=".WaitingFragment"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".WaitingFragment"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".ChangePasswordActivity"
             android:exported="false" />
@@ -45,15 +45,20 @@
             android:name=".ProfileActivity"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="http" />
                 <data android:scheme="https" />
                 <data android:host="toptoptoptop.com" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".HomeScreenActivity"
+            android:exported="false" >
+
         </activity>
         <activity
             android:name=".EditProfileActivity"
@@ -64,15 +69,6 @@
         <activity
             android:name=".LoginOptionsActivity"
             android:exported="false" /> <!-- HomeScreenActivity   PhoneSignupActivity  MainActivity -->
-        <activity
-            android:name=".HomeScreenActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".PhoneSignupActivity"
             android:exported="false" />
