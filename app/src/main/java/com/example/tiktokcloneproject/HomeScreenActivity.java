@@ -104,6 +104,11 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
             startActivity(intent);
         }
 
+        if (view.getId() == R.id.btn_add_video) {
+            Intent intent = new Intent(HomeScreenActivity.this, CameraActivity.class);
+            startActivity(intent);
+        }
+
         if(view.getId() == btnSwipe.getId()) {
 //            Intent intent = new Intent(HomeScreenActivity.this,SwipeVideo.class);
 //            startActivity(intent);

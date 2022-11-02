@@ -5,6 +5,12 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-feature android:name="android.hardware.location.gps" />
+
 
     <application
         android:name=".GlobalVariable"
@@ -77,6 +83,9 @@
             android:exported="false" />
         <activity
             android:name=".SearchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CameraActivity"
             android:exported="false" />
         <activity
             android:name=".ShareAccountActivity"
