@@ -61,7 +61,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
         @SuppressLint("ClickableViewAccessibility")
         public void setVideoObjects(final VideoObject videoObjects) {
-            txvTitle.setText(videoObjects.getAuthorId());
+            txvTitle.setText("@" + videoObjects.getAuthorId().trim());
             txvDescription.setText(videoObjects.getDescription());
             videoView.setVideoPath(videoObjects.getUrl());
 

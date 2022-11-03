@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -27,6 +28,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -42,6 +45,8 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
     private Button btnProfile;
     private Button btnSearch, btnSwipe, btnAddVideo;
     private TextView tvVideo; // DE TEST. Sau nay sua thanh clip de xem
+    private ViewPager2 viewPager2;
+    List<VideoObject> videoObjects;
 
     FirebaseAuth mAuth;
     FirebaseUser user;
@@ -72,9 +77,9 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 
 
 /////////////////////////////////////////////////////////////////////////
-//        final ViewPager2 viewPager2 = findViewById(R.id.viewPager);
-//        List<VideoObject> videoObjects = new ArrayList<>();
-//
+        viewPager2 = findViewById(R.id.viewPager);
+        videoObjects = new ArrayList<>();
+
 //        VideoObject videoObject1 = new VideoObject("https://firebasestorage.googleapis.com/v0/b/toptop-android.appspot.com/o/video_2022-11-01_10-13-57.mp4?alt=media&token=42fbd886-ec46-418b-aee1-368eafb7167a", "1", "1");
 //        videoObjects.add(videoObject1);
 //
@@ -110,6 +115,32 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 
         btnAddVideo.setOnClickListener(this);
     }//on Create
+
+    @Override public void onStart() {
+        super.onStart();
+        db.collection("videos")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String Id = document.get("Id", String.class);
+                                String Url = document.get("Url", String.class);
+                                String authorId = document.get("authorId", String.class);
+                                String  description = document.get("description", String.class);
+
+                                VideoObject videoObject = new VideoObject(Id, Url, authorId, description);
+                                videoObjects.add(videoObject);
+
+                            }
+                            viewPager2.setAdapter(new VideoAdapter(videoObjects));
+                        } else {
+                            Log.d("ERROR", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
 
 
     @Override
@@ -147,6 +178,8 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 //            startActivity(intent);
         }
         if(view.getId() == btnAddVideo.getId()) {
+
+//            progressDialog = new ProgressDialog(MainActivity.this);
             Intent intent = new Intent();
             intent.setType("video/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -161,6 +194,8 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
         if (requestCode == 5 && resultCode == RESULT_OK && data != null && data.getData() != null) {
             videoUri = data.getData();
             uploadVideo();
+//            progressDialog.setTitle("Uploading...");
+//            progressDialog.show();
         }
     }
 
@@ -192,14 +227,14 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 //                    reference1.child("" + System.currentTimeMillis()).setValue(map);
                     // Video uploaded successfully
                     // Dismiss dialog
-
+//                    progressDialog.dismiss();
                     Toast.makeText(HomeScreenActivity.this, "Video Uploaded!!", Toast.LENGTH_SHORT).show();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     // Error, Image not uploaded
-
+//                    progressDialog.dismiss();
                     Toast.makeText(HomeScreenActivity.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
