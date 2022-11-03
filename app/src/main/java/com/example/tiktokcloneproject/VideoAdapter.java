@@ -23,7 +23,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         this.videoObjects = videoObjects;
     }
 
-    public void addVideoObjects(VideoObject videoObject) {
+    public void addVideoObject(VideoObject videoObject) {
         this.videoObjects.add(videoObject);
     }
 

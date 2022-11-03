@@ -47,6 +47,7 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
     private TextView tvVideo; // DE TEST. Sau nay sua thanh clip de xem
     private ViewPager2 viewPager2;
     List<VideoObject> videoObjects;
+    VideoAdapter videoAdapter;
 
     FirebaseAuth mAuth;
     FirebaseUser user;
@@ -79,6 +80,9 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 /////////////////////////////////////////////////////////////////////////
         viewPager2 = findViewById(R.id.viewPager);
         videoObjects = new ArrayList<>();
+        videoAdapter = new VideoAdapter(videoObjects);
+
+
 
 //        VideoObject videoObject1 = new VideoObject("https://firebasestorage.googleapis.com/v0/b/toptop-android.appspot.com/o/video_2022-11-01_10-13-57.mp4?alt=media&token=42fbd886-ec46-418b-aee1-368eafb7167a", "1", "1");
 //        videoObjects.add(videoObject1);
@@ -118,28 +122,7 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 
     @Override public void onStart() {
         super.onStart();
-        db.collection("videos")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                String Id = document.get("Id", String.class);
-                                String Url = document.get("Url", String.class);
-                                String authorId = document.get("authorId", String.class);
-                                String  description = document.get("description", String.class);
-
-                                VideoObject videoObject = new VideoObject(Id, Url, authorId, description);
-                                videoObjects.add(videoObject);
-
-                            }
-                            viewPager2.setAdapter(new VideoAdapter(videoObjects));
-                        } else {
-                            Log.d("ERROR", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
+        loadVideos();
     }
 
 
@@ -271,7 +254,31 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
                         Log.w(TAG, "Error writing document", e);
                     }
                 });
+    }
 
+    private void loadVideos() {
+        db.collection("videos")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String Id = document.get("Id", String.class);
+                                String Url = document.get("Url", String.class);
+                                String authorId = document.get("authorId", String.class);
+                                String  description = document.get("description", String.class);
+
+                                VideoObject videoObject = new VideoObject(Id, Url, authorId, description);
+                                videoAdapter.addVideoObject(videoObject);
+
+                            }
+                            viewPager2.setAdapter(videoAdapter);
+                        } else {
+                            Log.d("ERROR", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 
 }// activity
