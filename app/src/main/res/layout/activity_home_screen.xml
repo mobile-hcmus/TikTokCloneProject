@@ -17,6 +17,7 @@
         android:orientation="vertical"
         android:id="@+id/viewPager"/>
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,6 +65,7 @@
         android:textSize="50sp"
         android:textStyle="bold"
         android:visibility="gone"/>
+
 
 
 

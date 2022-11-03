@@ -3,21 +3,23 @@ package com.example.tiktokcloneproject;
 import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class VideoObject {
-    private static final AtomicInteger count = new AtomicInteger(0);
-    private int Id;
+//    private static final AtomicInteger count = new AtomicInteger(0);
+    private String Id;
     private String Url, authorId, description;
     private ArrayList<String> hashtag, commentList;
     private int totalLikes, privacy; //(0: public, 1: private, 2: follower)
     private boolean downloadable;
 
-    public VideoObject(String url, String authorId, String description) {
+    public VideoObject(String id, String url, String authorId, String description) {
         Url = url;
         this.authorId = authorId;
         this.description = description;
-        this.Id = count.incrementAndGet();
+        this.Id = id;
         hashtag = new ArrayList<String>();
         commentList = new ArrayList<String>();
         totalLikes = 0;
@@ -25,7 +27,7 @@ public class VideoObject {
         downloadable = true;
     }
 
-    public int getId() {
+    public String getId() {
         return Id;
     }
 
@@ -59,5 +61,20 @@ public class VideoObject {
 
     public boolean isDownloadable() {
         return downloadable;
+    }
+
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("Id", Id);
+        result.put("Url", Url);
+        result.put("authorId", authorId);
+        result.put("description", description);
+        result.put("hashtag", hashtag);
+        result.put("commentList", commentList);
+        result.put("totalLikes", totalLikes);
+        result.put("privacy", privacy);
+        result.put("downloadable", downloadable);
+
+        return result;
     }
 }

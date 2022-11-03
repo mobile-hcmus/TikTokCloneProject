@@ -12,6 +12,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -25,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -33,6 +35,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HomeScreenActivity extends Activity implements View.OnClickListener{
 
@@ -42,8 +45,10 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 
     FirebaseAuth mAuth;
     FirebaseUser user;
+    FirebaseFirestore db;
 
     StorageReference storageRef;
+    Uri videoUri;
 
 
     @Override
@@ -62,6 +67,7 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
         btnSwipe.setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+        db = FirebaseFirestore.getInstance();
 
 
 
@@ -148,7 +154,6 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
         }
     }//on click
 
-    Uri videoUri;
 
     // startActivityForResult is used to receive the result, which is the selected video.
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -169,7 +174,8 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
     private void uploadVideo() {
         if (videoUri != null) {
             // save the selected video in Firebase storage
-            final StorageReference reference = FirebaseStorage.getInstance().getReference("Files/" + System.currentTimeMillis() + "." + getFileType(videoUri));
+            String Id = String.valueOf(System.currentTimeMillis());
+            final StorageReference reference = FirebaseStorage.getInstance().getReference("videos/" + Id + "." + getFileType(videoUri));
             reference.putFile(videoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -177,10 +183,13 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
                     while (!uriTask.isSuccessful()) ;
                     // get the link of video
                     String downloadUri = uriTask.getResult().toString();
-                    DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Video");
-                    HashMap<String, String> map = new HashMap<>();
-                    map.put("videolink", downloadUri);
-                    reference1.child("" + System.currentTimeMillis()).setValue(map);
+
+                    VideoObject videoObject = new VideoObject(Id, downloadUri,user.getUid(),"");
+                    writeNewVideo(videoObject);
+//                    DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Video");
+//                    HashMap<String, String> map = new HashMap<>();
+//                    map.put("videolink", downloadUri);
+//                    reference1.child("" + System.currentTimeMillis()).setValue(map);
                     // Video uploaded successfully
                     // Dismiss dialog
 
@@ -206,5 +215,28 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
         }
     }
 
+
+    private void writeNewVideo(VideoObject video) {
+
+        // Basic sign-in info:
+        Map<String, Object> videoValues = video.toMap();
+        final String TAG = "ADD";
+        Map<String, Object> childUpdates = new HashMap<>();
+        db.collection("videos").document(video.getId())
+                .set(videoValues)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
+
+    }
 
 }// activity
