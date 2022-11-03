@@ -27,5 +27,7 @@
     <string name="action_search">Search...</string>
     <string name="title_activity_fullscreen_avatar">FullscreenAvatarActivity</string>
 
+    <string name="ic_add">"&#10133;"</string>
+
     <!--   //////////////////////////////////////////////////////////   -->
 </resources>

@@ -23,6 +23,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         this.videoObjects = videoObjects;
     }
 
+    public void addVideoObjects(VideoObject videoObject) {
+        this.videoObjects.add(videoObject);
+    }
+
     @NonNull
     @Override
     public VideoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -42,29 +46,29 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     static class VideoViewHolder extends RecyclerView.ViewHolder {
 
         VideoView videoView;
-        TextView videoTitle, videoDescription;
-        ProgressBar progressBar;
+        TextView txvDescription, txvTitle;
+        ProgressBar pgbWait;
 
 
         public VideoViewHolder(@NonNull View itemView) {
             super(itemView);
             videoView = itemView.findViewById(R.id.videoView);
-            videoTitle = itemView.findViewById(R.id.videoTitle);
-            videoDescription = itemView.findViewById(R.id.videoDescription);
-            progressBar = itemView.findViewById(R.id.progressBar);
+            txvTitle = itemView.findViewById(R.id.txvTitle);
+            txvDescription = itemView.findViewById(R.id.txvDescription);
+            pgbWait = itemView.findViewById(R.id.pgbWait);
 
         }
 
         @SuppressLint("ClickableViewAccessibility")
         public void setVideoObjects(final VideoObject videoObjects) {
-            videoTitle.setText(videoObjects.getVideoTitle());
-            videoDescription.setText(videoObjects.getVideoDescription());
-            videoView.setVideoPath(videoObjects.getVideoURL());
+            txvTitle.setText(videoObjects.getAuthorId());
+            txvDescription.setText(videoObjects.getDescription());
+            videoView.setVideoPath(videoObjects.getUrl());
 
             videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mediaPlayer) {
-                    progressBar.setVisibility(View.GONE);
+                    pgbWait.setVisibility(View.GONE);
                     mediaPlayer.start();
                 }
             });
@@ -83,7 +87,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 }
             });
         }
-    }
+    } // class ViewHolder
 
 
-}
+}// class adapter
