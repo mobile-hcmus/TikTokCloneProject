@@ -66,7 +66,7 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
         btnProfile = (Button) findViewById(R.id.btnProfile);
         btnSearch=(Button) findViewById(R.id.btnSearch);
         btnSwipe = (Button) findViewById(R.id.btnSwipe);
-        btnAddVideo = (Button) findViewById(R.id.btnAddVideo);
+
 
         btnProfile.setOnClickListener(this);
         btnSearch.setOnClickListener(this);
@@ -117,12 +117,12 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
             tvVideo.setText("Chưa Đăng Nhập");
         }
 
-        btnAddVideo.setOnClickListener(this);
+
     }//on Create
 
     @Override public void onStart() {
         super.onStart();
-        loadVideos();
+//        loadVideos();
     }
 
 
@@ -160,101 +160,8 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 //            Intent intent = new Intent(HomeScreenActivity.this,SwipeVideo.class);
 //            startActivity(intent);
         }
-        if(view.getId() == btnAddVideo.getId()) {
-
-//            progressDialog = new ProgressDialog(MainActivity.this);
-            Intent intent = new Intent();
-            intent.setType("video/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(intent, 5);
-        }
     }//on click
 
-
-    // startActivityForResult is used to receive the result, which is the selected video.
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 5 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            videoUri = data.getData();
-            uploadVideo();
-//            progressDialog.setTitle("Uploading...");
-//            progressDialog.show();
-        }
-    }
-
-    private String getFileType(Uri videoUri) {
-        ContentResolver r = getContentResolver();
-        // get the file type ,in this case its mp4
-        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-        return mimeTypeMap.getExtensionFromMimeType(r.getType(videoUri));
-    }
-
-    private void uploadVideo() {
-        if (videoUri != null) {
-            // save the selected video in Firebase storage
-            String Id = String.valueOf(System.currentTimeMillis());
-            final StorageReference reference = FirebaseStorage.getInstance().getReference("videos/" + Id + "." + getFileType(videoUri));
-            reference.putFile(videoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                    while (!uriTask.isSuccessful()) ;
-                    // get the link of video
-                    String downloadUri = uriTask.getResult().toString();
-
-                    VideoObject videoObject = new VideoObject(Id, downloadUri,user.getUid(),"");
-                    writeNewVideo(videoObject);
-//                    DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Video");
-//                    HashMap<String, String> map = new HashMap<>();
-//                    map.put("videolink", downloadUri);
-//                    reference1.child("" + System.currentTimeMillis()).setValue(map);
-                    // Video uploaded successfully
-                    // Dismiss dialog
-//                    progressDialog.dismiss();
-                    Toast.makeText(HomeScreenActivity.this, "Video Uploaded!!", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    // Error, Image not uploaded
-//                    progressDialog.dismiss();
-                    Toast.makeText(HomeScreenActivity.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                // Progress Listener for loading
-                // percentage on the dialog box
-                @Override
-                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                    // show the progress bar
-                    double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                    //progressDialog.setMessage("Uploaded " + (int) progress + "%");
-                }
-            });
-        }
-    }
-
-
-    private void writeNewVideo(VideoObject video) {
-
-        // Basic sign-in info:
-        Map<String, Object> videoValues = video.toMap();
-        final String TAG = "ADD";
-        Map<String, Object> childUpdates = new HashMap<>();
-        db.collection("videos").document(video.getId())
-                .set(videoValues)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully written!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error writing document", e);
-                    }
-                });
-    }
 
     private void loadVideos() {
         db.collection("videos")

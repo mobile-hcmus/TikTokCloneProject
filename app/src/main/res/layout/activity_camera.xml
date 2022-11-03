@@ -5,7 +5,9 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/flMain"
+        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -57,6 +59,18 @@
             android:layout_height="match_parent"
             android:src="@drawable/icon_search"
             ></ImageView>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upload video"
+            android:layout_gravity="center"
+            android:id="@+id/btnUploadVideo"/>
     </FrameLayout>
+
+<ImageView
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:id="@+id/imv"/>
+
 
 </RelativeLayout>

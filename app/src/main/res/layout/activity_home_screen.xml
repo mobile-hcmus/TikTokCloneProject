@@ -107,22 +107,13 @@
                     android:text="Bạn bè" />
 
                 <Button
-                    android:id="@+id/btnAddVideo"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@color/tiktok_red"
-                    android:text="@string/ic_add"
-                    />
-                <Button
                     android:id="@+id/btn_add_video"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textColor="@color/tiktok_white"
-                    android:text="&#10133;"
+                    android:text="@string/ic_add"
                     android:onClick="onClick"/>
                 <Button
                     style="?android:attr/buttonBarButtonStyle"
