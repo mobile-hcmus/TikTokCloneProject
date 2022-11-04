@@ -2,7 +2,7 @@
     <string name="app_name">TopTop</string>
     <!--///////////////// Login Activity /////////////////////    -->
     <string name="hint_edtPhone">Enter your number phone</string>
-    <string name="ic_btnLogin">\u3e</string>
+    <string name="ic_btnNext">"&#62;&#62;"</string>
     <string name="ic_back">\u003C</string>
     <string name="hint_edtOtp">OTP with 6 digits</string>
     <string name="hint_edtPassword">Enter your password</string>
@@ -11,7 +11,7 @@
     <string name="btnChoiceEmail">Using email address</string>
     <string name="btnChoiceFacebook">Using facebook account</string>
     <string name="btn_signout">Đăng xuất</string>
-    <string name="error_PhoneAuth">Invalid phone number</string>
+    <string name="error_PhoneAuth">%1$s is invalid</string>
     <string name="error_Password">Password only include alphabet character and number</string>
     <string name="error_existedPhone">Account with this phone has existed</string>
     <string name="error_confirm">Confirm password is not correct</string>
@@ -26,6 +26,8 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="action_search">Search...</string>
     <string name="title_activity_fullscreen_avatar">FullscreenAvatarActivity</string>
+    <string name="hint_username">Enter username</string>
+    <string name="error_username">%1$s is invalid</string>
 
     <string name="ic_add">"&#10133;"</string>
 

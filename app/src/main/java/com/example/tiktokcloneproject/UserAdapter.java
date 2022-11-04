@@ -49,7 +49,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.userItems> imp
         if (user ==null) {
             return;
         }
-        holder.text_Username.setText(user.getuserName());
+        holder.text_Username.setText(user.getUserName());
         holder.layout_items.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,7 +58,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.userItems> imp
 //                Intent intent = new Intent(mainContext, ProfileActivity.class);
 //                intent.putExtras(bundle);
 //                mainContext.startActivity(intent);
-                Toast.makeText(view.getContext(), user.getuserName(),
+                Toast.makeText(view.getContext(), user.getUserName(),
                         Toast.LENGTH_LONG).show();
             }
         });
@@ -99,7 +99,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.userItems> imp
                 else {
                     List<User> list=new ArrayList<>();
                     for (User user : listUserOld){
-                        if (user.getuserName().toLowerCase().contains(srtSearch.toLowerCase())){
+                        if (user.getUserName().toLowerCase().contains(srtSearch.toLowerCase())){
                             list.add(user);
                         }
                     }

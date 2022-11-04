@@ -16,41 +16,6 @@
         android:id="@+id/fragWaiting"
         android:name="com.example.tiktokcloneproject.WaitingFragment"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/llChoice"
-        android:gravity="center"
-        android:visibility="gone">
-
-        <Button
-            android:id="@+id/btnBackToHomeScreen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ic_back"/>
-        <Button
-            android:id="@+id/btnChoicePhone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_login_shape"
-            android:textColor="@color/tiktok_black"
-            android:text="@string/btnChoicePhone"/>
-
-        <Button
-            android:id="@+id/btnChoiceEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btnChoiceEmail"/>
-        <Button
-            android:id="@+id/btnChoiceFacebook"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btnChoiceFacebook"/>
-
-    </LinearLayout>
-
-
 
     <LinearLayout
         android:id="@+id/llPhone"
@@ -77,34 +42,12 @@
             android:textColorHint="@color/hint"
             android:background="@color/tiktok_white"
             />
-        <EditText
-            android:id="@+id/edtPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:drawableLeft="@drawable/ic_phone"
-            android:padding="8dp"
-            android:hint="@string/hint_edtPassword"
-            android:textColor="@color/tiktok_black"
-            android:textColorHint="@color/hint"
-            android:background="@color/tiktok_white"
-            />
-        <EditText
-            android:id="@+id/edtConfirm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:drawableLeft="@drawable/ic_phone"
-            android:padding="8dp"
-            android:hint="@string/hint_edtConfirm"
-            android:textColor="@color/tiktok_black"
-            android:textColorHint="@color/hint"
-            android:background="@color/tiktok_white"
-            />
+
         <Button
             android:id="@+id/btnPhone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/ic_btnNext"
             />
 
 
@@ -131,7 +74,8 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/btnOtp"/>
+            android:id="@+id/btnOtp"
+            android:text="@string/ic_btnNext"/>
 
     </LinearLayout>
 

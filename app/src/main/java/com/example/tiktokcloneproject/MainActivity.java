@@ -14,7 +14,7 @@ public class MainActivity extends Activity {
     }
 
     public void signUpPage(View v) {
-        Intent intent = new Intent(MainActivity.this, PhoneSignupActivity.class);
+        Intent intent = new Intent(MainActivity.this, SignupChoiceActivity.class);
 
         startActivity(intent);
 

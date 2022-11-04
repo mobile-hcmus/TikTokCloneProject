@@ -42,10 +42,9 @@ import java.util.regex.Pattern;
 
 public class PhoneSignupActivity extends FragmentActivity implements View.OnClickListener {
 
-    private LinearLayout llSignupPage, llChoice, llPhone, llOtp, llWait;
-    private EditText edtPhone, edtOtp, edtPassword, edtConfirm;
-    private Button btnPhone, btnOtp, btnChoicePhone, btnChoiceEmail, btnChoiceFacebook, btnBackToHomeScreen,
-            btnBackToChoice;
+    private LinearLayout llSignupPage, llPhone, llOtp;
+    private EditText edtPhone, edtOtp;
+    private Button btnPhone, btnOtp;
     private Fragment waitingFragment;
     private FragmentTransaction ft;
     private FragmentManager fm;
@@ -72,19 +71,10 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
         llSignupPage = (LinearLayout) findViewById(R.id.llSignupPage);
         llPhone = (LinearLayout) llSignupPage.findViewById(R.id.llPhone);
         llOtp = (LinearLayout) llSignupPage.findViewById(R.id.llOtp);
-        llChoice = (LinearLayout) llSignupPage.findViewById(R.id.llChoice);
-//        llWait = (LinearLayout) llSignupPage.findViewById(R.id.llWait);
         edtPhone = (EditText) llSignupPage.findViewById(R.id.edtPhone);
         edtOtp = (EditText) llSignupPage.findViewById(R.id.edtOtp);
-        edtPassword = (EditText) llSignupPage.findViewById(R.id.edtPassword);
-        edtConfirm = (EditText) llSignupPage.findViewById(R.id.edtConfirm);
         btnPhone = (Button) llSignupPage.findViewById(R.id.btnPhone);
         btnOtp = (Button) llSignupPage.findViewById(R.id.btnOtp);
-        btnChoicePhone = (Button) llSignupPage.findViewById(R.id.btnChoicePhone);
-        btnChoiceEmail = (Button) llSignupPage.findViewById(R.id.btnChoiceEmail);
-        btnChoiceFacebook = (Button) llSignupPage.findViewById(R.id.btnChoiceFacebook);
-        btnBackToHomeScreen = (Button) llSignupPage.findViewById(R.id.btnBackToHomeScreen);
-        btnBackToChoice = (Button) llSignupPage.findViewById(R.id.btnBackToChoice);
 
         validator = Validator.getInstance();
         fm= getSupportFragmentManager();
@@ -92,9 +82,7 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
 
         addShowHideListener(waitingFragment);
 
-        setVisibleVisibility(llChoice.getId());
-        btnPhone.setText(getString(R.string.ic_btnLogin) + getString(R.string.ic_btnLogin));
-        btnOtp.setText(getString(R.string.ic_btnLogin) + getString(R.string.ic_btnLogin));
+        setVisibleVisibility(llPhone.getId());
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         db = FirebaseFirestore.getInstance();
@@ -116,6 +104,7 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
 
             @Override
             public void onVerificationFailed(@NonNull FirebaseException e) {
+                addShowHideListener(waitingFragment);
                 Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_verify), Toast.LENGTH_SHORT).show();
                 setVisibleVisibility(llPhone.getId());
             }
@@ -124,6 +113,7 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
             public void onCodeSent(@NonNull String verificationId,
                                    @NonNull PhoneAuthProvider.ForceResendingToken token) {
                 super.onCodeSent(verificationId, token);
+                addShowHideListener(waitingFragment);
                 Toast.makeText(PhoneSignupActivity.this, getString(R.string.otp_sent), Toast.LENGTH_SHORT).show();
                 setVisibleVisibility(llOtp.getId());
                 mVerificationId = verificationId;
@@ -132,18 +122,12 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
             }
         }; // end callbacks
 
-        btnChoicePhone.setOnClickListener(this);
         btnPhone.setOnClickListener(this);
         btnOtp.setOnClickListener(this);
-        btnBackToChoice.setOnClickListener(this);
-        btnBackToHomeScreen.setOnClickListener(this);
     } // end onCreate
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == btnChoicePhone.getId()) {
-            setVisibleVisibility(llPhone.getId());
-        }
         if(v.getId() == btnPhone.getId()) {
             handleBtnPhoneClick();
         }
@@ -155,12 +139,6 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
                 PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, edtOtp.getText().toString());
                 signInWithPhoneAuthCredential(credential);
             }
-        }
-        if(v.getId() == btnBackToHomeScreen.getId()) {
-            moveToAnotherActivity(HomeScreenActivity.class);
-        }
-        if(v.getId() == btnBackToChoice.getId()) {
-            setVisibleVisibility(llChoice.getId());
         }
 
     }
@@ -186,9 +164,8 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
                             FirebaseUser firebaseUser = task.getResult().getUser();
 
 
-                            User user = new User("" + firebaseUser.getUid(), edtPhone.getText().toString(), null, null, edtPassword.getText().toString());
+                            User user = new User("" + firebaseUser.getUid(), "", edtPhone.getText().toString(), "");
                             writeNewUser(user);
-                            writeNewProfile(user);
 
                             moveToAnotherActivity(HomeScreenActivity.class);
 
@@ -203,10 +180,8 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
     }
 
     private void setVisibleVisibility(int id) {
-        llChoice.setVisibility(GONE);
         llPhone.setVisibility(GONE);
         llOtp.setVisibility(GONE);
-//        llWait.setVisibility(GONE);
 
         findViewById(id).setVisibility(VISIBLE);
     }
@@ -217,7 +192,7 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
         Map<String, Object> userValues = user.toMap();
         final String TAG = "ADD";
         Map<String, Object> childUpdates = new HashMap<>();
-        db.collection("users").document(user.userName)
+        db.collection("users").document(user.getUserId())
                 .set(userValues)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -232,28 +207,6 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
                     }
                 });
 
-    }
-
-    private void writeNewProfile(User user) {
-
-        // Basic sign-in info:
-        Map<String, Object> userValues = user.toMapProfile();
-        final String TAG = "ADD";
-        Map<String, Object> childUpdates = new HashMap<>();
-        db.collection("profiles").document(user.userName)
-                .set(userValues)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully written!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error writing document", e);
-                    }
-                });
     }
 
 
@@ -267,16 +220,8 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
 
     private void handleBtnPhoneClick() {
         String phone = edtPhone.getText().toString();
-        String password = edtPassword.getText().toString();
-        String confirm = edtConfirm.getText().toString();
-
-
-        if (phone.isEmpty() || !validator.isValidPhone(phone)) {
-            Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_PhoneAuth), Toast.LENGTH_SHORT).show();
-        } else if (password.isEmpty() || !validator.isValidPassword(password)) {
-            Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_Password), Toast.LENGTH_SHORT).show();
-        } else if (!password.equals(confirm)) {
-            Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_confirm), Toast.LENGTH_SHORT).show();
+        if(!validator.isValidPhone(phone)) {
+            Toast.makeText(this, getString(R.string.error_PhoneAuth, phone), Toast.LENGTH_SHORT).show();
         } else {
             String formattedPhone = "+84" + phone.substring(phone.length() - 9);
             edtPhone.setText(formattedPhone);

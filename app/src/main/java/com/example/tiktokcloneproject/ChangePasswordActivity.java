@@ -67,8 +67,7 @@ public class ChangePasswordActivity extends FragmentActivity implements View.OnC
         addShowHideListener(fragmentWaiting);
 
         setVisibleVisibility(llOldPassword.getId());
-        btnOldPassword.setText(getString(R.string.ic_btnLogin) + getString(R.string.ic_btnLogin));
-        btnNewPassword.setText(getString(R.string.ic_btnLogin) + getString(R.string.ic_btnLogin));
+
         btnOldPassword.setOnClickListener(this);
         btnNewPassword.setOnClickListener(this);
     }

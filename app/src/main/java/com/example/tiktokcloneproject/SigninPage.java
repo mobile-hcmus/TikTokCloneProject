@@ -86,8 +86,7 @@ public class SigninPage extends FragmentActivity implements View.OnClickListener
 
         addShowHideListener(waitingFragment);
         setVisibleVisibility(llChoice.getId());
-        btnPhone.setText(getString(R.string.ic_btnLogin) + getString(R.string.ic_btnLogin));
-        btnOtp.setText(getString(R.string.ic_btnLogin) + getString(R.string.ic_btnLogin));
+
 
         db = FirebaseFirestore.getInstance();
 
