@@ -14,6 +14,7 @@ import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
 import android.view.TextureView;
@@ -213,6 +214,14 @@ public class CameraActivity extends Activity implements View.OnClickListener {
         }
         if (view.getId() == btnUploadVideo.getId()) {
             //            progressDialog = new ProgressDialog(MainActivity.this);
+
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_MEDIA_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getApplicationContext(), "please grant permission!", Toast.LENGTH_SHORT).show();
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.ACCESS_MEDIA_LOCATION},
+                            1);
+                }
+
             Intent intent = new Intent();
             intent.setType("video/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
