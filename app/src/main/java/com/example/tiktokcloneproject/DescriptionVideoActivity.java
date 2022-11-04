@@ -11,7 +11,9 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,7 +36,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.google.firestore.v1.Cursor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -77,6 +78,12 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
          videoUri = Uri.parse(videoPath);
 
 
+        //get thumbnail video
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        mmr.setDataSource( getApplicationContext(), videoUri );
+        //1000 is microseconds
+        Bitmap bm = mmr.getScaledFrameAtTime( 10000000, MediaMetadataRetriever.OPTION_NEXT_SYNC, 1000, 1000 );
+        imvShortCutVideo.setImageBitmap(bm);
 
 
         btnDescription.setOnClickListener(this);
