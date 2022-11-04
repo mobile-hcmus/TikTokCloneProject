@@ -30,6 +30,9 @@
             android:name=".SignupChoiceActivity"
             android:exported="false" />
         <activity
+            android:name=".SigninChoiceActivity"
+            android:exported="false" />
+        <activity
             android:name=".DescriptionVideoActivity"
             android:exported="false" /> <!-- <activity -->
         <!-- android:name=".WaitingFragment" -->
@@ -50,7 +53,7 @@
             android:name=".SettingsAndPrivacyActivity"
             android:exported="false" />
         <activity
-            android:name=".SigninPage"
+            android:name=".PhoneSigninActivity"
             android:exported="false" />
         <activity
             android:name=".DeleteAccountActivity"

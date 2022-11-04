@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
     }
 
     public void signInPage(View v) {
-        Intent intent = new Intent(MainActivity.this, SigninPage.class);
+        Intent intent = new Intent(MainActivity.this, SigninChoiceActivity.class);
         startActivity(intent);
     }
 }

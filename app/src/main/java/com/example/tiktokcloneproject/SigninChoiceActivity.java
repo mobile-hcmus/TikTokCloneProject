@@ -9,18 +9,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-public class SignupChoiceActivity extends Activity implements View.OnClickListener {
+public class SigninChoiceActivity extends Activity implements View.OnClickListener {
     Button btnChoicePhone, btnChoiceEmail;
-    LinearLayout llSignupChoice;
+    LinearLayout llSigninChoice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup_choice);
+        setContentView(R.layout.activity_signin_choice);
 
-        llSignupChoice = (LinearLayout) findViewById(R.id.llSignupChoice);
-        btnChoicePhone = (Button) llSignupChoice.findViewById(R.id.btnChoicePhone);
-        btnChoiceEmail = (Button) llSignupChoice.findViewById(R.id.btnChoiceEmail);
+        llSigninChoice = (LinearLayout) findViewById(R.id.llSigninChoice);
+        btnChoicePhone = (Button) llSigninChoice.findViewById(R.id.btnChoicePhone);
+        btnChoiceEmail = (Button) llSigninChoice.findViewById(R.id.btnChoiceEmail);
 
         btnChoicePhone.setOnClickListener(this);
         btnChoiceEmail.setOnClickListener(this);
@@ -29,7 +29,7 @@ public class SignupChoiceActivity extends Activity implements View.OnClickListen
     @Override
     public void onClick(View view) {
         if(view.getId() == btnChoicePhone.getId()) {
-            Intent intent = new Intent(SignupChoiceActivity.this, PhoneSignupActivity.class);
+            Intent intent = new Intent(SigninChoiceActivity.this, PhoneSigninActivity.class);
             startActivity(intent);
         }
     }

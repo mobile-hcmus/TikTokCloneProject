@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SigninChoiceActivity"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:id="@+id/llSigninChoice">
+
+    <Button
+        android:id="@+id/btnChoicePhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_login_shape"
+        android:textColor="@color/tiktok_black"
+        android:text="@string/btnChoicePhone"/>
+
+    <Button
+        android:id="@+id/btnChoiceEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btnChoiceEmail"/>
+
+
+
+</LinearLayout>

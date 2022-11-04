@@ -16,7 +16,7 @@
     <string name="error_existedPhone">Account with this phone has existed</string>
     <string name="error_confirm">Confirm password is not correct</string>
     <string name="error_verify">Verify Failed. Try again!</string>
-    <string name="error_signin">Phone number or password is invalid. Try again!</string>
+    <string name="error_signin">%1$s don\'t have an account. Please sign up!</string>
     <string name="successful_signin">Sign in successfully</string>
     <string name="successful_changePassword">Change password successfully</string>
     <string name="otp_sent">OTP has been sent</string>

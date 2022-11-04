@@ -1,13 +1,11 @@
 package com.example.tiktokcloneproject;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,10 +20,8 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -36,11 +32,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.concurrent.TimeUnit;
 
-public class SigninPage extends FragmentActivity implements View.OnClickListener {
-    private LinearLayout llSigninPage, llChoice, llPhone, llWait, llOtp;
-    private EditText edtPhone, edtPassword, edtOtp;
-    private Button btnPhone, btnOtp, btnChoicePhone, btnChoiceEmail, btnChoiceFacebook, btnBackToHomeScreen,
-            btnBackToChoice;
+public class PhoneSigninActivity extends FragmentActivity implements View.OnClickListener {
+    private LinearLayout llSigninPage, llPhone, llOtp;
+    private EditText edtPhone, edtOtp;
+    private Button btnPhone, btnOtp;
     private Fragment waitingFragment;
     private FragmentTransaction ft;
     private FragmentManager fm;
@@ -62,30 +57,22 @@ public class SigninPage extends FragmentActivity implements View.OnClickListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signin_page);
+        setContentView(R.layout.activity_phone_signin);
 
         llSigninPage = (LinearLayout) findViewById(R.id.llSigninPage);
         llPhone = (LinearLayout) llSigninPage.findViewById(R.id.llPhone);
-        llChoice = (LinearLayout) llSigninPage.findViewById(R.id.llChoice);
         llOtp = (LinearLayout) llSigninPage.findViewById(R.id.llOtp);
-//        llWait = (LinearLayout) llSigninPage.findViewById(R.id.llWait);
         edtPhone = (EditText) llSigninPage.findViewById(R.id.edtPhone);
         edtOtp = (EditText) llSigninPage.findViewById(R.id.edtOtp);
-        edtPassword = (EditText) llSigninPage.findViewById(R.id.edtPassword);
         btnPhone = (Button) llSigninPage.findViewById(R.id.btnPhone);
         btnOtp = (Button) llSigninPage.findViewById(R.id.btnOtp);
-        btnChoicePhone = (Button) llSigninPage.findViewById(R.id.btnChoicePhone);
-        btnChoiceEmail = (Button) llSigninPage.findViewById(R.id.btnChoiceEmail);
-        btnChoiceFacebook = (Button) llSigninPage.findViewById(R.id.btnChoiceFacebook);
-        btnBackToHomeScreen = (Button) llSigninPage.findViewById(R.id.btnBackToHomeScreen);
-        btnBackToChoice = (Button) llSigninPage.findViewById(R.id.btnBackToChoice);
 
         validator = Validator.getInstance();
         fm= getSupportFragmentManager();
         waitingFragment = fm.findFragmentById(R.id.fragWaiting);
 
         addShowHideListener(waitingFragment);
-        setVisibleVisibility(llChoice.getId());
+        setVisibleVisibility(llPhone.getId());
 
 
         db = FirebaseFirestore.getInstance();
@@ -106,7 +93,7 @@ public class SigninPage extends FragmentActivity implements View.OnClickListener
 
             @Override
             public void onVerificationFailed(@NonNull FirebaseException e) {
-                Toast.makeText(SigninPage.this, getString(R.string.error_verify), Toast.LENGTH_SHORT).show();
+                Toast.makeText(PhoneSigninActivity.this, getString(R.string.error_verify), Toast.LENGTH_SHORT).show();
                 addShowHideListener(waitingFragment);
                 setVisibleVisibility(llPhone.getId());
             }
@@ -115,7 +102,7 @@ public class SigninPage extends FragmentActivity implements View.OnClickListener
             public void onCodeSent(@NonNull String verificationId,
                                    @NonNull PhoneAuthProvider.ForceResendingToken token) {
                 super.onCodeSent(verificationId, token);
-                Toast.makeText(SigninPage.this, getString(R.string.otp_sent), Toast.LENGTH_SHORT).show();
+                Toast.makeText(PhoneSigninActivity.this, getString(R.string.otp_sent), Toast.LENGTH_SHORT).show();
                 addShowHideListener(waitingFragment);
                 setVisibleVisibility(llOtp.getId());
                 mVerificationId = verificationId;
@@ -125,29 +112,18 @@ public class SigninPage extends FragmentActivity implements View.OnClickListener
         }; // end callbacks
 
 
-        btnChoicePhone.setOnClickListener(this);
         btnPhone.setOnClickListener(this);
         btnOtp.setOnClickListener(this);
-        btnBackToChoice.setOnClickListener(this);
-        btnBackToHomeScreen.setOnClickListener(this);
     }//on create
 
     public void onClick(View v) {
-        if(v.getId() == btnChoicePhone.getId()) {
-            setVisibleVisibility(llPhone.getId());
-        }
-        if(v.getId() == btnBackToChoice.getId()) {
-            setVisibleVisibility(llChoice.getId());
-        }
-        if(v.getId() == btnBackToHomeScreen.getId()) {
-            moveToAnotherActivity(HomeScreenActivity.class);
-        }
+
         if(v.getId() == btnPhone.getId()) {
             handleBtnPhoneClick();
         }
         if(v.getId() == btnOtp.getId()) {
             if(TextUtils.isEmpty(edtOtp.getText().toString()) || edtOtp.getText().toString().length() != 6) {
-                Toast.makeText(SigninPage.this, getString(R.string.error_Otp), Toast.LENGTH_SHORT).show();
+                Toast.makeText(PhoneSigninActivity.this, getString(R.string.error_Otp), Toast.LENGTH_SHORT).show();
             }
             else {
                 PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, edtOtp.getText().toString());
@@ -163,22 +139,21 @@ public class SigninPage extends FragmentActivity implements View.OnClickListener
                 PhoneAuthOptions.newBuilder(mAuth)
                         .setPhoneNumber(edtPhone.getText().toString())       // Phone number to verify
                         .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                        .setActivity(SigninPage.this)                 // Activity (for callback binding)
+                        .setActivity(PhoneSigninActivity.this)                 // Activity (for callback binding)
                         .setCallbacks(callbacks)          // OnVerificationStateChangedCallbacks
                         .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
     }
 
     private void setVisibleVisibility(int id) {
-        llChoice.setVisibility(GONE);
+        llOtp.setVisibility(GONE);
         llPhone.setVisibility(GONE);
-//        llWait.setVisibility(GONE);
 
         findViewById(id).setVisibility(VISIBLE);
     }
 
     private void moveToAnotherActivity(Class<?> cls) {
-        Intent intent = new Intent(SigninPage.this, cls);
+        Intent intent = new Intent(PhoneSigninActivity.this, cls);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
 
@@ -192,12 +167,12 @@ public class SigninPage extends FragmentActivity implements View.OnClickListener
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
                             addShowHideListener(waitingFragment);
-                            Toast.makeText(SigninPage.this, getString(R.string.successful_signin), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PhoneSigninActivity.this, getString(R.string.successful_signin), Toast.LENGTH_SHORT).show();
                             moveToAnotherActivity(HomeScreenActivity.class);
 
                         } else {
                             addShowHideListener(waitingFragment);
-                            Toast.makeText(SigninPage.this, getString(R.string.error_verify), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PhoneSigninActivity.this, getString(R.string.error_verify), Toast.LENGTH_SHORT).show();
                             setVisibleVisibility(llPhone.getId());
 
                         }
@@ -209,17 +184,13 @@ public class SigninPage extends FragmentActivity implements View.OnClickListener
 
     private void handleBtnPhoneClick() {
         String phone = edtPhone.getText().toString();
-        String password = edtPassword.getText().toString();
-        if(phone.isEmpty() || !validator.isValidPhone(phone)) {
-            Toast.makeText(SigninPage.this, getString(R.string.error_PhoneAuth), Toast.LENGTH_SHORT).show();
-        } else if(password.isEmpty() || !validator.isValidPassword(password)) {
-            Toast.makeText(SigninPage.this, getString(R.string.error_Password), Toast.LENGTH_SHORT).show();
+        if(!validator.isValidPhone(phone)) {
+            Toast.makeText(PhoneSigninActivity.this, getString(R.string.error_PhoneAuth), Toast.LENGTH_SHORT).show();
         } else {
             String formattedPhone = "+84" + phone.substring(phone.length() - 9);
             edtPhone.setText(formattedPhone);
             db.collection("users")
                     .whereEqualTo("phone", formattedPhone)
-                    .whereEqualTo("password", password)
                     .get().addOnCompleteListener(task -> {
                         msg = "FALSE";
                         if (task.isSuccessful()) {
@@ -236,7 +207,7 @@ public class SigninPage extends FragmentActivity implements View.OnClickListener
 
                         if (msg.equals("FALSE")) {
                             addShowHideListener(waitingFragment);
-                            Toast.makeText(SigninPage.this, getString(R.string.error_signin), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PhoneSigninActivity.this, getString(R.string.error_signin, phone), Toast.LENGTH_SHORT).show();
                             setVisibleVisibility(llPhone.getId());
                         } else {
                             handler.post(this::signIn);
