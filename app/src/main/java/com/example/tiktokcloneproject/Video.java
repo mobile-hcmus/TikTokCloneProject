@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class VideoObject {
+public class Video {
 //    private static final AtomicInteger count = new AtomicInteger(0);
     private String Id;
     private String Url, authorId, description;
@@ -15,7 +15,7 @@ public class VideoObject {
     private int totalLikes, privacy; //(0: public, 1: private, 2: follower)
     private boolean downloadable;
 
-    public VideoObject(String id, String url, String authorId, String description) {
+    public Video(String id, String url, String authorId, String description) {
         Url = url;
         this.authorId = authorId;
         this.description = description;

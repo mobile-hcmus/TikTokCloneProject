@@ -1,23 +1,17 @@
 package com.example.tiktokcloneproject;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.Activity;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -117,8 +111,8 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
                     // get the link of video
                     String downloadUri = uriTask.getResult().toString();
 
-                    VideoObject videoObject = new VideoObject(Id, downloadUri,user.getUid(),edtDescription.getText().toString());
-                    writeNewVideo(videoObject);
+                    Video video = new Video(Id, downloadUri,user.getUid(),edtDescription.getText().toString());
+                    writeNewVideo(video);
 //                    DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Video");
 //                    HashMap<String, String> map = new HashMap<>();
 //                    map.put("videolink", downloadUri);
@@ -153,7 +147,7 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
     }
 
 
-    private void writeNewVideo(VideoObject video) {
+    private void writeNewVideo(Video video) {
 
         // Basic sign-in info:
         Map<String, Object> videoValues = video.toMap();

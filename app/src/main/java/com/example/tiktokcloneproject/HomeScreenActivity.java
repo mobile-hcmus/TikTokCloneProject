@@ -2,43 +2,28 @@ package com.example.tiktokcloneproject;
 
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class HomeScreenActivity extends Activity implements View.OnClickListener{
 
@@ -46,7 +31,7 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
     private Button btnSearch, btnSwipe, btnAddVideo;
     private TextView tvVideo; // DE TEST. Sau nay sua thanh clip de xem
     private ViewPager2 viewPager2;
-    List<VideoObject> videoObjects;
+    List<Video> videos;
     VideoAdapter videoAdapter;
 
     FirebaseAuth mAuth;
@@ -79,8 +64,8 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 
 /////////////////////////////////////////////////////////////////////////
         viewPager2 = findViewById(R.id.viewPager);
-        videoObjects = new ArrayList<>();
-        videoAdapter = new VideoAdapter(videoObjects);
+        videos = new ArrayList<>();
+        videoAdapter = new VideoAdapter(videos);
 
 
 
@@ -176,8 +161,8 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
                                 String authorId = document.get("authorId", String.class);
                                 String  description = document.get("description", String.class);
 
-                                VideoObject videoObject = new VideoObject(Id, Url, authorId, description);
-                                videoAdapter.addVideoObject(videoObject);
+                                Video video = new Video(Id, Url, authorId, description);
+                                videoAdapter.addVideoObject(video);
 
                             }
                             viewPager2.setAdapter(videoAdapter);

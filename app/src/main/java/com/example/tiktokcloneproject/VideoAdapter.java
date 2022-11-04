@@ -17,14 +17,14 @@ import java.util.List;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
 
-    private List<VideoObject> videoObjects;
+    private List<Video> videos;
 
-    public VideoAdapter(List<VideoObject> videoObjects) {
-        this.videoObjects = videoObjects;
+    public VideoAdapter(List<Video> videos) {
+        this.videos = videos;
     }
 
-    public void addVideoObject(VideoObject videoObject) {
-        this.videoObjects.add(videoObject);
+    public void addVideoObject(Video video) {
+        this.videos.add(video);
     }
 
     @NonNull
@@ -35,12 +35,12 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
     @Override
     public void onBindViewHolder(@NonNull VideoViewHolder holder, int position) {
-        holder.setVideoObjects(videoObjects.get(position));
+        holder.setVideoObjects(videos.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return videoObjects.size();
+        return videos.size();
     }
 
     static class VideoViewHolder extends RecyclerView.ViewHolder {
@@ -60,7 +60,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         }
 
         @SuppressLint("ClickableViewAccessibility")
-        public void setVideoObjects(final VideoObject videoObjects) {
+        public void setVideoObjects(final Video videoObjects) {
             txvTitle.setText("@" + videoObjects.getAuthorId().trim());
             txvDescription.setText(videoObjects.getDescription());
             videoView.setVideoPath(videoObjects.getUrl());
