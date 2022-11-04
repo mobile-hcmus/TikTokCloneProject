@@ -1,6 +1,9 @@
 package com.example.tiktokcloneproject;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,7 +16,9 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -27,6 +32,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.collection.LLRBNode;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -35,21 +42,29 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-
+import java.io.Console;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Calendar;
+import java.util.Locale;
 
 
 public class EditProfileActivity extends Activity implements View.OnClickListener {
     private EditText edtName, edtUsername, edtPhone, edtEmail, edtBirthdate;
-    private Button btnEdit, btnPhoto, btnApply;
+    private String Name, Username, Phone, Email, Birthdate;
+    private Button btnEdit, btnPhoto, btnApply, btnSelect;
     private LinearLayout llEditProfile;
     private FirebaseFirestore db;
     private Validator validator;
     private Uri avatarUri;
     private final int SELECT_IMAGE_CODE = 10;
     private ProgressBar progressbar;
+    private ImageView imvBackToProfile;
 
     private FirebaseStorage storage;
     private StorageReference storageReference;
+
+    final Calendar myCalendar= Calendar.getInstance();
 
     FirebaseUser user;
 
@@ -79,6 +94,8 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         btnEdit = (Button) llEditProfile.findViewById(R.id.btnEditProfile);
         btnPhoto = (Button) llEditProfile.findViewById(R.id.btnPhoto);
         btnApply = (Button) llEditProfile.findViewById(R.id.btnApply);
+        btnSelect = (Button) llEditProfile.findViewById(R.id.btnSelect);
+        imvBackToProfile = (ImageView) findViewById(R.id.imvBackToProfile);
         progressbar = findViewById(R.id.progressBar);
 
         validator = Validator.getInstance();
@@ -87,6 +104,8 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         btnEdit.setOnClickListener(this);
         btnApply.setOnClickListener(this);
         btnPhoto.setOnClickListener(this);
+        btnSelect.setOnClickListener(this);
+        imvBackToProfile.setOnClickListener(this);
 
         setOnTextChanged();
         db = FirebaseFirestore.getInstance();
@@ -167,13 +186,17 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if (v.getId() == btnEdit.getId()) {
-            setEnableEdt(true);
             btnApply.setVisibility(View.VISIBLE);
             btnEdit.setVisibility(View.GONE);
             btnPhoto.setVisibility(View.GONE);
+
+            Name = edtName.getText().toString();
+            setEnableEdt(true);
+
         }
         if (v.getId() == btnApply.getId()) {
             setOnTextChanged();
+            update(Name, Username, Phone, Email, Birthdate);
         }
 
         if (v.getId() == btnPhoto.getId()) {
@@ -181,9 +204,48 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(Intent.createChooser(intent, "Title"), SELECT_IMAGE_CODE);
-
+        }
+        if (v.getId() == imvBackToProfile.getId()){
+            onBackPressed();
+            finish();
+        }
+        if (v.getId() == btnSelect.getId()){
+            DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                    myCalendar.set(Calendar.YEAR, year);
+                    myCalendar.set(Calendar.MONTH, month);
+                    myCalendar.set(Calendar.DAY_OF_MONTH, day);
+                    updateLabel();
+                }
+            };
+            new DatePickerDialog(this,date,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show();
         }
     }//on click
+
+    private void update(String name, String username, String phone, String email, String birthdate) {
+        HashMap newData = new HashMap();
+        newData.put("userName", username);
+        newData.put("phone", phone);
+        newData.put("email", email);
+        newData.put("birthdate", birthdate);
+
+        db.collection("users").document(user.getUid()).update(newData).addOnCompleteListener(this, new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(EditProfileActivity.this, "Update successfully!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(EditProfileActivity.this, "Update fail!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        setEnableEdt(false);
+        btnApply.setVisibility(View.GONE);
+        btnEdit.setVisibility(View.VISIBLE);
+        btnPhoto.setVisibility(View.VISIBLE);
+}
 
     private void setEnableEdt(boolean value) {
         edtName.setEnabled(value);
@@ -206,6 +268,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
                     edtUsername.setTextColor(getResources().getColor(R.color.tiktok_red));
                 } else {
                     edtUsername.setTextColor(getResources().getColor(R.color.black));
+                    Username = edtUsername.getText().toString();
                 }
             }
 
@@ -228,6 +291,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
                     edtPhone.setTextColor(getResources().getColor(R.color.tiktok_red));
                 } else {
                     edtPhone.setTextColor(getResources().getColor(R.color.black));
+                    Phone = edtPhone.getText().toString();
                 }
             }
 
@@ -247,10 +311,9 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (!validator.isValidEmail(charSequence.toString())) {
                     edtEmail.setTextColor(getResources().getColor(R.color.tiktok_red));
-                }
-                else
-                {
+                } else {
                     edtEmail.setTextColor(getResources().getColor(R.color.black));
+                    Email = edtEmail.getText().toString();
                 }
             }
 
@@ -270,10 +333,9 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (!validator.isValidBirthdate(charSequence.toString())) {
                     edtBirthdate.setTextColor(getResources().getColor(R.color.tiktok_red));
-                }
-                else
-                {
+                } else {
                     edtBirthdate.setTextColor(getResources().getColor(R.color.black));
+                    Birthdate = edtBirthdate.getText().toString();
                 }
             }
 
@@ -282,6 +344,11 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
 
             }
         });
-
     }
+    private void updateLabel()
+    {
+        String myFormat="dd/MM/yyyy";
+        SimpleDateFormat dateFormat=new SimpleDateFormat(myFormat, Locale.US);
+        edtBirthdate.setText(dateFormat.format(myCalendar.getTime()));
+    };
 }
