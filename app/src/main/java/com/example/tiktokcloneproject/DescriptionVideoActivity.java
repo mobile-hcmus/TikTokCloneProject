@@ -18,6 +18,9 @@ import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -38,7 +41,9 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
     EditText edtDescription;
     Button btnDescription;
     ImageView imvShortCutVideo;
-    Fragment fragmentWaiting;
+    TextView txvPercent;
+    ProgressBar pgbPercent;
+    LinearLayout llProgress;
     private FragmentTransaction ft;
     private FragmentManager fm;
 
@@ -61,7 +66,14 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
         edtDescription = (EditText) findViewById(R.id.edtDescription);
         btnDescription = (Button) findViewById(R.id.btnDescription);
         imvShortCutVideo = (ImageView) findViewById(R.id.imvShortCutVideo);
-        fragmentWaiting = (Fragment) getSupportFragmentManager().findFragmentById(R.id.fragWaiting);
+        txvPercent = (TextView) findViewById(R.id.txvPercent);
+        pgbPercent = (ProgressBar) findViewById(R.id.pgbPercent);
+        llProgress = (LinearLayout) findViewById(R.id.llProgress);
+
+        llProgress.setVisibility(View.GONE);
+
+        txvPercent.setText("0%");
+        pgbPercent.setProgress(0);
 
         validator = Validator.getInstance();
 
@@ -71,7 +83,6 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
 
         fm = getSupportFragmentManager();
 
-        addShowHideListener(fragmentWaiting);
 
         Intent intent = getIntent();
         String videoPath= intent.getStringExtra("videoUri");
@@ -106,7 +117,7 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
     @Override
     public void onClick(View view) {
         if(view.getId() == btnDescription.getId()) {
-            addShowHideListener(fragmentWaiting);
+            llProgress.setVisibility(View.VISIBLE);
             uploadVideo();
         }
     }
@@ -133,34 +144,22 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
 
                     Video video = new Video(Id, downloadUri,user.getUid(),edtDescription.getText().toString());
                     writeNewVideo(video);
-//                    DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Video");
-//                    HashMap<String, String> map = new HashMap<>();
-//                    map.put("videolink", downloadUri);
-//                    reference1.child("" + System.currentTimeMillis()).setValue(map);
-                    // Video uploaded successfully
-                    // Dismiss dialog
-//                    progressDialog.dismiss();
-                    addShowHideListener(fragmentWaiting);
                     moveToAnotherActivity(CameraActivity.class);
                     Toast.makeText(getApplicationContext(), "Video Uploaded!!", Toast.LENGTH_SHORT).show();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    // Error, Image not uploaded
-//                    progressDialog.dismiss();
-                    addShowHideListener(fragmentWaiting);
                     moveToAnotherActivity(CameraActivity.class);
                     Toast.makeText(getApplicationContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                // Progress Listener for loading
-                // percentage on the dialog box
                 @Override
                 public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                    // show the progress bar
                     double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                    //progressDialog.setMessage("Uploaded " + (int) progress + "%");
+                    int progressInt = (int) Math.floor(progress);
+                    txvPercent.setText(progressInt + "%");
+                    pgbPercent.setProgress(progressInt);
                 }
             });
         }
@@ -189,18 +188,6 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
                 });
     }
 
-    void addShowHideListener(final Fragment fragment) {
-        ft = fm.beginTransaction();
-        ft.setCustomAnimations(android.R.animator.fade_in,
-                android.R.animator.fade_out);
-        if (fragment.isHidden()) {
-            ft.show(fragment);
-        } else {
-            ft.hide(fragment);
-        }
-        ft.commit();
-
-    }
 
     private void moveToAnotherActivity(Class<?> cls) {
         Intent intent = new Intent(DescriptionVideoActivity.this, cls);
