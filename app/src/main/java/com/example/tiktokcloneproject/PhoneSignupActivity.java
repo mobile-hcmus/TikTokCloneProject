@@ -163,8 +163,9 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
 
                             FirebaseUser firebaseUser = task.getResult().getUser();
 
-
-                            User user = new User("" + firebaseUser.getUid(), "", edtPhone.getText().toString(), "");
+                            String id = firebaseUser.getUid();
+                            String username = id.substring(0, Math.min(id.length(), 6));
+                            User user = new User(id, username, edtPhone.getText().toString(), "");
                             writeNewUser(user);
 
                             moveToAnotherActivity(HomeScreenActivity.class);
