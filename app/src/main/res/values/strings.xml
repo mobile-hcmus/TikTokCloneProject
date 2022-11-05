@@ -28,6 +28,8 @@
     <string name="title_activity_fullscreen_avatar">FullscreenAvatarActivity</string>
     <string name="hint_username">Enter username</string>
     <string name="error_username">%1$s is invalid</string>
+    <string name="error_undefined">Something is wrong. Please try again!</string>
+    <string name="error_upload_video">Video must have duration less than 15s and maximum resolution is 720p</string>
 
     <string name="ic_add">"&#10133;"</string>
 

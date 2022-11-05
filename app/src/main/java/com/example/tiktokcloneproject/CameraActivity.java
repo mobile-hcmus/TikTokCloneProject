@@ -12,6 +12,7 @@ import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -232,6 +233,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 5 && resultCode == RESULT_OK && data != null && data.getData() != null) {
             videoUri = data.getData();
+
 
             Intent i = new Intent(this,
                     DescriptionVideoActivity.class);

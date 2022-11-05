@@ -43,10 +43,14 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
     private FragmentManager fm;
 
     Uri videoUri;
+    final float maximumResolution = 1280 * 720; //720p
+    final long maximumDuration = 15000; //miliseconds
 
     FirebaseAuth mAuth;
     FirebaseUser user;
     FirebaseFirestore db;
+
+    Validator validator;
 
 
     @Override
@@ -58,6 +62,8 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
         btnDescription = (Button) findViewById(R.id.btnDescription);
         imvShortCutVideo = (ImageView) findViewById(R.id.imvShortCutVideo);
         fragmentWaiting = (Fragment) getSupportFragmentManager().findFragmentById(R.id.fragWaiting);
+
+        validator = Validator.getInstance();
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
@@ -72,13 +78,27 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
          videoUri = Uri.parse(videoPath);
 
 
-        //get thumbnail video
+        //get thumbnail video, duration
         MediaMetadataRetriever mmr = new MediaMetadataRetriever();
         mmr.setDataSource( getApplicationContext(), videoUri );
-        //1000 is microseconds
+        String height = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT);
+        String width = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH);
+        String time = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        long timeInMillisec = Long.parseLong(time );
+        //time is microseconds
         Bitmap bm = mmr.getScaledFrameAtTime( 10000000, MediaMetadataRetriever.OPTION_NEXT_SYNC, 1000, 1000 );
-        imvShortCutVideo.setImageBitmap(bm);
 
+        mmr.release();
+        Log.i("Info", "Resolution"  + height + "x" + width + ". Time: " + timeInMillisec / 1000);
+        if(!validator.isNumeric(height) || !validator.isNumeric(width)) {
+            Toast.makeText(getApplicationContext(), getString(R.string.error_undefined), Toast.LENGTH_SHORT).show();
+            moveToAnotherActivity(CameraActivity.class);
+        } else if(Float.parseFloat(height) * Float.parseFloat(width) > maximumResolution  || timeInMillisec > maximumDuration) {
+            Toast.makeText(getApplicationContext(), getString(R.string.error_upload_video), Toast.LENGTH_SHORT).show();
+            moveToAnotherActivity(CameraActivity.class);
+        }
+
+        imvShortCutVideo.setImageBitmap(bm);
 
         btnDescription.setOnClickListener(this);
     }
