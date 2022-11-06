@@ -52,7 +52,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
     TextureView.SurfaceTextureListener textureListener = new TextureView.SurfaceTextureListener() {
         @Override
         public void onSurfaceTextureAvailable(@NonNull SurfaceTexture surfaceTexture, int i, int i1) {
-            getCameraIds(i, i1, true);
+            getCameraIds(i, i1, defaultId == frontId);
             connectCamera();
         }
 
@@ -144,7 +144,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
         // thread starting
         startBackgroundThread();
         if (textureFront.isAvailable()) {
-            getCameraIds(textureFront.getWidth(), textureFront.getHeight(), true);
+            getCameraIds(textureFront.getWidth(), textureFront.getHeight(), defaultId == frontId);
             connectCamera();
         } else {
             textureFront.setSurfaceTextureListener(textureListener);
@@ -186,7 +186,8 @@ public class CameraActivity extends Activity implements View.OnClickListener {
                 mainCamera.close();
                 mainCamera = null;
             }
-            getCameraIds(textureFront.getWidth(), textureFront.getHeight(), defaultId != frontId);
+            defaultId = (defaultId == frontId) ? backId : frontId;
+            textureFront.setSurfaceTextureListener(textureListener);
             connectCamera();
         }
         if (view.getId() == btnUploadVideo.getId()) {
