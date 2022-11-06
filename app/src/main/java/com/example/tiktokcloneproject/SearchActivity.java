@@ -76,9 +76,10 @@ public class SearchActivity extends AppCompatActivity {
 
         rcv_users.setLayoutManager(linearLayoutManager);
 
+        String key="";
 
-        getData();
-        userAdapter=new UserAdapter(userArrayList);
+        getData(key);
+        userAdapter=new UserAdapter(this,userArrayList);
         rcv_users.setAdapter(userAdapter);
         RecyclerView.ItemDecoration itemDecoration= new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
         rcv_users.addItemDecoration(itemDecoration);
@@ -86,7 +87,9 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
-    private void getData() {
+
+
+    private void getData(String key) {
 //        userDB.collection("users").orderBy("userName", Query.Direction.ASCENDING)
 //                .whereEqualTo("userName", true)
 //                .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -111,11 +114,10 @@ public class SearchActivity extends AppCompatActivity {
 //        });
 
 
-
         userDB.collection("users")
-//                .orderBy("userName")
-//                .startAt(cc)
-//                .endAt(cc+"\uf8ff")
+                .orderBy("userName")
+                .startAt(key)
+                .endAt(key+"\uf8ff")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -156,15 +158,23 @@ public class SearchActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                userAdapter.getFilter().filter(query);
+//                userAdapter.getFilter().filter(query);
+
+                userArrayList.clear();
+                getData(query);
+                userAdapter.notifyDataSetChanged();
+
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Toast.makeText(SearchActivity.this,newText,
-                        Toast.LENGTH_LONG).show();
-                userAdapter.getFilter().filter(newText);
+//                Toast.makeText(SearchActivity.this,newText,
+//                        Toast.LENGTH_LONG).show();
+//                userAdapter.getFilter().filter(newText);
+                userArrayList.clear();
+                getData(newText);
+                userAdapter.notifyDataSetChanged();
 
 
                 return false;

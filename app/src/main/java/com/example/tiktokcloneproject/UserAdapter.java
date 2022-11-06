@@ -26,9 +26,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.userItems> imp
 
 
 
-    public UserAdapter(List<User> listUser)
-    {
 
+    public UserAdapter(Context context,List<User> listUser)
+    {
+        mainContext =context;
         this.listUser=listUser;
         this.listUserOld=listUser;
     }
@@ -54,12 +55,19 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.userItems> imp
             @Override
             public void onClick(View view) {
 //                Bundle bundle = new Bundle();
-//                bundle.putString("id", user.getId());
+//                bundle.putString("id", user.getUserId());
 //                Intent intent = new Intent(mainContext, ProfileActivity.class);
 //                intent.putExtras(bundle);
 //                mainContext.startActivity(intent);
-                Toast.makeText(view.getContext(), user.getUserName(),
-                        Toast.LENGTH_LONG).show();
+//                Toast.makeText(view.getContext(), user.getUserName(),
+//                        Toast.LENGTH_LONG).show();
+
+                Intent intent=new Intent(mainContext, FollowActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("obj",user);
+                intent.putExtras(bundle);
+
+                mainContext.startActivity(intent);
             }
         });
     }

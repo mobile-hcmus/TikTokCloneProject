@@ -4,11 +4,12 @@ import android.net.Uri;
 
 import androidx.annotation.Nullable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class User {
+public class User implements Serializable {
 
     private String userId, userName, name, birthdate, phone, avatarUri, email;
     private ArrayList<String> followers, following, myVideoUri, myFavoriteVideoUri;

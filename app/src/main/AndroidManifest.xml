@@ -100,6 +100,9 @@
             android:name=".SearchActivity"
             android:exported="false" />
         <activity
+            android:name=".FollowActivity"
+            android:exported="false" />
+        <activity
             android:name=".CameraActivity"
             android:exported="false" />
         <activity
