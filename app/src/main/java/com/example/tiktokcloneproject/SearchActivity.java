@@ -66,6 +66,7 @@ public class SearchActivity extends AppCompatActivity {
 
 
 
+        userArrayList.clear();
         userDB = FirebaseFirestore.getInstance();
 
 
@@ -89,7 +90,18 @@ public class SearchActivity extends AppCompatActivity {
 
 
 
+
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
+        if (userAdapter!=null){
+            userAdapter.release();
+        }
+    }
+
     private void getData(String key) {
+        userArrayList.clear();
 //        userDB.collection("users").orderBy("userName", Query.Direction.ASCENDING)
 //                .whereEqualTo("userName", true)
 //                .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -160,7 +172,7 @@ public class SearchActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
 //                userAdapter.getFilter().filter(query);
 
-                userArrayList.clear();
+//                userArrayList.clear();
                 getData(query);
                 userAdapter.notifyDataSetChanged();
 
@@ -172,7 +184,7 @@ public class SearchActivity extends AppCompatActivity {
 //                Toast.makeText(SearchActivity.this,newText,
 //                        Toast.LENGTH_LONG).show();
 //                userAdapter.getFilter().filter(newText);
-                userArrayList.clear();
+//                userArrayList.clear();
                 getData(newText);
                 userAdapter.notifyDataSetChanged();
 

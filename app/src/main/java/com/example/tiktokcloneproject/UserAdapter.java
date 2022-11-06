@@ -94,6 +94,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.userItems> imp
 
         }
     }
+
+    public void release()
+    {
+        mainContext = null;
+    }
+
     @Override
     public Filter getFilter() {
         return new Filter() {

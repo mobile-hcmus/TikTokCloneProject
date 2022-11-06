@@ -109,6 +109,7 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
 
 
         btnEditProfile.setOnClickListener(this);
+
     }//on create
 
 

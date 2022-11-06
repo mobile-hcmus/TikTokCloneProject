@@ -41,12 +41,12 @@ import java.util.Set;
 
 public class FollowActivity extends Activity {
     private TextView txvFollowing, txvFollowers, txvLikes, txvUserName;
-    private Button btn, btnEditProfile;
+    private Button btn, btnUnfollow, btnFollow;
     ImageView imvAvatarProfile;
     Uri avatarUri;
     FirebaseFirestore db;
     FirebaseAuth mAuth;
-    FirebaseUser user;
+    FirebaseUser currentUser;
     FirebaseStorage storage;
     StorageReference storageReference;
     Bitmap bitmap;
@@ -58,9 +58,37 @@ public class FollowActivity extends Activity {
 
         Bundle bundle = getIntent().getExtras();
         User user=(User) bundle.get("obj");
+        //nhận object từ search activity, không cần querry lại!
 
+
+        //tải ảnh sau
+        imvAvatarProfile = (ImageView) findViewById(R.id.imvAvatarProfile);
         txvUserName = (TextView)findViewById(R.id.txv_username);
         txvUserName.setText(user.getUserName());
+        txvFollowing = (TextView)findViewById(R.id.text_following);
+        txvFollowers = (TextView)findViewById(R.id.text_followers);
+        txvLikes = (TextView)findViewById(R.id.text_likes);
+        txvUserName = (TextView)findViewById(R.id.txv_username);
+
+        btnFollow  = (Button)findViewById(R.id.button_follow);
+        btnUnfollow =(Button)findViewById(R.id.button_unfollow);
+
+
+
+
+        //check đã follow hay chưa
+
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+
+//        currentUser.getUid();
+
+        if (true) {
+            btn = (Button)findViewById(R.id.button_unfollow);
+        } else {
+            btn = (Button)findViewById(R.id.button_follow);
+        }
+        btn.setVisibility(View.VISIBLE);
 
     }}
 
