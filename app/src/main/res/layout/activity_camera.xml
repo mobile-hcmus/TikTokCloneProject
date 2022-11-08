@@ -38,7 +38,7 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
                     <Button
-                        android:id="@+id/flip_camera"
+                        android:id="@+id/button_flip_camera"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Flip"
@@ -53,20 +53,25 @@
                 android:layout_height="50px"
                 android:layout_weight="1"
                 android:gravity="center_vertical">
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Start record"
-                    android:layout_weight="2"></Button>
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
                     <Button
-                        android:layout_width="wrap_content"
+                        android:id="@+id/button_record"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Stop record"
-                        android:layout_gravity="center"></Button>
+                        android:text="Start recording"
+                        android:layout_weight="2"
+                        android:onClick="onClick"></Button>
+                    <Button
+                        android:id="@+id/button_stop"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Stop recording"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        android:onClick="onClick"></Button>
                 </FrameLayout>
                 <FrameLayout
                     android:layout_width="wrap_content"
