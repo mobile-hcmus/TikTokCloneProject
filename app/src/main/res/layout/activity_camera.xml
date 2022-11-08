@@ -44,7 +44,6 @@
                         android:text="Flip"
                         android:layout_gravity="right"
                         android:onClick="onClick">
-
                     </Button>
                 </LinearLayout>
             </LinearLayout>

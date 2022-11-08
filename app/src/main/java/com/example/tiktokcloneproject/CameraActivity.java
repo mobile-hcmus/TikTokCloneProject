@@ -10,6 +10,7 @@ import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.CamcorderProfile;
@@ -87,6 +88,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
     FirebaseUser user;
 
     MediaRecorder mediaRecorder;
+    File videoFileHolder;
     Button btnStartRecording;
     Button btnFlip;
     Button btnStopRecording;
@@ -167,8 +169,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
         cameraFrameLayout = findViewById(R.id.camera_frame);
         textureFront = findViewById(R.id.texture_view_front);
 
-        // Open Camera
-
+        // Filter list
     }
 
     @Override
@@ -250,7 +251,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
             btnStartRecording.setVisibility(View.GONE);
             isRecording = true;
             try {
-                createVideoFileName();
+                videoFileHolder = createVideoFileName();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -261,6 +262,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
             if (isRecording) {
                 mediaRecorder.stop();
                 mediaRecorder.reset();
+                MediaScannerConnection.scanFile(getApplicationContext(), new String[]{videoFileHolder.getAbsolutePath()}, null, null);
                 startCameraPreview();
                 isRecording = false;
                 btnStartRecording.setVisibility(View.VISIBLE);
@@ -398,7 +400,6 @@ public class CameraActivity extends Activity implements View.OnClickListener {
                 captureRequestBuilder = mainCamera.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
                 captureRequestBuilder.addTarget(previewSurface);
                 captureRequestBuilder.addTarget(recordSurface);
-
                 mainCamera.createCaptureSession(Arrays.asList(previewSurface, recordSurface),
                         new CameraCaptureSession.StateCallback() {
                             @Override
@@ -477,8 +478,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
         mediaRecorder.setOutputFile(videoFileName);
         mediaRecorder.setVideoSize(videoSize.getWidth(), videoSize.getHeight());
         mediaRecorder.setVideoFrameRate(30);
-//        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mediaRecorder.setVideoEncodingBitRate(1000000);
+        mediaRecorder.setVideoEncodingBitRate(3000000);
         mediaRecorder.setOrientationHint(totalRotation);
         mediaRecorder.prepare();
     }
