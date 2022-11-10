@@ -48,7 +48,7 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
     private FragmentManager fm;
 
     Uri videoUri;
-    final float maximumResolution = 1280 * 720; //720p
+//    final float maximumResolution = 1280 * 720; //720p
     final long maximumDuration = 15000; //miliseconds
 
     FirebaseAuth mAuth;
@@ -104,7 +104,7 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
         if(!validator.isNumeric(height) || !validator.isNumeric(width)) {
             Toast.makeText(getApplicationContext(), getString(R.string.error_undefined), Toast.LENGTH_SHORT).show();
             moveToAnotherActivity(CameraActivity.class);
-        } else if(Float.parseFloat(height) * Float.parseFloat(width) > maximumResolution  || timeInMillisec > maximumDuration) {
+        } else if(timeInMillisec > maximumDuration) {
             Toast.makeText(getApplicationContext(), getString(R.string.error_upload_video), Toast.LENGTH_SHORT).show();
             moveToAnotherActivity(CameraActivity.class);
         }

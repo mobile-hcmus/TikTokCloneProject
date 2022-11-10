@@ -79,9 +79,17 @@
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="Pause"
+                        android:layout_gravity="center"
+                        android:id="@+id/button_pause"
+                        android:visibility="gone"
+                        android:onClick="onClick"/>
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="Upload video"
                         android:layout_gravity="center"
-                        android:id="@+id/btnUploadVideo"/>
+                        android:id="@+id/btnUploadVideo" />
                 </FrameLayout>
             </LinearLayout>
         </LinearLayout>

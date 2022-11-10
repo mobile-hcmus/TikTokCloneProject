@@ -82,8 +82,8 @@ public class CameraActivity extends Activity implements View.OnClickListener {
     Size previewSize;
     Size videoSize;
     Button btnUploadVideo;
+    Button btnPause;
     FirebaseFirestore db;
-    Uri videoUri;
     FirebaseAuth mAuth;
     FirebaseUser user;
 
@@ -93,6 +93,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
     Button btnFlip;
     Button btnStopRecording;
     boolean isRecording = false;
+    boolean isPaused = false;
 
     String videoFileName;
     String userId;
@@ -163,6 +164,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
         btnUploadVideo.setOnClickListener(this);
         btnStartRecording = findViewById(R.id.button_record);
         btnFlip = findViewById(R.id.button_flip_camera);
+        btnPause = findViewById(R.id.button_pause);
         btnStopRecording = findViewById(R.id.button_stop);
 
         // Get Camera TextureView
@@ -200,7 +202,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(getApplicationContext(), "please grant permission!", Toast.LENGTH_SHORT).show();
                 ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.CAMERA},
+                        new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO},
                         1);
             }
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -246,6 +248,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
 
         if (view.getId() == R.id.button_record) {
             btnStopRecording.setVisibility(View.VISIBLE);
+            btnPause.setVisibility(View.VISIBLE);
             btnFlip.setVisibility(View.GONE);
             btnUploadVideo.setVisibility(View.GONE);
             btnStartRecording.setVisibility(View.GONE);
@@ -258,15 +261,28 @@ public class CameraActivity extends Activity implements View.OnClickListener {
             startRecord();
             mediaRecorder.start();
         }
+        if (view.getId() == R.id.button_pause) {
+            if (!isPaused) {
+                mediaRecorder.pause();
+                btnPause.setText("Resume");
+                isPaused = true;
+            } else {
+                mediaRecorder.resume();
+                btnPause.setText("Pause");
+                isPaused = false;
+            }
+        }
         if (view.getId() == R.id.button_stop) {
             if (isRecording) {
                 mediaRecorder.stop();
                 mediaRecorder.reset();
                 MediaScannerConnection.scanFile(getApplicationContext(), new String[]{videoFileHolder.getAbsolutePath()}, null, null);
                 startCameraPreview();
+                startUploadingActivity(Uri.fromFile(videoFileHolder));
                 isRecording = false;
                 btnStartRecording.setVisibility(View.VISIBLE);
                 btnFlip.setVisibility(View.VISIBLE);
+            btnPause.setVisibility(View.GONE);
                 btnUploadVideo.setVisibility(View.VISIBLE);
                 btnStopRecording.setVisibility(View.GONE);
             }
@@ -275,12 +291,9 @@ public class CameraActivity extends Activity implements View.OnClickListener {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 5 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            videoUri = data.getData();
+            Uri videoUri = data.getData();
 
-            Intent i = new Intent(this,
-                    DescriptionVideoActivity.class);
-            i.putExtra("videoUri", videoUri.toString());
-            startActivity(i);
+            startUploadingActivity(videoUri);
 
 //            try {
 //                uploadVideo();
@@ -291,6 +304,13 @@ public class CameraActivity extends Activity implements View.OnClickListener {
 //            progressDialog.setTitle("Uploading...");
 //            progressDialog.show();
         }
+    }
+
+    void startUploadingActivity(Uri videoUri) {
+        Intent i = new Intent(this,
+                DescriptionVideoActivity.class);
+        i.putExtra("videoUri", videoUri.toString());
+        startActivity(i);
     }
 
     private void getCameraIds(int width, int height, boolean isFront) {
@@ -473,8 +493,10 @@ public class CameraActivity extends Activity implements View.OnClickListener {
 
     void setupMediaRecorder() throws IOException{
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         mediaRecorder.setOutputFile(videoFileName);
         mediaRecorder.setVideoSize(videoSize.getWidth(), videoSize.getHeight());
         mediaRecorder.setVideoFrameRate(30);
