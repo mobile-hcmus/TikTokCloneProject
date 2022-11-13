@@ -9,9 +9,14 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.SpannableString;
+import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -34,8 +39,11 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DescriptionVideoActivity extends FragmentActivity implements View.OnClickListener {
     EditText edtDescription;
@@ -44,6 +52,7 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
     TextView txvPercent;
     ProgressBar pgbPercent;
     LinearLayout llProgress;
+    final String REGEX_HASHTAG = "#([A-Za-z0-9_-]+)";
     private FragmentTransaction ft;
     private FragmentManager fm;
 
@@ -56,6 +65,8 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
     FirebaseFirestore db;
 
     Validator validator;
+
+    ArrayList<String> hashtags;
 
 
     @Override
@@ -88,6 +99,8 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
         String videoPath= intent.getStringExtra("videoUri");
          videoUri = Uri.parse(videoPath);
 
+         hashtags = new ArrayList<>();
+
 
         //get thumbnail video, duration
         MediaMetadataRetriever mmr = new MediaMetadataRetriever();
@@ -111,14 +124,20 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
 
         imvShortCutVideo.setImageBitmap(bm);
 
+
+
         btnDescription.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         if(view.getId() == btnDescription.getId()) {
-            llProgress.setVisibility(View.VISIBLE);
-            uploadVideo();
+//            llProgress.setVisibility(View.VISIBLE);
+            Matcher matcher = Pattern.compile("#([A-Za-z0-9_-]+)").matcher(edtDescription.getText().toString());
+            while(matcher.find()) {
+                Toast.makeText(this, matcher.group(0), Toast.LENGTH_SHORT).show();
+            }
+//            uploadVideo();
         }
     }
 
