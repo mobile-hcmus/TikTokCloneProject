@@ -294,22 +294,15 @@ public class CameraActivity extends Activity implements View.OnClickListener {
             Uri videoUri = data.getData();
 
             startUploadingActivity(videoUri);
-
-//            try {
-//                uploadVideo();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-
-//            progressDialog.setTitle("Uploading...");
-//            progressDialog.show();
         }
     }
 
     void startUploadingActivity(Uri videoUri) {
         Intent i = new Intent(this,
                 DescriptionVideoActivity.class);
-        i.putExtra("videoUri", videoUri.toString());
+        Bundle bundle = new Bundle();
+        bundle.putString("videoUri", videoUri.toString());
+        i.putExtras(bundle);
         startActivity(i);
     }
 

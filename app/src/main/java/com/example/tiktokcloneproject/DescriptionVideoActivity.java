@@ -28,11 +28,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -67,6 +71,8 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
     Validator validator;
 
     ArrayList<String> hashtags;
+    String Id;
+    final String TAG = "STATE";
 
 
     @Override
@@ -96,7 +102,8 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
 
 
         Intent intent = getIntent();
-        String videoPath= intent.getStringExtra("videoUri");
+        Bundle bundle = intent.getExtras();
+        String videoPath= bundle.getString("videoUri");
          videoUri = Uri.parse(videoPath);
 
          hashtags = new ArrayList<>();
@@ -132,12 +139,14 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
     @Override
     public void onClick(View view) {
         if(view.getId() == btnDescription.getId()) {
-//            llProgress.setVisibility(View.VISIBLE);
-            Matcher matcher = Pattern.compile("#([A-Za-z0-9_-]+)").matcher(edtDescription.getText().toString());
+            llProgress.setVisibility(View.VISIBLE);
+            Matcher matcher = Pattern.compile(REGEX_HASHTAG).matcher(edtDescription.getText().toString());
             while(matcher.find()) {
-                Toast.makeText(this, matcher.group(0), Toast.LENGTH_SHORT).show();
+                hashtags.add(matcher.group(0));
             }
-//            uploadVideo();
+            Id = String.valueOf(System.currentTimeMillis());
+            writeHashtags(hashtags);
+            uploadVideo();
         }
     }
 
@@ -151,7 +160,6 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
     private void uploadVideo(){
         if (videoUri != null) {
             // save the selected video in Firebase storage
-            String Id = String.valueOf(System.currentTimeMillis());
             final StorageReference reference = FirebaseStorage.getInstance().getReference("videos/" + Id + "." + getFileType(videoUri));
             reference.putFile(videoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -189,7 +197,6 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
 
         // Basic sign-in info:
         Map<String, Object> videoValues = video.toMap();
-        final String TAG = "ADD";
         Map<String, Object> childUpdates = new HashMap<>();
         db.collection("videos").document(video.getId())
                 .set(videoValues)
@@ -213,5 +220,32 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
 
+    }
+
+    private void writeHashtags(ArrayList<String> hashtags) {
+        ArrayList<String> videoIds = new ArrayList<>();
+        videoIds.add(Id);
+        Map<String, Object> docData = new HashMap<>();
+        docData.put("videoIds", videoIds);
+         hashtags.forEach((hashtag) -> {
+            DocumentReference docRef = db.collection("hashtags").document(hashtag);
+                    docRef.get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                        docRef.update("videoIds", FieldValue.arrayUnion(Id));
+                                } else {
+                                    docRef.set(docData);
+                                }
+                            } else {
+                                Log.d(TAG, "Failed with: ", task.getException());
+                            }
+                        }
+                    });
+
+        });
     }
 }
