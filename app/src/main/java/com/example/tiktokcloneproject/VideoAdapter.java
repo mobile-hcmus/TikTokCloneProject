@@ -1,11 +1,15 @@
 package com.example.tiktokcloneproject;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -18,8 +22,10 @@ import java.util.List;
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
 
     private List<Video> videos;
+    Context context;
 
-    public VideoAdapter(List<Video> videos) {
+    public VideoAdapter(Context context, List<Video> videos) {
+        this.context = context;
         this.videos = videos;
     }
 
@@ -47,6 +53,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
         VideoView videoView;
         TextView txvDescription, txvTitle;
+        ImageView imvComment;
         ProgressBar pgbWait;
 
 
@@ -55,6 +62,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             videoView = itemView.findViewById(R.id.videoView);
             txvTitle = itemView.findViewById(R.id.txvTitle);
             txvDescription = itemView.findViewById(R.id.txvDescription);
+            imvComment = itemView.findViewById(R.id.imvComment);
             pgbWait = itemView.findViewById(R.id.pgbWait);
 
         }
@@ -63,6 +71,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         public void setVideoObjects(final Video videoObjects) {
             txvTitle.setText("@" + videoObjects.getAuthorId().trim());
             txvDescription.setText(videoObjects.getDescription());
+            imvComment = itemView.findViewById(R.id.imvComment);
             videoView.setVideoPath(videoObjects.getUrl());
 
             videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -84,6 +93,14 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                         videoView.start();
                         return false;
                     }
+                }
+            });
+
+            imvComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(view.getContext(), CommentActivity.class);
+                    view.getContext().startActivity(intent);
                 }
             });
         }

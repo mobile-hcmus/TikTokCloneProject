@@ -116,11 +116,12 @@
                     android:text=""
                     android:textSize="20sp"/>
                 <Button
-                    android:layout_width="wrap_content"
+                    android:id="@+id/btnSelect"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
-                    android:id="@+id/btnSelect"
                     android:text="..."></Button>
+
             </LinearLayout>
             <Button
                 android:layout_width="match_parent"

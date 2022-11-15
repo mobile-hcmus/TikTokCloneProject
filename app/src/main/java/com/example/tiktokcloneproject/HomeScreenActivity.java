@@ -65,7 +65,7 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 /////////////////////////////////////////////////////////////////////////
         viewPager2 = findViewById(R.id.viewPager);
         videos = new ArrayList<>();
-        videoAdapter = new VideoAdapter(videos);
+        videoAdapter = new VideoAdapter(this, videos);
 
 
 
@@ -107,7 +107,7 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 
     @Override public void onStart() {
         super.onStart();
-//        loadVideos();
+        loadVideos();
     }
 
 
