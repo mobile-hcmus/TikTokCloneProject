@@ -44,6 +44,7 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.Theme_TikTokCloneProject);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
@@ -107,7 +108,7 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 
     @Override public void onStart() {
         super.onStart();
-        loadVideos();
+//        loadVideos();
     }
 
 
