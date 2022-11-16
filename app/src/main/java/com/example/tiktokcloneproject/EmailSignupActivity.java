@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -52,7 +54,7 @@ public class EmailSignupActivity extends Activity{
 
     private GoogleSignInClient mGoogleSignInClient;
 
-
+    private Dialog dialog;
 
 
     @Override
@@ -77,6 +79,10 @@ public class EmailSignupActivity extends Activity{
         // [END initialize_auth]
         db = FirebaseFirestore.getInstance();
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        builder.setView(R.layout.dialog_progress);
+        dialog = builder.create();
 
         signUp();
     }
@@ -92,7 +98,7 @@ public class EmailSignupActivity extends Activity{
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-
+                dialog.show();
                 handleSignUp(account);
 
             } catch (ApiException e) {
@@ -113,7 +119,7 @@ public class EmailSignupActivity extends Activity{
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-
+                            dialog.dismiss();
                             FirebaseUser firebaseUser = mAuth.getCurrentUser();
                             String id = firebaseUser.getUid();
                             String username = id.substring(0, Math.min(id.length(), 6));
@@ -123,6 +129,7 @@ public class EmailSignupActivity extends Activity{
                             moveToAnotherActivity(HomeScreenActivity.class);
 
                         } else {
+                            dialog.dismiss();
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             moveToAnotherActivity(SignupChoiceActivity.class);
@@ -191,7 +198,7 @@ public class EmailSignupActivity extends Activity{
                     if (msg.equals("FALSE")) {
                         firebaseAuthWithGoogle(account.getIdToken());
                     } else {
-
+                        dialog.dismiss();
                         Toast.makeText(EmailSignupActivity.this, getString(R.string.error_existedEmail), Toast.LENGTH_SHORT).show();
                         moveToAnotherActivity(SignupChoiceActivity.class);
                     }

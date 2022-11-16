@@ -65,6 +65,8 @@
         <entry key="..\:/TikTok/app/src/main/res/layout/activity_signin_choice.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/layout/activity_signin_page.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/layout/activity_signup_choice.xml" value="0.1" />
+        <entry key="..\:/TikTok/app/src/main/res/layout/dialog_progress.xml" value="0.1" />
+        <entry key="..\:/TikTok/app/src/main/res/layout/fragment_waiting.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
       </map>
     </option>

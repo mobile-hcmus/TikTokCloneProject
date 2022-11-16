@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,6 +41,8 @@ public class EmailSignInActivity extends Activity {
 
     private GoogleSignInClient mGoogleSignInClient;
 
+    private Dialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +61,11 @@ public class EmailSignInActivity extends Activity {
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
         db = FirebaseFirestore.getInstance();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        builder.setView(R.layout.dialog_progress);
+        dialog = builder.create();
         signIn();
 
     }
@@ -70,7 +80,7 @@ public class EmailSignInActivity extends Activity {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-
+                dialog.show();
                 handleSignIn(account);
 
             } catch (ApiException e) {
@@ -91,13 +101,14 @@ public class EmailSignInActivity extends Activity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-
+                            dialog.dismiss();
                             FirebaseUser firebaseUser = mAuth.getCurrentUser();
                             Toast.makeText(EmailSignInActivity.this, getString(R.string.successful_signin), Toast.LENGTH_SHORT).show();
 
                             moveToAnotherActivity(HomeScreenActivity.class);
 
                         } else {
+                            dialog.dismiss();
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             moveToAnotherActivity(SigninChoiceActivity.class);
@@ -141,6 +152,7 @@ public class EmailSignInActivity extends Activity {
                     }
 
                     if (msg.equals("FALSE")) {
+                        dialog.dismiss();
                         Toast.makeText(EmailSignInActivity.this, getString(R.string.error_signin, account.getEmail()), Toast.LENGTH_SHORT).show();
                         moveToAnotherActivity(SigninChoiceActivity.class);
                     } else {
