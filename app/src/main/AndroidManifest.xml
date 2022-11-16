@@ -26,20 +26,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TikTokCloneProject"
         tools:targetApi="31">
-
+        <activity
+            android:name=".EmailSignInActivity"
+            android:exported="false" />
         <activity
             android:name=".EmailSignupActivity"
             android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.VIEW"/>
-            <category android:name="android.intent.category.DEFAULT"/>
-            <category android:name="android.intent.category.BROWSABLE"/>
-            <data
-                android:host="example.com"
-                android:scheme="https"/>
-        </intent-filter>
-        </activity>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="example.com"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".SignupChoiceActivity"
             android:exported="false" />

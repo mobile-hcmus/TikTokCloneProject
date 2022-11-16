@@ -4,13 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -19,10 +15,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,37 +24,24 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+public class EmailSignInActivity extends Activity {
 
-public class EmailSignupActivity extends Activity{
-
-    EditText edtEmail;
-    Button btnEmail;
-
-    private static final String TAG = "EmailSignUpActivity";
+    private static final String TAG = "EmailSignInActivity";
     private static final int RC_SIGN_IN = 9001;
 
     private String msg;
 
     // [START declare_auth]
     private FirebaseAuth mAuth;
-    private  FirebaseFirestore db;
+    private FirebaseFirestore db;
     // [END declare_auth]
 
     private GoogleSignInClient mGoogleSignInClient;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_email_signup);
-
-        edtEmail = (EditText) findViewById(R.id.edtEmail);
-        btnEmail = (Button) findViewById(R.id.btnEmail);
+//        setContentView(R.layout.activity_email_signin);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -76,11 +56,9 @@ public class EmailSignupActivity extends Activity{
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
         db = FirebaseFirestore.getInstance();
+        signIn();
 
-
-        signUp();
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -93,7 +71,7 @@ public class EmailSignupActivity extends Activity{
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
 
-                handleSignUp(account);
+                handleSignIn(account);
 
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
@@ -115,17 +93,14 @@ public class EmailSignupActivity extends Activity{
                             Log.d(TAG, "signInWithCredential:success");
 
                             FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                            String id = firebaseUser.getUid();
-                            String username = id.substring(0, Math.min(id.length(), 6));
-                            User user = new User(id, username, "", firebaseUser.getEmail());
-                            writeNewUser(user);
+                            Toast.makeText(EmailSignInActivity.this, getString(R.string.successful_signin), Toast.LENGTH_SHORT).show();
 
                             moveToAnotherActivity(HomeScreenActivity.class);
 
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            moveToAnotherActivity(SignupChoiceActivity.class);
+                            moveToAnotherActivity(SigninChoiceActivity.class);
 
                         }
                     }
@@ -133,45 +108,22 @@ public class EmailSignupActivity extends Activity{
     }
     // [END auth_with_google]
     // [START signin]
-    private void signUp() {
+    private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
 
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
     // [END signin]
 
-    private void writeNewUser(User user) {
-
-        // Basic sign-in info:
-        Map<String, Object> userValues = user.toMap();
-        Map<String, Object> childUpdates = new HashMap<>();
-        db.collection("users").document(user.getUserId())
-                .set(userValues)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully written!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error writing document", e);
-                    }
-                });
-
-    }
-
-
     private void moveToAnotherActivity(Class<?> cls) {
-        Intent intent = new Intent(EmailSignupActivity.this, cls);
+        Intent intent = new Intent(EmailSignInActivity.this, cls);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
 
         finish();
     }
 
-    private void handleSignUp(GoogleSignInAccount account) {
+    private void handleSignIn(GoogleSignInAccount account) {
         db.collection("users")
                 .whereEqualTo("email", account.getEmail())
                 .get().addOnCompleteListener(task -> {
@@ -189,11 +141,11 @@ public class EmailSignupActivity extends Activity{
                     }
 
                     if (msg.equals("FALSE")) {
-                        firebaseAuthWithGoogle(account.getIdToken());
+                        Toast.makeText(EmailSignInActivity.this, getString(R.string.error_signin, account.getEmail()), Toast.LENGTH_SHORT).show();
+                        moveToAnotherActivity(SigninChoiceActivity.class);
                     } else {
 
-                        Toast.makeText(EmailSignupActivity.this, getString(R.string.error_existedEmail), Toast.LENGTH_SHORT).show();
-                        moveToAnotherActivity(SignupChoiceActivity.class);
+                        firebaseAuthWithGoogle(account.getIdToken());
                     }
                 });
 
