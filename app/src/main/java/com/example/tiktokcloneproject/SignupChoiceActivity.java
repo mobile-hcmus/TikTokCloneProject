@@ -32,5 +32,9 @@ public class SignupChoiceActivity extends Activity implements View.OnClickListen
             Intent intent = new Intent(SignupChoiceActivity.this, PhoneSignupActivity.class);
             startActivity(intent);
         }
+        if(view.getId() == btnChoiceEmail.getId()) {
+            Intent intent = new Intent(SignupChoiceActivity.this, EmailSignupActivity.class);
+            startActivity(intent);
+        }
     }
 }

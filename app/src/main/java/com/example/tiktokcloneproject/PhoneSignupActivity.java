@@ -84,7 +84,6 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
 
         setVisibleVisibility(llPhone.getId());
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
         db = FirebaseFirestore.getInstance();
 
 
