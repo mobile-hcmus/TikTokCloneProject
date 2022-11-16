@@ -101,6 +101,8 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         validator = Validator.getInstance();
         setEnableEdt(false);
         btnApply.setVisibility(View.GONE);
+        btnSelect.setVisibility(View.GONE);
+
         btnEdit.setOnClickListener(this);
         btnApply.setOnClickListener(this);
         btnPhoto.setOnClickListener(this);
@@ -189,6 +191,8 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
             btnApply.setVisibility(View.VISIBLE);
             btnEdit.setVisibility(View.GONE);
             btnPhoto.setVisibility(View.GONE);
+            btnSelect.bringToFront();
+            btnSelect.setVisibility(View.VISIBLE);
 
             Name = edtName.getText().toString();
             setEnableEdt(true);

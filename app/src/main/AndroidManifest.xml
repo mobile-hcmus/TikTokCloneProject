@@ -120,6 +120,9 @@
             android:name=".CameraActivity"
             android:exported="false" />
         <activity
+            android:name=".CommentActivity"
+            android:exported="false" />
+        <activity
             android:name=".ShareAccountActivity"
             android:exported="false"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
