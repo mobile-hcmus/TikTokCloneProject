@@ -108,7 +108,7 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 
     @Override public void onStart() {
         super.onStart();
-//        loadVideos();
+        loadVideos();
     }
 
 
