@@ -1,11 +1,9 @@
 package com.example.tiktokcloneproject;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -16,10 +14,13 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,8 +37,6 @@ import com.google.android.gms.auth.api.identity.zbn;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.internal.ApiKey;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -51,10 +50,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
-import java.util.Set;
 
 public class ProfileActivity extends Activity implements View.OnClickListener{
     private TextView txvFollowing, txvFollowers, txvLikes, txvUserName;
+    private EditText edtBio;
     private Button btn, btnEditProfile;
     ImageView imvAvatarProfile;
     Uri avatarUri;
@@ -64,13 +63,15 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
     FirebaseStorage storage;
     StorageReference storageReference;
     Bitmap bitmap;
+    String userId;
+    DocumentReference docRef;
+    String oldBioText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         Intent intent = getIntent();
-        String userId;
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
@@ -91,6 +92,7 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
         txvFollowers = (TextView)findViewById(R.id.text_followers);
         txvLikes = (TextView)findViewById(R.id.text_likes);
         txvUserName = (TextView)findViewById(R.id.txv_username);
+        edtBio = (EditText)findViewById(R.id.edt_bio);
         btnEditProfile =(Button)findViewById(R.id.button_edit_profile);
         imvAvatarProfile = (ImageView) findViewById(R.id.imvAvatarProfile);
 //        avatarUri = getIntent().getParcelableExtra("uri");
@@ -108,24 +110,45 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
         btn.setVisibility(View.VISIBLE);
 
         db  = FirebaseFirestore.getInstance();
-        DocumentReference docRef = db.collection("profiles").document(userId);
+        docRef = db.collection("profiles").document(userId);
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
                     txvFollowing.setText(((Long)document.get("following")).toString());
                     txvFollowers.setText(((Long)document.get("followers")).toString());
-                    txvLikes.setText(((Long)document.get("totalLikes")).toString());
-                    txvUserName.setText("@" + document.getString("username"));
+                    txvLikes.setText(((Long)document.get("likes")).toString());
+                    txvUserName.setText("@" + document.getString("userName"));
+                    oldBioText = document.getString("bio");
+                    edtBio.setText(oldBioText);
+
                 } else { }
             } else { }
         });
-
-
+        oldBioText = edtBio.getText().toString();
+        edtBio.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b) {
+                    findViewById(R.id.layout_bio).setVisibility(View.VISIBLE);
+                } else {
+                    findViewById(R.id.layout_bio).setVisibility(View.GONE);
+                }
+            }
+        });
         btnEditProfile.setOnClickListener(this);
 
     }//on create
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    void updateBio() {
+        docRef.update("bio", edtBio.getText().toString());
+        oldBioText = edtBio.getText().toString();
+    }
 
 
     public void onClick(View v) {
@@ -153,6 +176,19 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
 //            Toast.makeText(this, "YYY", Toast.LENGTH_SHORT).show();
             moveToAnotherActivity(EditProfileActivity.class);
 
+        }
+
+        if(v.getId() == R.id.btn_update_bio) {
+            updateBio();
+            findViewById(R.id.layout_bio).setVisibility(View.GONE);
+            View current = getCurrentFocus();
+            if (current != null) current.clearFocus();
+        }
+        if(v.getId() == R.id.btn_cancel_update_bio) {
+            edtBio.setText(oldBioText);
+            findViewById(R.id.layout_bio).setVisibility(View.GONE);
+            View current = getCurrentFocus();
+            if (current != null) current.clearFocus();
         }
     }
 

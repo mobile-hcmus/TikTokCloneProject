@@ -125,6 +125,8 @@ public class EmailSignupActivity extends Activity{
                             String username = id.substring(0, Math.min(id.length(), 6));
                             User user = new User(id, username, "", firebaseUser.getEmail());
                             writeNewUser(user);
+                            Profile profile = new Profile(id, username);
+                            writeNewProfile(profile);
 
                             moveToAnotherActivity(HomeScreenActivity.class);
 
@@ -153,6 +155,29 @@ public class EmailSignupActivity extends Activity{
         Map<String, Object> userValues = user.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
         db.collection("users").document(user.getUserId())
+                .set(userValues)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
+
+    }
+
+    private void writeNewProfile(Profile profile) {
+
+        // Basic sign-in info:
+        Map<String, Object> userValues = profile.toMap();
+        final String TAG = "ADD";
+        Map<String, Object> childUpdates = new HashMap<>();
+        db.collection("profiles").document(profile.getUserId())
                 .set(userValues)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

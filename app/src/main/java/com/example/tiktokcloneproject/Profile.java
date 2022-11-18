@@ -1,54 +1,44 @@
 package com.example.tiktokcloneproject;
 
-import android.net.Uri;
-
-import androidx.annotation.Nullable;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class User implements Serializable {
+public class Profile implements Serializable {
 
-    private String userId, userName, birthdate, phone, avatarUri, email;
-//    private ArrayList<String> followers, following, myVideoUri, myFavoriteVideoUri;
+    private String userId, userName,  avatarUri, bio;
+    private int followers, following, likes;
     private boolean isPrivate;
-//    private int totalLikes;
 
-    public User(String userName) {
+    public Profile(String userName) {
         this.userName = userName;
     }
 
-    public User(String userId, String userName, String phone, String email) {
+    public Profile(String userId, String userName) {
         this.userId = userId;
         this.userName = userName;
-        this.phone = phone;
-        this.email = email;
-        this.birthdate = this.avatarUri = "";
+        followers = following = likes = 0;
+        avatarUri = "";
+        bio = "Adđ your bio.";
+        isPrivate = false;
 //        followers = new ArrayList<>();
 //        following = new ArrayList<>();
 //        myVideoUri = new ArrayList<>();
 //        myFavoriteVideoUri = new ArrayList<>();
-        isPrivate = false;
-//        totalLikes = 0;
     }
 
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("userId", userId);
         result.put("userName", userName);
-        result.put("birthdate", birthdate);
-        result.put("avatarrUri", avatarUri);
-        result.put("email", email);
+        result.put("avatarName", avatarUri);
         result.put("isPrivate", isPrivate);
-        result.put("phone", phone);
-//        result.put("name", name);
-//        result.put("followers", followers);
-//        result.put("following", following);
-//        result.put("myVideoUri", myVideoUri);
+        result.put("following", following);
+        result.put("followers", followers);
+        result.put("likes", likes);
+        result.put("bio", bio);
 //        result.put("myFavoriteVideoUri", myFavoriteVideoUri);
-//        result.put("totalLikes", totalLikes);
         return result;
     }
 
@@ -60,21 +50,25 @@ public class User implements Serializable {
         return userName;
     }
 
-    public String getBirthdate() {
-        return birthdate;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public String getBirthdate() {
+//        return birthdate;
+//    }
+//
+//    public String getPhone() {
+//        return phone;
+//    }
 
     public String getAvatarUri() {
         return avatarUri;
     }
 
-    public String getEmail() {
-        return email;
-    }
+//    public String getEmail() {
+//        return email;
+//    }
 
 //    public ArrayList<String> getFollowers() {
 //        return followers;
@@ -95,7 +89,7 @@ public class User implements Serializable {
     public boolean isPrivate() {
         return isPrivate;
     }
-
+//
 //    public int getTotalLikes() {
 //        return totalLikes;
 //    }
