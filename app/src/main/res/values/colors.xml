@@ -7,10 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="tiktok_white">#FFFFFFFF</color>
-    <color name="tiktok_black">#FF010101</color>
-    <color name="tiktok_blue">#FF69C9D0</color>
-    <color name="tiktok_red">#FFEE1D52</color>
+    <color name="tiktok_white">#FFFFFF</color>
+    <color name="tiktok_black">#262C38</color>
+    <color name="tiktok_blue">#63C7CF</color>
+    <color name="tiktok_red">#ED2156</color>
     <color name="hint">#FF7F8487</color>
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>

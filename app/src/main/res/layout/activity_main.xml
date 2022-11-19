@@ -20,14 +20,22 @@
         tools:context=".MainActivity">
 
     <Button
-        android:layout_width="125dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="signUpPage"
+        android:text="@string/sign_up"
         android:layout_marginBottom="20dp"
-        android:text="Đăng Ký" />
+        android:background="@drawable/btn_signup_shape"
+        android:fontFamily="@font/montserrat_bold"
+        android:textColor="@color/tiktok_white"
+        android:textSize="20dp"/>
     <Button
-        android:layout_width="125dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Đăng Nhập"
-        android:onClick="signInPage"/>
+        android:text="@string/sign_in"
+        android:onClick="signInPage"
+        android:background="@drawable/btn_signup_shape"
+        android:fontFamily="@font/montserrat_bold"
+        android:textColor="@color/tiktok_white"
+        android:textSize="20dp"/>
 </LinearLayout>
