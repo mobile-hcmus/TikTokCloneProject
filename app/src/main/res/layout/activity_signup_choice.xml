@@ -11,17 +11,32 @@
 
         <Button
             android:id="@+id/btnChoicePhone"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/btn_signup_shape"
-            android:textColor="@color/tiktok_black"
-            android:text="@string/btnChoicePhone"/>
+            android:text="@string/btnChoicePhone"
+            android:paddingHorizontal="40dp"
+            android:paddingVertical="10dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:textColor="@color/tiktok_white"
+            android:background="@drawable/btn_red_shape"
+            android:textSize="15dp"
+            />
 
         <Button
             android:id="@+id/btnChoiceEmail"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/btnChoiceEmail"/>
+            android:text="@string/btnChoiceEmail"
+            android:drawableLeft="@drawable/ic_google"
+            android:drawablePadding="6dp"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="16dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:textColor="@color/tiktok_black"
+            android:background="@drawable/btn_white_shape"
+            android:textSize="15dp"
+            />
 
 
 

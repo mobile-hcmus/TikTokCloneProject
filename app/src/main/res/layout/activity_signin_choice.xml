@@ -13,7 +13,7 @@
         android:id="@+id/btnChoicePhone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/btn_signup_shape"
+        android:background="@drawable/btn_red_shape"
         android:textColor="@color/tiktok_black"
         android:text="@string/btnChoicePhone"/>
 

@@ -8,7 +8,7 @@
     <string name="hint_edtPassword">Enter your password</string>
     <string name="hint_edtConfirm">Confirm your password</string>
     <string name="btnChoicePhone">Using phone number</string>
-    <string name="btnChoiceEmail">Using email address</string>
+    <string name="btnChoiceEmail">Using Google Account</string>
     <string name="btnChoiceFacebook">Using facebook account</string>
     <string name="btn_signout">Đăng xuất</string>
     <string name="error_PhoneAuth">%1$s is invalid</string>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/tiktok_white_50" />
+            <corners android:radius="2dp" />
+
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <solid android:color="@color/tiktok_white" />
+            <corners android:radius="2dp" />
+            <stroke android:color="@color/tiktok_grey"
+                android:width="1dp"/>
+        </shape>
+    </item>
+</selector>

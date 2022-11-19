@@ -11,10 +11,6 @@
         <shape>
             <solid android:color="@color/tiktok_red" />
             <corners android:radius="2dp" />
-            <padding android:top="10dp"
-                android:bottom="10dp"
-                android:left="40dp"
-                android:right="40dp"/>
         </shape>
     </item>
 </selector>
