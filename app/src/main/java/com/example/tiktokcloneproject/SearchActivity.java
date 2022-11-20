@@ -207,4 +207,8 @@ public class SearchActivity extends AppCompatActivity {
         super.onBackPressed();
 
     }
+
+    private boolean checkIsFollowing(ArrayList<String> userIDFollowingList, String anotherUserID) {
+        return userIDFollowingList.contains(anotherUserID);
+    }
 }
