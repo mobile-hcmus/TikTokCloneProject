@@ -139,7 +139,7 @@ public class SearchActivity extends AppCompatActivity {
                                     Toast.LENGTH_LONG).show();
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                userArrayList.add(new User(document.getString("userName")));
+                                userArrayList.add(new User(document.getString("userId"),document.getString("userName")));
 
 
 

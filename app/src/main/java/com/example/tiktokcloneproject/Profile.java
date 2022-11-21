@@ -50,6 +50,8 @@ public class Profile implements Serializable {
         return userName;
     }
 
+
+
 //    public String getName() {
 //        return name;
 //    }

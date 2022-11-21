@@ -50,15 +50,25 @@ public class FollowActivity extends Activity {
     FirebaseStorage storage;
     StorageReference storageReference;
     Bitmap bitmap;
+    FirebaseUser user;
+    String currentUserID,userId;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follow);
 
+
+        Intent intent = getIntent();
         Bundle bundle = getIntent().getExtras();
         User user=(User) bundle.get("obj");
-        //nhận object từ search activity, không cần querry lại!
+        //nhận object từ search activity
+
+
+
+
 
 
         //tải ảnh sau
@@ -76,14 +86,40 @@ public class FollowActivity extends Activity {
 
 
 
-        //check đã follow hay chưa
 
+
+        //id nhận từ search Activity
+        userId= user.getUserId();
+
+        //check đã follow hay chưa
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+        //id đang đăng nhập
+        currentUserID =   currentUser.getUid();
+
+        boolean isFollowed=false;
+
+
+        //query vào profile, check tồn tại
+
+
+//
+
+
+
+
+
+
+
+
+
+
+
+
 
 //        currentUser.getUid();
 
-        if (true) {
+        if (isFollowed) {
             btn = (Button)findViewById(R.id.button_unfollow);
         } else {
             btn = (Button)findViewById(R.id.button_follow);

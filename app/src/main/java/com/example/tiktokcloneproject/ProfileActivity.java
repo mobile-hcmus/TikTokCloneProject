@@ -86,6 +86,7 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
             }
         } else {
             userId =  user.getUid();
+
         }
         setContentView(R.layout.activity_profile);
         txvFollowing = (TextView)findViewById(R.id.text_following);
