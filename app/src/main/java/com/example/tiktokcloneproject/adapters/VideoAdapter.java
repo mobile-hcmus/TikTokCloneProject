@@ -1,7 +1,6 @@
-package com.example.tiktokcloneproject;
+package com.example.tiktokcloneproject.adapters;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -16,6 +15,10 @@ import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.tiktokcloneproject.CommentActivity;
+import com.example.tiktokcloneproject.R;
+import com.example.tiktokcloneproject.model.Video;
 
 import java.util.List;
 
@@ -69,10 +72,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
         @SuppressLint("ClickableViewAccessibility")
         public void setVideoObjects(final Video videoObjects) {
-            txvTitle.setText("@" + videoObjects.getAuthorId().trim());
+            txvTitle.setText("@" + videoObjects.getUsername());
             txvDescription.setText(videoObjects.getDescription());
             imvComment = itemView.findViewById(R.id.imvComment);
-            videoView.setVideoPath(videoObjects.getUrl());
+            videoView.setVideoPath(videoObjects.getVideoUri());
 
             videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override

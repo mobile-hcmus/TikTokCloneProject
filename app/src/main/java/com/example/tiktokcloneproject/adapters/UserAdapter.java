@@ -1,4 +1,4 @@
-package com.example.tiktokcloneproject;
+package com.example.tiktokcloneproject.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,14 +10,16 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tiktokcloneproject.FollowActivity;
+import com.example.tiktokcloneproject.R;
+import com.example.tiktokcloneproject.model.User;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.userItems> implements Filterable {
     private List<User> listUser;

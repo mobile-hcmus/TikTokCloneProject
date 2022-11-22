@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.tiktokcloneproject.adapters.VideoAdapter;
+import com.example.tiktokcloneproject.model.Video;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Source;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
@@ -151,18 +154,22 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 
     private void loadVideos() {
         db.collection("videos")
-                .get()
+                .get(Source.CACHE)
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                String Id = document.get("Id", String.class);
-                                String Url = document.get("Url", String.class);
+                                String videoId = document.get("videoId", String.class);
                                 String authorId = document.get("authorId", String.class);
-                                String  description = document.get("description", String.class);
+                                String Uri = document.get("videoUri", String.class);
+                                String username = document.get("username", String.class);
+                                String authorAvatarId = document.get("authorAvatarId", String.class);
+                                String description = document.get("description", String.class);
+                                int totalLikes = document.get("totalLikes", int.class);
+                                int totalComments = document.get("totalComments", int.class);
 
-                                Video video = new Video(Id, Url, authorId, description);
+                                Video video = new Video(videoId,Uri, authorId, authorAvatarId, description, username, totalLikes, totalComments );
                                 videoAdapter.addVideoObject(video);
 
                             }

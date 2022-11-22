@@ -1,4 +1,4 @@
-package com.example.tiktokcloneproject;
+package com.example.tiktokcloneproject.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;

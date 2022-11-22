@@ -1,7 +1,6 @@
 package com.example.tiktokcloneproject;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -9,14 +8,10 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.SpannableString;
-import android.text.TextWatcher;
-import android.text.style.ForegroundColorSpan;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -28,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tiktokcloneproject.model.Video;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -60,6 +56,8 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
     private FragmentTransaction ft;
     private FragmentManager fm;
 
+    String username, authorAvatarId;
+
     Uri videoUri;
 //    final float maximumResolution = 1280 * 720; //720p
     final long maximumDuration = 15000; //miliseconds
@@ -72,7 +70,9 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
 
     ArrayList<String> hashtags;
     String Id;
-    final String TAG = "STATE";
+    final String TAG = "DescriptionVideoActivity";
+
+    Handler handler = new Handler();
 
 
     @Override
@@ -146,6 +146,25 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
             }
             Id = String.valueOf(System.currentTimeMillis());
             writeHashtags(hashtags);
+            DocumentReference docRef = db.collection("users").document(user.getUid());
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            authorAvatarId = document.get("authorAvatarId", String.class);
+                            username = document.get("username", String.class);
+                            uploadVideo();
+                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
             uploadVideo();
         }
     }
@@ -168,8 +187,8 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
                     while (!uriTask.isSuccessful()) ;
                     // get the link of video
                     String downloadUri = uriTask.getResult().toString();
-
-                    Video video = new Video(Id, downloadUri,user.getUid(),edtDescription.getText().toString());
+                    String description = edtDescription.getText().toString();
+                    Video video = new Video(Id, downloadUri,user.getUid(), username, authorAvatarId, description, hashtags);
                     writeNewVideo(video);
                     moveToAnotherActivity(CameraActivity.class);
                     Toast.makeText(getApplicationContext(), "Video Uploaded!!", Toast.LENGTH_SHORT).show();
@@ -198,7 +217,7 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
         // Basic sign-in info:
         Map<String, Object> videoValues = video.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
-        db.collection("videos").document(video.getId())
+        db.collection("videos").document(video.getVideoId())
                 .set(videoValues)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -247,5 +266,9 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
                     });
 
         });
+    }
+
+    private void getAuthorInfo() {
+
     }
 }

@@ -1,4 +1,4 @@
-package com.example.tiktokcloneproject;
+package com.example.tiktokcloneproject.model;
 
 import android.net.Uri;
 
