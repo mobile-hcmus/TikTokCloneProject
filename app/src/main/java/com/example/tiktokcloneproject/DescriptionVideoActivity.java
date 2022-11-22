@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tiktokcloneproject.model.Video;
+import com.example.tiktokcloneproject.model.VideoSummary;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -73,6 +74,7 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
     final String TAG = "DescriptionVideoActivity";
 
     Handler handler = new Handler();
+    Bitmap thumbnail;
 
 
     @Override
@@ -117,7 +119,7 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
         String time = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
         long timeInMillisec = Long.parseLong(time );
         //time is microseconds
-        Bitmap bm = mmr.getScaledFrameAtTime( 10000000, MediaMetadataRetriever.OPTION_NEXT_SYNC, 1000, 1000 );
+        thumbnail = mmr.getScaledFrameAtTime( 10000000, MediaMetadataRetriever.OPTION_NEXT_SYNC, 1000, 1000 );
 
         mmr.release();
         Log.i("Info", "Resolution"  + height + "x" + width + ". Time: " + timeInMillisec / 1000);
@@ -129,7 +131,7 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
             moveToAnotherActivity(CameraActivity.class);
         }
 
-        imvShortCutVideo.setImageBitmap(bm);
+        imvShortCutVideo.setImageBitmap(thumbnail);
 
 
 
@@ -155,7 +157,9 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
                         if (document.exists()) {
                             authorAvatarId = document.get("authorAvatarId", String.class);
                             username = document.get("username", String.class);
-                            uploadVideo();
+                            if(videoUri != null) {
+                                handler.post(DescriptionVideoActivity.this::uploadVideo);
+                            }
                             Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                         } else {
                             Log.d(TAG, "No such document");
@@ -165,7 +169,6 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
                     }
                 }
             });
-            uploadVideo();
         }
     }
 
@@ -177,10 +180,9 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
     }
 
     private void uploadVideo(){
-        if (videoUri != null) {
-            // save the selected video in Firebase storage
-            final StorageReference reference = FirebaseStorage.getInstance().getReference("videos/" + Id + "." + getFileType(videoUri));
-            reference.putFile(videoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+            FirebaseStorage.getInstance().getReference("videos/" + Id + "." + getFileType(videoUri))
+                    .putFile(videoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
@@ -189,6 +191,8 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
                     String downloadUri = uriTask.getResult().toString();
                     String description = edtDescription.getText().toString();
                     Video video = new Video(Id, downloadUri,user.getUid(), username, authorAvatarId, description, hashtags);
+                    VideoSummary videoSummary = new VideoSummary(Id, thumbnail);
+                    writeNewVideoSummary(videoSummary);
                     writeNewVideo(video);
                     moveToAnotherActivity(CameraActivity.class);
                     Toast.makeText(getApplicationContext(), "Video Uploaded!!", Toast.LENGTH_SHORT).show();
@@ -205,10 +209,11 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
                     double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
                     int progressInt = (int) Math.floor(progress);
                     txvPercent.setText(progressInt + "%");
+                    Log.i(TAG, progressInt + "");
                     pgbPercent.setProgress(progressInt);
                 }
             });
-        }
+
     }
 
 
@@ -218,6 +223,25 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
         Map<String, Object> videoValues = video.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
         db.collection("videos").document(video.getVideoId())
+                .set(videoValues)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
+    }
+
+    private void writeNewVideoSummary(VideoSummary video) {
+        Map<String, Object> videoValues = video.toMap();
+        Map<String, Object> childUpdates = new HashMap<>();
+        db.collection("video_summaries").document(video.getVideoId())
                 .set(videoValues)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
