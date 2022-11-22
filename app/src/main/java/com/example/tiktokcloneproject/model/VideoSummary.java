@@ -7,10 +7,10 @@ import java.util.Map;
 
 public class VideoSummary {
     private String videoId;
-    private Bitmap thumbnailUri;
+    private String thumbnailUri;
     private int watchCount;
 
-    public VideoSummary(String videoId, Bitmap thumbnailUri) {
+    public VideoSummary(String videoId, String thumbnailUri) {
         this.videoId = videoId;
         this.thumbnailUri = thumbnailUri;
         watchCount = 0;
@@ -20,7 +20,7 @@ public class VideoSummary {
         return videoId;
     }
 
-    public Bitmap getThumbnailUri() {
+    public String getThumbnailUri() {
         return thumbnailUri;
     }
 

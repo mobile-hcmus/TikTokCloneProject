@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
@@ -40,6 +41,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -119,7 +121,7 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
         String time = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
         long timeInMillisec = Long.parseLong(time );
         //time is microseconds
-        thumbnail = mmr.getScaledFrameAtTime( 10000000, MediaMetadataRetriever.OPTION_NEXT_SYNC, 1000, 1000 );
+        thumbnail = mmr.getScaledFrameAtTime( 1000000, MediaMetadataRetriever.OPTION_NEXT_SYNC, 1000, 1000 );
 
         mmr.release();
         Log.i("Info", "Resolution"  + height + "x" + width + ". Time: " + timeInMillisec / 1000);
@@ -132,6 +134,9 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
         }
 
         imvShortCutVideo.setImageBitmap(thumbnail);
+
+
+
 
 
 
@@ -148,6 +153,7 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
             }
             Id = String.valueOf(System.currentTimeMillis());
             writeHashtags(hashtags);
+            uploadThumbnail();
             DocumentReference docRef = db.collection("users").document(user.getUid());
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -191,8 +197,6 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
                     String downloadUri = uriTask.getResult().toString();
                     String description = edtDescription.getText().toString();
                     Video video = new Video(Id, downloadUri,user.getUid(), username, authorAvatarId, description, hashtags);
-                    VideoSummary videoSummary = new VideoSummary(Id, thumbnail);
-                    writeNewVideoSummary(videoSummary);
                     writeNewVideo(video);
                     moveToAnotherActivity(CameraActivity.class);
                     Toast.makeText(getApplicationContext(), "Video Uploaded!!", Toast.LENGTH_SHORT).show();
@@ -202,6 +206,7 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
                 public void onFailure(@NonNull Exception e) {
                     moveToAnotherActivity(CameraActivity.class);
                     Toast.makeText(getApplicationContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, e.getMessage());
                 }
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -216,12 +221,39 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
 
     }
 
+    private void uploadThumbnail() {
+        // Get the data from an ImageView as bytes
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+        FirebaseStorage.getInstance().getReference("thumbnails/" + Id + ".jpg")
+                .putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                        while (!uriTask.isSuccessful()) ;
+                        // get the link of video
+                        String downloadUri = uriTask.getResult().toString();
+                        VideoSummary videoSummary = new VideoSummary(Id, downloadUri);
+                        writeNewVideoSummary(videoSummary);
+                        moveToAnotherActivity(CameraActivity.class);
+                        Toast.makeText(getApplicationContext(), "Video Uploaded!!", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        moveToAnotherActivity(CameraActivity.class);
+                        Toast.makeText(getApplicationContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, e.getMessage());
+                    }
+                });
+    }
+
 
     private void writeNewVideo(Video video) {
 
         // Basic sign-in info:
         Map<String, Object> videoValues = video.toMap();
-        Map<String, Object> childUpdates = new HashMap<>();
         db.collection("videos").document(video.getVideoId())
                 .set(videoValues)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
