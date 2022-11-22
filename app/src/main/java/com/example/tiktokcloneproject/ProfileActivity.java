@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -55,6 +56,7 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
     private TextView txvFollowing, txvFollowers, txvLikes, txvUserName;
     private EditText edtBio;
     private Button btn, btnEditProfile;
+    private LinearLayout llFollowing, llFollowers;
     ImageView imvAvatarProfile;
     Uri avatarUri;
     FirebaseFirestore db;
@@ -74,7 +76,7 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
         Intent intent = getIntent();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-
+        Log.d("test", "ok");
         if (intent.getExtras() != null) {
             if (intent.hasExtra("id")) {
                 userId = intent.getStringExtra("id");
@@ -96,6 +98,11 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
         edtBio = (EditText)findViewById(R.id.edt_bio);
         btnEditProfile =(Button)findViewById(R.id.button_edit_profile);
         imvAvatarProfile = (ImageView) findViewById(R.id.imvAvatarProfile);
+        llFollowers = (LinearLayout) findViewById(R.id.ll_followers);
+        llFollowing = (LinearLayout) findViewById(R.id.ll_following);
+
+        llFollowers.setOnClickListener(this);
+        llFollowing.setOnClickListener(this);
 //        avatarUri = getIntent().getParcelableExtra("uri");
 
         imvAvatarProfile.setImageURI(avatarUri);
@@ -118,8 +125,8 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
                 if (document.exists()) {
                     txvFollowing.setText(((Long)document.get("following")).toString());
                     txvFollowers.setText(((Long)document.get("followers")).toString());
-                    txvLikes.setText(((Long)document.get("likes")).toString());
-                    txvUserName.setText("@" + document.getString("userName"));
+                    txvLikes.setText(((Long)document.get("totalLikes")).toString());
+                    txvUserName.setText("@" + document.getString("username"));
                     oldBioText = document.getString("bio");
                     edtBio.setText(oldBioText);
 
@@ -190,6 +197,10 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
             findViewById(R.id.layout_bio).setVisibility(View.GONE);
             View current = getCurrentFocus();
             if (current != null) current.clearFocus();
+        }
+        if (v.getId() == llFollowers.getId() || v.getId() == llFollowing.getId()) {
+            Intent intent = new Intent(ProfileActivity.this, FollowListActivity.class);
+            startActivity(intent);
         }
     }
 

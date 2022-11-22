@@ -35,6 +35,8 @@
     <string name="sign_in">Sign In</string>
     <string name="ic_add">"&#10133;"</string>
     <string name="hint_enter_email">Enter your email</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
     <!--   //////////////////////////////////////////////////////////   -->

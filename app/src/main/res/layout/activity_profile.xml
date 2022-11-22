@@ -52,10 +52,12 @@
         android:orientation="horizontal"
         android:gravity="center_horizontal">
         <LinearLayout
+            android:id="@+id/ll_following"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:clickable="true">
             <TextView
                 android:id="@+id/text_following"
                 android:layout_width="wrap_content"
@@ -70,10 +72,12 @@
                 android:textSize="14dp"></TextView>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/ll_followers"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:clickable="true">
             <TextView
                 android:id="@+id/text_followers"
                 android:layout_width="wrap_content"

@@ -10,6 +10,7 @@
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_camera.xml" value="0.16770833333333332" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_delete_account.xml" value="0.16770833333333332" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_email_log_in.xml" value="0.16770833333333332" />
+        <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_follow_list.xml" value="0.16770833333333332" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_full_screeen_avatar.xml" value="0.16770833333333332" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_full_screen_avatar.xml" value="0.34479166666666666" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_fullscreen_avatar.xml" value="0.34479166666666666" />
@@ -24,6 +25,8 @@
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_sign_in_to_delete.xml" value="0.34479166666666666" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_signin_page.xml" value="0.16770833333333332" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.33" />
+        <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/fragment_followers_list.xml" value="0.16770833333333332" />
+        <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/fragment_following_list.xml" value="0.16770833333333332" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/item_user.xml" value="0.16770833333333332" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/share_account_layout.xml" value="0.33" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/menu/main_menu.xml" value="0.16770833333333332" />
