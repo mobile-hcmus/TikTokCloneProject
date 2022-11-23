@@ -4,9 +4,21 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,6 +58,8 @@ public class FollowersListFragment extends Fragment {
         return fragment;
     }
 
+    TextView tvTest;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,12 +67,51 @@ public class FollowersListFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
+
+    ArrayList <String> userIdArrayList=new ArrayList<String>();
+    ArrayList <String> userNameArrayList=new ArrayList<String>();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_followers_list, container, false);
+        View contentView = inflater.inflate(R.layout.fragment_followers_list, container, false);
+        ListView lvFollowers = (ListView) contentView.findViewById(R.id.lv_followers);
+
+        //userArrayList.clear();
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        db.collection("users").document(user.getUid()).get().addOnCompleteListener(task -> {
+            DocumentSnapshot document = task.getResult();
+            userIdArrayList = (ArrayList<String>)document.get("followers");
+            getUserNameById(userIdArrayList);
+            showList(contentView, lvFollowers);
+
+        });
+
+
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(contentView.getContext(),
+//                android.R.layout.simple_list_item_1,
+//                userArrayList);
+//
+//        lvFollowers.setAdapter(adapter);
+
+        return contentView;
+    }
+
+    String userName = "";
+    public void getUserNameById(ArrayList<String> userIdList){
+    }
+
+    void showList(View contentView, ListView lvFollowers) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(contentView.getContext(),
+                android.R.layout.simple_list_item_1,
+                userIdArrayList);
+
+        lvFollowers.setAdapter(adapter);
     }
 }

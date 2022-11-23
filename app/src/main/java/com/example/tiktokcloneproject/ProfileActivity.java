@@ -50,6 +50,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.checkerframework.checker.units.qual.A;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProfileActivity extends Activity implements View.OnClickListener{
@@ -76,7 +79,6 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
         Intent intent = getIntent();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-        Log.d("test", "ok");
         if (intent.getExtras() != null) {
             if (intent.hasExtra("id")) {
                 userId = intent.getStringExtra("id");
@@ -198,8 +200,16 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
             View current = getCurrentFocus();
             if (current != null) current.clearFocus();
         }
-        if (v.getId() == llFollowers.getId() || v.getId() == llFollowing.getId()) {
+        if (v.getId() == llFollowers.getId()) {
             Intent intent = new Intent(ProfileActivity.this, FollowListActivity.class);
+            intent.putExtra("pageIndex", 1);
+
+            startActivity(intent);
+        }
+        if (v.getId() == llFollowing.getId()) {
+            Intent intent = new Intent(ProfileActivity.this, FollowListActivity.class);
+            intent.putExtra("pageIndex", 0);
+
             startActivity(intent);
         }
     }

@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class User implements Serializable {
@@ -14,6 +15,7 @@ public class User implements Serializable {
     private String userId, userName, birthdate, phone, avatarUri, email;
 //    private ArrayList<String> followers, following, myVideoUri, myFavoriteVideoUri;
     private boolean isPrivate;
+    List<String> followers;
 //    private int totalLikes;
 
     public User(String userName) {
@@ -31,6 +33,21 @@ public class User implements Serializable {
         this.phone = phone;
         this.email = email;
         this.birthdate = this.avatarUri = "";
+//        followers = new ArrayList<>();
+//        following = new ArrayList<>();
+//        myVideoUri = new ArrayList<>();
+//        myFavoriteVideoUri = new ArrayList<>();
+        isPrivate = false;
+//        totalLikes = 0;
+    }
+
+    public User(String userId, String userName, String phone, String email, List<String> followers) {
+        this.userId = userId;
+        this.userName = userName;
+        this.phone = phone;
+        this.email = email;
+        this.birthdate = this.avatarUri = "";
+        this.followers = followers;
 //        followers = new ArrayList<>();
 //        following = new ArrayList<>();
 //        myVideoUri = new ArrayList<>();
@@ -101,7 +118,12 @@ public class User implements Serializable {
         return isPrivate;
     }
 
-//    public int getTotalLikes() {
+    public List<String> getFollowers() {
+        return followers;
+    }
+
+
+    //    public int getTotalLikes() {
 //        return totalLikes;
 //    }
 }

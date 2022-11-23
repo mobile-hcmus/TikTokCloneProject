@@ -8,9 +8,13 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.firestore.DocumentSnapshot;
+
+import java.util.ArrayList;
 
 public class FollowListActivity extends AppCompatActivity {
 
@@ -19,6 +23,9 @@ public class FollowListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follow_list);
 
+
+        Bundle i = getIntent().getExtras();
+        int pageIndex = i.getInt("pageIndex");
         ActionBar actionBar = getSupportActionBar();
 
         if (actionBar!=null) {
@@ -30,6 +37,10 @@ public class FollowListActivity extends AppCompatActivity {
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(this);
         viewPager2.setAdapter(adapter);
+
+
+        tabLayout.setScrollPosition(pageIndex,0f,true);
+        viewPager2.setCurrentItem(pageIndex);
 
         new TabLayoutMediator(tabLayout, viewPager2,
                 new TabLayoutMediator.TabConfigurationStrategy() {
