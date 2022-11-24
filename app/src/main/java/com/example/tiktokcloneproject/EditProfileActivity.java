@@ -166,13 +166,14 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
         progress.show();
 
-        StorageReference upload = storageReference.child(user.getUid().toString());
+        StorageReference upload = storageReference.child("/user_avatars").child(user.getUid().toString());
 
         upload.putFile(avatarUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         progress.dismiss();
+
                         Toast.makeText(EditProfileActivity.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
                     }
                 })

@@ -111,7 +111,7 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 
     @Override public void onStart() {
         super.onStart();
-//        loadVideos();
+        loadVideos();
     }
 
 
@@ -154,7 +154,7 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 
     private void loadVideos() {
         db.collection("videos")
-                .get(Source.CACHE)
+                .get(Source.DEFAULT)
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -166,8 +166,8 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
                                 String username = document.get("username", String.class);
                                 String authorAvatarId = document.get("authorAvatarId", String.class);
                                 String description = document.get("description", String.class);
-                                int totalLikes = document.get("totalLikes", int.class);
-                                int totalComments = document.get("totalComments", int.class);
+                                int totalLikes = document.get("totalLikes", Integer.class);
+                                int totalComments = document.get("totalComments", Integer.class);
 
                                 Video video = new Video(videoId,Uri, authorId, authorAvatarId, description, username, totalLikes, totalComments );
                                 videoAdapter.addVideoObject(video);

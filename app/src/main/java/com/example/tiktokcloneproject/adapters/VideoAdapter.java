@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tiktokcloneproject.CommentActivity;
+import com.example.tiktokcloneproject.ProfileActivity;
 import com.example.tiktokcloneproject.R;
 import com.example.tiktokcloneproject.model.Video;
 
@@ -102,8 +104,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             imvComment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(view.getContext(), CommentActivity.class);
-                    view.getContext().startActivity(intent);
+                Intent intent = new Intent(view.getContext(), CommentActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("videoId", videoObjects.getVideoId());
+                intent.putExtras(bundle);
+                view.getContext().startActivity(intent);
                 }
             });
         }

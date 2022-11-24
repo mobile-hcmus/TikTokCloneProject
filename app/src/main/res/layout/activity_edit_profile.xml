@@ -101,26 +101,30 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp">
+                android:layout_marginBottom="50dp"
+                android:orientation="horizontal">
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:text="Birthdate"
-                    android:textSize="20sp"/>
+                    android:textSize="20sp"
+                    />
                 <EditText
-                    android:layout_width="130dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:id="@+id/edtBirthdate"
                     android:text=""
-                    android:textSize="20sp"/>
+                    android:textSize="20sp"
+                    android:layout_weight="7"/>
                 <Button
                     android:id="@+id/btnSelect"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
-                    android:text="..."></Button>
+                    android:text="..."
+                    android:layout_weight="2"/>
 
             </LinearLayout>
             <Button

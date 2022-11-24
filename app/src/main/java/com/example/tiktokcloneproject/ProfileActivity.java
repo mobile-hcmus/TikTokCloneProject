@@ -323,7 +323,7 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
     protected void onResume() {
         super.onResume();
 
-        StorageReference download = storageReference.child(user.getUid().toString());
+        StorageReference download = storageReference.child("/user_avatars").child(user.getUid().toString());
 
         long MAX_BYTE = 1024*1024;
         download.getBytes(MAX_BYTE)

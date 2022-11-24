@@ -10,8 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
+        android:orientation="horizontal"
+        android:layout_gravity="top">
         <ImageView
             android:id="@+id/imvBackToHomeScreen"
             android:layout_width="wrap_content"
@@ -33,6 +33,44 @@
             android:textColor="@color/black"/>
     </LinearLayout>
     <ListView
+        android:id="@+id/listViewComment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:scrollbarSize="3dp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imvMyAvatarInComment"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:bottomRightRadius="20dip"
+            android:bottomLeftRadius="20dip"
+            android:topRightRadius="20dip"
+            android:topLeftRadius="20dip"
+            android:layout_weight="1"
+            android:src="@drawable/ic_baseline_account_circle_24"></ImageView>
+
+        <EditText
+            android:id="@+id/edtComment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:hint="Add comment..."></EditText>
+
+        <ImageButton
+            android:id="@+id/imbSendComment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:src="@drawable/ic_send"></ImageButton>
+    </LinearLayout>
 </LinearLayout>
