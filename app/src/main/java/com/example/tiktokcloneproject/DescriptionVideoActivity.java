@@ -1,16 +1,25 @@
 package com.example.tiktokcloneproject;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -52,9 +61,6 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
     EditText edtDescription;
     Button btnDescription;
     ImageView imvShortCutVideo;
-    TextView txvPercent;
-    ProgressBar pgbPercent;
-    LinearLayout llProgress;
     final String REGEX_HASHTAG = "#([A-Za-z0-9_-]+)";
     private FragmentTransaction ft;
     private FragmentManager fm;
@@ -78,6 +84,9 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
     Handler handler = new Handler();
     Bitmap thumbnail;
 
+    NotificationManagerCompat mNotifyManager;
+    NotificationCompat.Builder mBuilder;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,14 +96,6 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
         edtDescription = (EditText) findViewById(R.id.edtDescription);
         btnDescription = (Button) findViewById(R.id.btnDescription);
         imvShortCutVideo = (ImageView) findViewById(R.id.imvShortCutVideo);
-        txvPercent = (TextView) findViewById(R.id.txvPercent);
-        pgbPercent = (ProgressBar) findViewById(R.id.pgbPercent);
-        llProgress = (LinearLayout) findViewById(R.id.llProgress);
-
-        llProgress.setVisibility(View.GONE);
-
-        txvPercent.setText("0%");
-        pgbPercent.setProgress(0);
 
         validator = Validator.getInstance();
 
@@ -136,6 +137,24 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
         imvShortCutVideo.setImageBitmap(thumbnail);
 
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NOTIFICATION_POLICY) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(getApplicationContext(), "please grant permission!", Toast.LENGTH_SHORT).show();
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_NOTIFICATION_POLICY},
+                    1);
+        }
+
+        createNotificationChannel();
+
+        mNotifyManager =
+                NotificationManagerCompat.from(getApplicationContext());
+        mBuilder = new NotificationCompat.Builder(this, "Video");
+        mBuilder.setContentTitle("Video uploading")
+                .setContentText("Upload in progress")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setSmallIcon(R.drawable.ic_download);
+
 
 
 
@@ -143,10 +162,29 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
         btnDescription.setOnClickListener(this);
     }
 
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Video";
+            String description = "Video";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("Video", name, importance);
+            channel.setSound(null, null);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
     @Override
     public void onClick(View view) {
         if(view.getId() == btnDescription.getId()) {
-            llProgress.setVisibility(View.VISIBLE);
+            mBuilder.setProgress(100, 0, false);
+            mNotifyManager.notify(0, mBuilder.build());
+
             Matcher matcher = Pattern.compile(REGEX_HASHTAG).matcher(edtDescription.getText().toString());
             while(matcher.find()) {
                 hashtags.add(matcher.group(0));
@@ -186,7 +224,7 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
     }
 
     private void uploadVideo(){
-
+        moveToAnotherActivity(CameraActivity.class);
             FirebaseStorage.getInstance().getReference("videos/" + Id + "." + getFileType(videoUri))
                     .putFile(videoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -198,13 +236,15 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
                     String description = edtDescription.getText().toString();
                     Video video = new Video(Id, downloadUri,user.getUid(), username, authorAvatarId, description, hashtags);
                     writeNewVideo(video);
-                    moveToAnotherActivity(CameraActivity.class);
-                    Toast.makeText(getApplicationContext(), "Video Uploaded!!", Toast.LENGTH_SHORT).show();
+                    // When done, update the notification one more time to remove the progress bar
+                    mBuilder.setContentText("Upload complete")
+                            .setProgress(0,0,false);
+                    mNotifyManager.notify(0, mBuilder.build());
+                    Toast.makeText(DescriptionVideoActivity.this, "Upload successfully", Toast.LENGTH_SHORT).show();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    moveToAnotherActivity(CameraActivity.class);
                     Toast.makeText(getApplicationContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     Log.d(TAG, e.getMessage());
                 }
@@ -213,9 +253,9 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
                 public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                     double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
                     int progressInt = (int) Math.floor(progress);
-                    txvPercent.setText(progressInt + "%");
                     Log.i(TAG, progressInt + "");
-                    pgbPercent.setProgress(progressInt);
+                    mBuilder.setProgress(100, progressInt, false);
+                    mNotifyManager.notify(0, mBuilder.build());
                 }
             });
 
@@ -236,13 +276,11 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
                         String downloadUri = uriTask.getResult().toString();
                         VideoSummary videoSummary = new VideoSummary(Id, downloadUri);
                         writeNewVideoSummary(videoSummary);
-                        moveToAnotherActivity(CameraActivity.class);
-                        Toast.makeText(getApplicationContext(), "Video Uploaded!!", Toast.LENGTH_SHORT).show();
+                        Log.i(TAG, "Upload thumbnail successfully");
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        moveToAnotherActivity(CameraActivity.class);
                         Toast.makeText(getApplicationContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.d(TAG, e.getMessage());
                     }
