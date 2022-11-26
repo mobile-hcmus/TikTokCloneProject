@@ -75,6 +75,7 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_bottom);
         setContentView(R.layout.activity_profile);
         Intent intent = getIntent();
         mAuth = FirebaseAuth.getInstance();

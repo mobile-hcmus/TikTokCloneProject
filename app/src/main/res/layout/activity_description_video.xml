@@ -7,27 +7,57 @@
     android:layout_height="match_parent"
     tools:context=".DescriptionVideoActivity"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center_horizontal"
+    android:padding="8dp"
+    >
 
-
-    <ImageView
-        android:layout_width="wrap_content"
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <EditText
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:inputType="textMultiLine"
+        android:scrollHorizontally="false"
+        android:id="@+id/edtDescription"
+        android:hint="@string/hint_description"
+        android:gravity="top"
+        android:background="@drawable/no_border_shape"
+        android:padding="8dp"
+        android:maxLength="200"
+        android:maxLines="8"
+        android:lines="8"
+        android:layout_marginRight="12dp"
+        />
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="180dp"
+        android:layout_weight="1"
+
         android:id="@+id/imvShortCutVideo"/>
 
-    <EditText
+</LinearLayout>
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/edtDescription"
-        android:hint="Describe your video"
-        android:layout_gravity="center_vertical"
-        />
+        android:layout_height="2dp"
+        android:background="@color/tiktok_grey"
+        android:layout_marginVertical="12dp"
+        android:layout_marginHorizontal="24dp"/>
 
     <Button
         android:id="@+id/btnDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="&#62;&#62;"
+        android:background="@drawable/btn_red_shape"
+        android:drawableLeft="@drawable/ic_upload"
+        android:drawablePadding="4dp"
+        android:paddingVertical="5dp"
+        android:paddingHorizontal="10dp"
+        android:text="@string/post"
+        android:fontFamily="@font/montserrat_bold"
+        android:textColor="@color/tiktok_white"
+        android:textSize="16dp"
         />
 
 

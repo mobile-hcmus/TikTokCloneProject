@@ -41,6 +41,8 @@
     <string name="profile">Profile</string>
     <string name="following">Following</string>
     <string name="for_you">For you</string>
+    <string name="hint_description">Enter your description</string>
+    <string name="post">Post</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
