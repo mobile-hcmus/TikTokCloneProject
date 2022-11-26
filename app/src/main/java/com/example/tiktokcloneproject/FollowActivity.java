@@ -175,6 +175,7 @@ public class FollowActivity extends Activity {
                 Data.put("userID",userId);
 
 
+                //thêm following
                 db.collection("profiles").document(currentUserID)
                 .collection("following").document(userId)
                 .set(Data)
@@ -192,6 +193,27 @@ public class FollowActivity extends Activity {
                     }
                 });
 
+                //thêm follower
+
+                Map<String, Object> Data1 = new HashMap<>();
+                Data1.put("userID",currentUserID);
+                db.collection("profiles").document(userId)
+                        .collection("followers").document(currentUserID)
+                        .set(Data)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "follower added");
+
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "follower fail",e);
+                            }
+                        });
+
 
             }
         });
@@ -204,6 +226,7 @@ public class FollowActivity extends Activity {
             public void onClick(View view) {
                 Log.d(TAG, "unfollow clicked");
 
+                //xóa following
                 db.collection("profiles").document(currentUserID)
                         .collection("following").document(userId)
                         .delete()
@@ -220,6 +243,25 @@ public class FollowActivity extends Activity {
                                 Log.w(TAG, "Error deleting document", e);
                             }
                         });
+
+                //xóa follower
+                db.collection("profiles").document(userId)
+                        .collection("followers").document(currentUserID)
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error deleting document", e);
+                            }
+                        });
+
+
 
             }
         });

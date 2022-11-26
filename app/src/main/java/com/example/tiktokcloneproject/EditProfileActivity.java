@@ -43,6 +43,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.Console;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Calendar;
@@ -167,7 +168,6 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         progress.show();
 
         StorageReference upload = storageReference.child("/user_avatars").child(user.getUid().toString());
-
         upload.putFile(avatarUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override

@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentActivity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -34,6 +35,9 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,7 +63,10 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
     private String msg;
     Handler handler = new Handler();
     private Dialog dialog;
+    private Uri avatarUri=Uri.parse("android.resource://com.example.tiktokcloneproject/drawable/default_avatar");
 
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,6 +177,45 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
                             Profile profile = new Profile(id, username);
                             writeNewProfile(profile);
                             dialog.dismiss();
+                            //upload default avatar
+
+
+                            storage = FirebaseStorage.getInstance();
+                            storageReference = storage.getReference();
+
+
+                            StorageReference upload = storageReference.child("/user_avatars").child(firebaseUser.getUid().toString());
+                            upload.putFile(avatarUri)
+                                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                        @Override
+                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                            Toast.makeText(PhoneSignupActivity.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(PhoneSignupActivity.this, "Image Failed", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                             moveToAnotherActivity(HomeScreenActivity.class);
 
                         } else {

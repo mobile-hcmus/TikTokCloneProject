@@ -127,8 +127,8 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
                 if (document.exists()) {
                     txvFollowing.setText(((Long)document.get("following")).toString());
                     txvFollowers.setText(((Long)document.get("followers")).toString());
-                    txvLikes.setText(((Long)document.get("totalLikes")).toString());
-                    txvUserName.setText("@" + document.getString("username"));
+                    txvLikes.setText(((Long)document.get("likes")).toString());
+                    txvUserName.setText("@" + document.getString("userName"));
                     oldBioText = document.getString("bio");
                     edtBio.setText(oldBioText);
 
@@ -324,6 +324,8 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
         super.onResume();
 
         StorageReference download = storageReference.child("/user_avatars").child(user.getUid().toString());
+
+        Log.d("abc",download.toString());
 
         long MAX_BYTE = 1024*1024;
         download.getBytes(MAX_BYTE)
