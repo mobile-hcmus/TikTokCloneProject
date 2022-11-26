@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -43,7 +44,7 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
     private LinearLayout llSignupPage, llPhone;
     RelativeLayout rlOtp;
     private EditText edtPhone, edtOtp;
-    private Button btnPhone, btnOtp;
+    private ImageButton btnPhone, btnOtp;
     private final int VISIBLE = View.VISIBLE;
     private final int GONE = View.GONE;
     private Validator validator;
@@ -70,8 +71,8 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
         rlOtp = (RelativeLayout) llSignupPage.findViewById(R.id.rlOtp);
         edtPhone = (EditText) llSignupPage.findViewById(R.id.edtPhone);
         edtOtp = (EditText) llSignupPage.findViewById(R.id.edtOtp);
-        btnPhone = (Button) llSignupPage.findViewById(R.id.btnPhone);
-        btnOtp = (Button) llSignupPage.findViewById(R.id.btnOtp);
+        btnPhone = (ImageButton) llSignupPage.findViewById(R.id.btnPhone);
+        btnOtp = (ImageButton) llSignupPage.findViewById(R.id.btnOtp);
 
         validator = Validator.getInstance();
 

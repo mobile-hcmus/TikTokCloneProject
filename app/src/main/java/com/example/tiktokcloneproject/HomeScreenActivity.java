@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.tiktokcloneproject.adapters.VideoAdapter;
@@ -31,7 +32,8 @@ import java.util.List;
 public class HomeScreenActivity extends Activity implements View.OnClickListener{
 
     private Button btnProfile;
-    private Button btnSearch, btnSwipe, btnAddVideo;
+    private Button btnSwipe, btnAddVideo;
+    private ImageButton btnSearch;
     private TextView tvVideo; // DE TEST. Sau nay sua thanh clip de xem
     private ViewPager2 viewPager2;
     List<Video> videos;
@@ -53,7 +55,7 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 
         tvVideo = (TextView) findViewById(R.id.tvVideo);
         btnProfile = (Button) findViewById(R.id.btnProfile);
-        btnSearch=(Button) findViewById(R.id.btnSearch);
+        btnSearch=(ImageButton) findViewById(R.id.btnSearch);
         btnSwipe = (Button) findViewById(R.id.btnSwipe);
 
 
@@ -111,7 +113,7 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 
     @Override public void onStart() {
         super.onStart();
-        loadVideos();
+//        loadVideos();
     }
 
 

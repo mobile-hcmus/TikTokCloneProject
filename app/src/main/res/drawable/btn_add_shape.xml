@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:bottom="-5dp"
+        android:right="-5dp"
+        android:top="-5dp"
+        >
+        <shape>
+            <corners android:bottomLeftRadius="10dp"
+                android:topLeftRadius="10dp"/>
+            <solid android:color="@color/tiktok_white" />
+
+            <stroke
+                android:width="5dp"
+                android:color="@color/tiktok_blue" />
+        </shape>
+    </item>
+
+    <item
+        android:bottom="-5dp"
+        android:left="-5dp"
+        android:top="-5dp">
+    <shape>
+        <stroke
+            android:width="5dp"
+            android:color="@color/tiktok_black" />
+    </shape>
+    </item>
+
+    <item
+        android:bottom="-5dp"
+        android:left="-5dp"
+        android:top="-5dp">
+        <shape>
+            <corners android:topRightRadius="10dp"
+                android:bottomRightRadius="10dp"/>
+            <stroke
+                android:width="5dp"
+                android:color="@color/tiktok_red" />
+        </shape>
+    </item>
+
+
+
+</layer-list>

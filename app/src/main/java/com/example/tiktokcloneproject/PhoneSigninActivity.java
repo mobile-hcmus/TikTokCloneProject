@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -36,7 +37,7 @@ public class PhoneSigninActivity extends FragmentActivity implements View.OnClic
     private LinearLayout llSigninPage, llPhone;
     private RelativeLayout rlOtp;
     private EditText edtPhone, edtOtp;
-    private Button btnPhone, btnOtp;
+    private ImageButton btnPhone, btnOtp;
 
     private final int VISIBLE = View.VISIBLE;
     private final int GONE = View.GONE;
@@ -63,8 +64,8 @@ public class PhoneSigninActivity extends FragmentActivity implements View.OnClic
         rlOtp = (RelativeLayout) llSigninPage.findViewById(R.id.rlOtp);
         edtPhone = (EditText) llSigninPage.findViewById(R.id.edtPhone);
         edtOtp = (EditText) llSigninPage.findViewById(R.id.edtOtp);
-        btnPhone = (Button) llSigninPage.findViewById(R.id.btnPhone);
-        btnOtp = (Button) llSigninPage.findViewById(R.id.btnOtp);
+        btnPhone = (ImageButton) llSigninPage.findViewById(R.id.btnPhone);
+        btnOtp = (ImageButton) llSigninPage.findViewById(R.id.btnOtp);
 
         validator = Validator.getInstance();
 

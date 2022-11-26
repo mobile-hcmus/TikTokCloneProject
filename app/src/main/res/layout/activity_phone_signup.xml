@@ -16,7 +16,7 @@
         android:id="@+id/llPhone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
+        android:visibility="visible"
         android:orientation="vertical"
         android:padding="8dp"
         android:background="@color/tiktok_white"
@@ -35,14 +35,15 @@
             android:background="@drawable/edt_shape"
             />
 
-        <Button
+        <ImageButton
             android:id="@+id/btnPhone"
             android:layout_marginTop="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_red_shape"
-            android:drawableLeft="@drawable/ic_next"
-            android:paddingLeft="34dp"
+            android:src="@drawable/ic_next"
+            android:paddingVertical="5dp"
+            android:paddingHorizontal="16dp"
            android:layout_gravity="end"
             />
 
@@ -55,7 +56,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/tiktok_white"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:visibility="gone">
         <EditText
             android:id="@+id/edtOtp"
             android:layout_width="match_parent"
@@ -68,14 +70,15 @@
             android:textColorHint="@color/hint"
             android:background="@drawable/edt_shape"
             />
-        <Button
+        <ImageButton
             android:id="@+id/btnOtp"
             android:layout_marginTop="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_red_shape"
-            android:drawableLeft="@drawable/ic_next"
-            android:paddingLeft="34dp"
+            android:src="@drawable/ic_next"
+            android:paddingVertical="5dp"
+            android:paddingHorizontal="16dp"
             android:layout_alignEnd="@+id/edtOtp"
             android:layout_below="@+id/edtOtp"/>
 
