@@ -121,16 +121,9 @@
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:text="Follow"
-        android:textAllCaps="false"
-        android:visibility="gone"></Button>
-    <Button
-        android:id="@+id/button_unfollow"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
         android:text="Unfollow"
         android:textAllCaps="false"
         android:visibility="gone"></Button>
+
 
 </LinearLayout>
