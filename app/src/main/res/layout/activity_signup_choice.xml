@@ -2,42 +2,59 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llSignupChoice"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignupChoiceActivity"
-    android:orientation="vertical"
     android:gravity="center"
-    android:id="@+id/llSignupChoice">
+    android:orientation="vertical"
+    tools:context=".SignupChoiceActivity">
 
-        <Button
-            android:id="@+id/btnChoicePhone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/btnChoicePhone"
-            android:paddingHorizontal="40dp"
-            android:paddingVertical="10dp"
-            android:layout_marginBottom="20dp"
-            android:fontFamily="@font/montserrat_bold"
-            android:textColor="@color/tiktok_white"
-            android:background="@drawable/btn_red_shape"
-            android:textSize="15dp"
-            />
+    <TextView
+        android:id="@+id/txvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_semibold"
+        android:padding="24dp"
+        android:text="@string/sign_up"
+        android:textColor="@color/tiktok_black"
+        android:textSize="40dp" />
 
-        <Button
-            android:id="@+id/btnChoiceEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/btnChoiceEmail"
-            android:drawableLeft="@drawable/ic_google"
-            android:drawablePadding="6dp"
-            android:paddingVertical="10dp"
-            android:paddingHorizontal="16dp"
-            android:fontFamily="@font/montserrat_bold"
-            android:textColor="@color/tiktok_black"
-            android:background="@drawable/btn_white_shape"
-            android:textSize="15dp"
-            />
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
 
+    <Button
+        android:id="@+id/btnChoicePhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/btn_red_shape"
+        android:fontFamily="@font/montserrat_bold"
+        android:paddingHorizontal="40dp"
+        android:paddingVertical="10dp"
+        android:text="@string/btnChoicePhone"
+        android:textColor="@color/tiktok_white"
+        android:textSize="15dp" />
+
+    <Button
+        android:id="@+id/btnChoiceEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_white_shape"
+        android:drawableLeft="@drawable/ic_google"
+        android:drawablePadding="6dp"
+        android:fontFamily="@font/montserrat_bold"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="10dp"
+        android:text="@string/btnChoiceEmail"
+        android:textColor="@color/tiktok_black"
+        android:textSize="15dp" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
 
 
 </LinearLayout>

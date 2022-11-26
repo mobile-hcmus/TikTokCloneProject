@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class SignupChoiceActivity extends Activity implements View.OnClickListener {
     Button btnChoicePhone, btnChoiceEmail;
     LinearLayout llSignupChoice;
+    TextView txvTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +23,9 @@ public class SignupChoiceActivity extends Activity implements View.OnClickListen
         llSignupChoice = (LinearLayout) findViewById(R.id.llSignupChoice);
         btnChoicePhone = (Button) llSignupChoice.findViewById(R.id.btnChoicePhone);
         btnChoiceEmail = (Button) llSignupChoice.findViewById(R.id.btnChoiceEmail);
+        txvTitle = (TextView) llSignupChoice.findViewById(R.id.txvTitle);
+
+        txvTitle.setText(getString(R.string.sign_up));
 
         btnChoicePhone.setOnClickListener(this);
         btnChoiceEmail.setOnClickListener(this);

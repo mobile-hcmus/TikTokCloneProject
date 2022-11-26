@@ -1,11 +1,10 @@
 package com.example.tiktokcloneproject;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.tiktokcloneproject.model.Profile;
@@ -40,12 +40,10 @@ import java.util.concurrent.TimeUnit;
 
 public class PhoneSignupActivity extends FragmentActivity implements View.OnClickListener {
 
-    private LinearLayout llSignupPage, llPhone, llOtp;
+    private LinearLayout llSignupPage, llPhone;
+    RelativeLayout rlOtp;
     private EditText edtPhone, edtOtp;
     private Button btnPhone, btnOtp;
-    private Fragment waitingFragment;
-    private FragmentTransaction ft;
-    private FragmentManager fm;
     private final int VISIBLE = View.VISIBLE;
     private final int GONE = View.GONE;
     private Validator validator;
@@ -59,6 +57,7 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
     /////Thread//////////
     private String msg;
     Handler handler = new Handler();
+    private Dialog dialog;
 
 
     @Override
@@ -68,21 +67,23 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
 
         llSignupPage = (LinearLayout) findViewById(R.id.llSignupPage);
         llPhone = (LinearLayout) llSignupPage.findViewById(R.id.llPhone);
-        llOtp = (LinearLayout) llSignupPage.findViewById(R.id.llOtp);
+        rlOtp = (RelativeLayout) llSignupPage.findViewById(R.id.rlOtp);
         edtPhone = (EditText) llSignupPage.findViewById(R.id.edtPhone);
         edtOtp = (EditText) llSignupPage.findViewById(R.id.edtOtp);
         btnPhone = (Button) llSignupPage.findViewById(R.id.btnPhone);
         btnOtp = (Button) llSignupPage.findViewById(R.id.btnOtp);
 
         validator = Validator.getInstance();
-        fm= getSupportFragmentManager();
-        waitingFragment = fm.findFragmentById(R.id.fragWaiting);
 
-        addShowHideListener(waitingFragment);
 
         setVisibleVisibility(llPhone.getId());
 
         db = FirebaseFirestore.getInstance();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        builder.setView(R.layout.dialog_progress);
+        dialog = builder.create();
 
 
 
@@ -94,6 +95,7 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
 
                 String code = phoneAuthCredential.getSmsCode();
                 if(code != null) {
+                    dialog.show();
                     edtOtp.setText(code);
                     signInWithPhoneAuthCredential(phoneAuthCredential);
                 }
@@ -101,7 +103,7 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
 
             @Override
             public void onVerificationFailed(@NonNull FirebaseException e) {
-                addShowHideListener(waitingFragment);
+                dialog.dismiss();
                 Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_verify), Toast.LENGTH_SHORT).show();
                 setVisibleVisibility(llPhone.getId());
             }
@@ -110,12 +112,11 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
             public void onCodeSent(@NonNull String verificationId,
                                    @NonNull PhoneAuthProvider.ForceResendingToken token) {
                 super.onCodeSent(verificationId, token);
-                addShowHideListener(waitingFragment);
                 Toast.makeText(PhoneSignupActivity.this, getString(R.string.otp_sent), Toast.LENGTH_SHORT).show();
-                setVisibleVisibility(llOtp.getId());
+                setVisibleVisibility(rlOtp.getId());
                 mVerificationId = verificationId;
                 mResendToken = token;
-
+                dialog.dismiss();
             }
         }; // end callbacks
 
@@ -134,6 +135,7 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
             }
             else {
                 PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, edtOtp.getText().toString());
+                dialog.show();
                 signInWithPhoneAuthCredential(credential);
             }
         }
@@ -166,11 +168,11 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
                             writeNewUser(user);
                             Profile profile = new Profile(id, username);
                             writeNewProfile(profile);
-
+                            dialog.dismiss();
                             moveToAnotherActivity(HomeScreenActivity.class);
 
                         } else {
-                            addShowHideListener(waitingFragment);
+                            dialog.dismiss();
                             setVisibleVisibility(llPhone.getId());
 
                         }
@@ -181,7 +183,7 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
 
     private void setVisibleVisibility(int id) {
         llPhone.setVisibility(GONE);
-        llOtp.setVisibility(GONE);
+        rlOtp.setVisibility(GONE);
 
         findViewById(id).setVisibility(VISIBLE);
     }
@@ -242,10 +244,12 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
     }
 
     private void handleBtnPhoneClick() {
+
         String phone = edtPhone.getText().toString();
         if(!validator.isValidPhone(phone)) {
             Toast.makeText(this, getString(R.string.error_PhoneAuth, phone), Toast.LENGTH_SHORT).show();
         } else {
+            dialog.show();
             String formattedPhone = "+84" + phone.substring(phone.length() - 9);
             edtPhone.setText(formattedPhone);
             db.collection("users")
@@ -267,26 +271,13 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
                         if (msg.equals("FALSE")) {
                             handler.post(PhoneSignupActivity.this::signUp);
                         } else {
-                            addShowHideListener(waitingFragment);
+                            dialog.dismiss();
                             Toast.makeText(PhoneSignupActivity.this, getString(R.string.error_existedPhone), Toast.LENGTH_SHORT).show();
                             setVisibleVisibility(llPhone.getId());
                         }
                     });
-            addShowHideListener(waitingFragment);
         }
     }
 
-    void addShowHideListener(final Fragment fragment) {
-        ft = fm.beginTransaction();
-        ft.setCustomAnimations(android.R.animator.fade_in,
-                android.R.animator.fade_out);
-        if (fragment.isHidden()) {
-            ft.show(fragment);
-        } else {
-            ft.hide(fragment);
-        }
-        ft.commit();
-
-    }
 
 }// end PhoneLoginActivity class
