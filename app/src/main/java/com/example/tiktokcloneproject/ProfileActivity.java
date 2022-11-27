@@ -88,6 +88,7 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_bottom);
         setContentView(R.layout.activity_profile);
         Intent intent = getIntent();
         mAuth = FirebaseAuth.getInstance();
@@ -402,6 +403,8 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
         super.onResume();
 
         StorageReference download = storageReference.child("/user_avatars").child(user.getUid().toString());
+
+        Log.d("abc",download.toString());
 
         long MAX_BYTE = 1024*1024;
         download.getBytes(MAX_BYTE)

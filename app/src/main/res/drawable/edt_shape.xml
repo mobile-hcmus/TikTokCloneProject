@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="false" android:state_window_focused="false">
+        <shape>
+            <stroke android:color="@color/tiktok_grey"
+                android:width="2dp"
+                />
+            <corners android:radius="2dp"/>
+
+        </shape>
+    </item>
+    <item android:state_focused="true" android:state_window_focused="true">
+        <shape android:shape="rectangle">
+            <stroke android:color="@color/tiktok_grey_50" android:width="2dp" />
+            <corners android:radius="2dp"/>
+        </shape>
+    </item>
+</selector>

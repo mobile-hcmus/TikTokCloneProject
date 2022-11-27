@@ -1,0 +1,9 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+  <path
+      android:fillColor="@color/tiktok_white"
+      android:pathData="m20,38.333 l-5,-5L7.792,33.333q-1.125,0 -1.959,-0.833Q5,31.667 5,30.542L5,6.125Q5,5 5.833,4.167q0.834,-0.834 1.959,-0.834h24.416q1.125,0 1.959,0.834Q35,5 35,6.125v24.417q0,1.125 -0.833,1.958 -0.834,0.833 -1.959,0.833L25,33.333ZM7.792,30.542h8.333L20,34.458l3.875,-3.916h8.333L32.208,6.125L7.792,6.125v24.417ZM7.792,6.125v24.417L7.792,6.125ZM22.458,20.833 L27.917,18.417L22.458,16l-2.416,-5.458L17.583,16l-5.458,2.417 5.458,2.416 2.459,5.459Z"/>
+</vector>

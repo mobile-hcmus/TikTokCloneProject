@@ -6,12 +6,12 @@
     tools:context=".FollowingListFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
+
+
+    <ListView
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="Following"
-        android:textAlignment="center"
-        android:textStyle="bold"
-        android:textSize="20dp"/>
+        android:id="@+id/lv_following"
+        ></ListView>
 
 </LinearLayout>

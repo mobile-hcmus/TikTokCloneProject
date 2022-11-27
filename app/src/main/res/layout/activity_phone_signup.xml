@@ -10,11 +10,6 @@
     tools:context=".PhoneSignupActivity"
     android:id="@+id/llSignupPage">
 
-    <fragment
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/fragWaiting"
-        android:name="com.example.tiktokcloneproject.WaitingFragment"/>
 
 
     <LinearLayout
@@ -23,13 +18,9 @@
         android:layout_height="match_parent"
         android:visibility="visible"
         android:orientation="vertical"
-        android:gravity="center"
+        android:padding="8dp"
+        android:background="@color/tiktok_white"
         >
-        <Button
-            android:id="@+id/btnBackToChoice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ic_back"/>
         <EditText
             android:id="@+id/edtPhone"
             android:layout_width="match_parent"
@@ -37,46 +28,60 @@
             android:inputType="phone"
             android:drawableLeft="@drawable/ic_phone"
             android:padding="8dp"
+
             android:hint="@string/hint_edtPhone"
             android:textColor="@color/tiktok_black"
             android:textColorHint="@color/hint"
-            android:background="@color/tiktok_white"
+            android:background="@drawable/edt_shape"
             />
 
-        <Button
+        <ImageButton
             android:id="@+id/btnPhone"
+            android:layout_marginTop="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/ic_btnNext"
+            android:background="@drawable/btn_red_shape"
+            android:src="@drawable/ic_next"
+            android:paddingVertical="5dp"
+            android:paddingHorizontal="16dp"
+           android:layout_gravity="end"
             />
 
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/llOtp"
+    <RelativeLayout
+        android:id="@+id/rlOtp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/tiktok_white"
+        android:padding="8dp"
+        android:visibility="gone">
         <EditText
             android:id="@+id/edtOtp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:inputType="number"
             android:gravity="center"
             android:padding="8dp"
             android:hint="@string/hint_edtOtp"
             android:textColor="@color/tiktok_black"
             android:textColorHint="@color/hint"
-            android:background="@color/tiktok_white"
+            android:background="@drawable/edt_shape"
             />
-        <Button
+        <ImageButton
+            android:id="@+id/btnOtp"
+            android:layout_marginTop="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/btnOtp"
-            android:text="@string/ic_btnNext"/>
+            android:background="@drawable/btn_red_shape"
+            android:src="@drawable/ic_next"
+            android:paddingVertical="5dp"
+            android:paddingHorizontal="16dp"
+            android:layout_alignEnd="@+id/edtOtp"
+            android:layout_below="@+id/edtOtp"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

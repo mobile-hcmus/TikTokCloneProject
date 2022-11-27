@@ -5,17 +5,29 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import com.example.tiktokcloneproject.model.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class FollowActivity extends Activity {
     private TextView txvFollowing, txvFollowers, txvLikes, txvUserName;
@@ -30,6 +42,9 @@ public class FollowActivity extends Activity {
     Bitmap bitmap;
     FirebaseUser user;
     String currentUserID,userId;
+    String TAG="abcd";
+    boolean isFollowed;
+
 
 
 
@@ -57,9 +72,10 @@ public class FollowActivity extends Activity {
         txvFollowers = (TextView)findViewById(R.id.text_followers);
         txvLikes = (TextView)findViewById(R.id.text_likes);
         txvUserName = (TextView)findViewById(R.id.txv_username);
-
-        btnFollow  = (Button)findViewById(R.id.button_follow);
-        btnUnfollow =(Button)findViewById(R.id.button_unfollow);
+        btn = (Button)findViewById(R.id.button_follow);
+        btn.setVisibility(View.VISIBLE);
+        //btnFollow  = (Button)findViewById(R.id.button_follow);
+        //btnUnfollow =(Button)findViewById(R.id.button_unfollow);
 
 
 
@@ -75,13 +91,14 @@ public class FollowActivity extends Activity {
         //id đang đăng nhập
         currentUserID =   currentUser.getUid();
 
-        boolean isFollowed=false;
 
 
+        db = FirebaseFirestore.getInstance();
         //query vào profile, check tồn tại
 
 
-//
+        Map<String, Object> Data = new HashMap<>();
+        Data.put("userID","2zig2V6vM4bUBefquTud8jHsy6M2");
 
 
 
@@ -89,22 +106,167 @@ public class FollowActivity extends Activity {
 
 
 
+        DocumentReference docRef = db.collection("profiles").document(currentUserID)
+                .collection("following").document(userId);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        isFollowed=true;
+                        handleFollowed();
+
+
+                    } else {
+                        Log.d(TAG, "No such document");
+                        isFollowed=false;
+                        handleUnfollowed();
+
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
 
 
 
-
-
+        //        db.collection("profiles").document(currentUserID)
+//                .collection("following").document("2zig2V6vM4bUBefquTud8jHsy6M2")
+//                .set(Data)
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//                        Log.d(TAG, "DocumentSnapshot successfully written!");
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.w(TAG, "Error writing document", e);
+//                    }
+//                });
 
 //        currentUser.getUid();
 
-        if (isFollowed) {
-            btn = (Button)findViewById(R.id.button_unfollow);
-        } else {
-            btn = (Button)findViewById(R.id.button_follow);
-        }
-        btn.setVisibility(View.VISIBLE);
 
-    }}
+//        if (isFollowed==true) {
+//            btn = (Button)findViewById(R.id.button_unfollow);
+//
+//            Log.w(TAG, "true");
+//        } else {
+//            btn.setText("follow");
+//            Log.w(TAG, "false");
+//            btn = (Button)findViewById(R.id.button_follow);
+//        }
+//        btn.setVisibility(View.VISIBLE);
+
+    }
+    private void handleUnfollowed() {
+        btn.setText("Follow");
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "follow clicked");
+
+                Map<String, Object> Data = new HashMap<>();
+                Data.put("userID",userId);
+
+
+                //thêm following
+                db.collection("profiles").document(currentUserID)
+                .collection("following").document(userId)
+                .set(Data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                        handleFollowed();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
+
+                //thêm follower
+
+                Map<String, Object> Data1 = new HashMap<>();
+                Data1.put("userID",currentUserID);
+                db.collection("profiles").document(userId)
+                        .collection("followers").document(currentUserID)
+                        .set(Data)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "follower added");
+
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "follower fail",e);
+                            }
+                        });
+
+
+            }
+        });
+    }
+
+    private void handleFollowed() {
+        btn.setText("Unfollow");
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "unfollow clicked");
+
+                //xóa following
+                db.collection("profiles").document(currentUserID)
+                        .collection("following").document(userId)
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                handleUnfollowed();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error deleting document", e);
+                            }
+                        });
+
+                //xóa follower
+                db.collection("profiles").document(userId)
+                        .collection("followers").document(currentUserID)
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error deleting document", e);
+                            }
+                        });
+
+
+
+            }
+        });
+    }
+}
 
 
 
