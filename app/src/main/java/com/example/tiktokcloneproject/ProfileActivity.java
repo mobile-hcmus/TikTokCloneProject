@@ -404,7 +404,6 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
 
         StorageReference download = storageReference.child("/user_avatars").child(user.getUid().toString());
 
-        Log.d("abc",download.toString());
 
         long MAX_BYTE = 1024*1024;
         download.getBytes(MAX_BYTE)

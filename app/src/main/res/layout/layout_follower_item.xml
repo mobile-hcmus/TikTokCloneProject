@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+    <ImageView
+        android:id="@+id/imv_follower_avatar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="15dp"/>
+
+    <TextView
+        android:id="@+id/tv_followers_userMame"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="15dp"
+        android:text="aaaaaaa"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:layout_marginRight="20dp"
+        android:layout_gravity="center"
+        android:textSize="10dp"
+        android:text="Follow back"
+        android:background="@color/tiktok_red"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="&#8942;"
+        android:layout_gravity="center"
+        android:gravity="end"
+        android:layout_marginRight="10dp"
+        android:textSize="25dp"/>
+</LinearLayout>
