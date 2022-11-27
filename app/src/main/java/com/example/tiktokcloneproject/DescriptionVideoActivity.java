@@ -274,7 +274,7 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
                         while (!uriTask.isSuccessful()) ;
                         // get the link of video
                         String downloadUri = uriTask.getResult().toString();
-                        VideoSummary videoSummary = new VideoSummary(Id, downloadUri);
+                        VideoSummary videoSummary = new VideoSummary(Id, downloadUri, new Long(0));
                         writeNewVideoSummary(videoSummary);
                         Log.i(TAG, "Upload thumbnail successfully");
                     }
@@ -311,7 +311,8 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
     private void writeNewVideoSummary(VideoSummary video) {
         Map<String, Object> videoValues = video.toMap();
         Map<String, Object> childUpdates = new HashMap<>();
-        db.collection("video_summaries").document(video.getVideoId())
+        db.collection("profiles").document(FirebaseAuth.getInstance().getUid()).
+                collection("public_videos").document(video.getVideoId())
                 .set(videoValues)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

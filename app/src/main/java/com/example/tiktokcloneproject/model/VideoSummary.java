@@ -8,12 +8,12 @@ import java.util.Map;
 public class VideoSummary {
     private String videoId;
     private String thumbnailUri;
-    private int watchCount;
+    private Long watchCount;
 
-    public VideoSummary(String videoId, String thumbnailUri) {
+    public VideoSummary(String videoId, String thumbnailUri, Long  watchCount) {
         this.videoId = videoId;
         this.thumbnailUri = thumbnailUri;
-        watchCount = 0;
+        this.watchCount = watchCount;
     }
 
     public String getVideoId() {
@@ -24,7 +24,7 @@ public class VideoSummary {
         return thumbnailUri;
     }
 
-    public int getWatchCount() {
+    public Long getWatchCount() {
         return watchCount;
     }
 
