@@ -1,10 +1,6 @@
 package com.example.tiktokcloneproject;
-
-import androidx.annotation.DimenRes;
+//
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -15,7 +11,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,10 +28,6 @@ import android.widget.TextView;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.tiktokcloneproject.adapters.UserAdapter;
-import com.example.tiktokcloneproject.adapters.VideoSummaryAdapter;
-import com.example.tiktokcloneproject.model.Video;
-import com.example.tiktokcloneproject.model.VideoSummary;
 import com.google.android.gms.auth.api.identity.BeginSignInRequest;
 import com.google.android.gms.auth.api.identity.BeginSignInResult;
 import com.google.android.gms.auth.api.identity.GetPhoneNumberHintIntentRequest;
@@ -56,8 +47,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -82,8 +71,6 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
     String userId;
     DocumentReference docRef;
     String oldBioText;
-    RecyclerView recVideoSummary;
-    ArrayList<VideoSummary> videoSummaries;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +103,6 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
         imvAvatarProfile = (ImageView) findViewById(R.id.imvAvatarProfile);
         llFollowers = (LinearLayout) findViewById(R.id.ll_followers);
         llFollowing = (LinearLayout) findViewById(R.id.ll_following);
-        recVideoSummary = (RecyclerView)findViewById(R.id.recycle_view_video_summary);
 
         llFollowers.setOnClickListener(this);
         llFollowing.setOnClickListener(this);
@@ -163,71 +149,7 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
         });
         btnEditProfile.setOnClickListener(this);
 
-        videoSummaries = new ArrayList<VideoSummary>();
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
-        recVideoSummary.setLayoutManager(gridLayoutManager);
-        recVideoSummary.addItemDecoration(new GridSpacingItemDecoration(3, 10, true));
-        setVideoSummaries();
     }//on create
-
-    protected void setVideoSummaries() {
-        db.collection("profiles").document(userId).collection("public_videos")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                videoSummaries.add(new VideoSummary(document.getString("videoId"),
-                                        document.getString("thumbnailUri"),
-                                        (Long)document.get("watchCount")));
-                            }
-                            if (videoSummaries.size() == 0) {
-                                return;
-                            }
-                            VideoSummaryAdapter videoSummaryAdapter =new VideoSummaryAdapter(getApplicationContext(), videoSummaries);
-                            recVideoSummary.setAdapter(videoSummaryAdapter);
-                        } else {
-                            Log.d("error", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-    }
-
-    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
-
-        private int spanCount;
-        private int spacing;
-        private boolean includeEdge;
-
-        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
-            this.spanCount = spanCount;
-            this.spacing = spacing;
-            this.includeEdge = includeEdge;
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            int position = parent.getChildAdapterPosition(view); // item position
-            int column = position % spanCount; // item column
-
-            if (includeEdge) {
-                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
-                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
-
-                if (position < spanCount) { // top edge
-                    outRect.top = spacing;
-                }
-                outRect.bottom = spacing; // item bottom
-            } else {
-                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
-                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
-                if (position >= spanCount) {
-                    outRect.top = spacing; // item top
-                }
-            }
-        }
-    }
 
     @Override
     protected void onPause() {
@@ -423,4 +345,11 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
                 });
     }
 
+    // NOTE (Quang): These buttons below belong to Setting and Privacy activity
+//    public void privacyPage(View view) {
+//        Intent intent = new Intent(ProfileActivity.this, DeleteAccountActivity.class);
+//        startActivity(intent);
+//        finish();
+//    }
+//
 }
