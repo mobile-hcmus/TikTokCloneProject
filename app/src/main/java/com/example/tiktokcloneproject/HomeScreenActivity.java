@@ -32,7 +32,7 @@ import java.util.List;
 public class HomeScreenActivity extends Activity implements View.OnClickListener{
 
     private Button btnProfile;
-    private Button btnSwipe, btnAddVideo;
+    private Button btnSwipe, btnAddVideo, btnInbox;
     private ImageButton btnSearch;
     private TextView tvVideo; // DE TEST. Sau nay sua thanh clip de xem
     private ViewPager2 viewPager2;
