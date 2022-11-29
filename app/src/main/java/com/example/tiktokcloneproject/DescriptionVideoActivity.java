@@ -111,7 +111,7 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
         Bundle bundle = intent.getExtras();
         String videoPath= bundle.getString("videoUri");
          videoUri = Uri.parse(videoPath);
-
+         Log.d("URI", videoUri.toString());
          hashtags = new ArrayList<>();
 
 
@@ -221,7 +221,11 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
         ContentResolver r = getContentResolver();
         // get the file type ,in this case its mp4
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-        return mimeTypeMap.getExtensionFromMimeType(r.getType(videoUri));
+        String ext =  mimeTypeMap.getExtensionFromMimeType(r.getType(videoUri));
+        if(ext == null) {
+            ext = mimeTypeMap.getFileExtensionFromUrl(videoUri.toString());
+        }
+        return ext;
     }
 
     private void uploadVideo(){

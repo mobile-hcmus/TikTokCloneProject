@@ -3,18 +3,13 @@ package com.example.tiktokcloneproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 
+import com.example.tiktokcloneproject.adapters.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.google.firebase.firestore.DocumentSnapshot;
-
-import java.util.ArrayList;
 
 public class FollowListActivity extends AppCompatActivity {
 

@@ -2,6 +2,7 @@ package com.example.tiktokcloneproject;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -12,10 +13,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.tiktokcloneproject.adapters.FollowerAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
@@ -73,6 +80,8 @@ public class FollowersListFragment extends Fragment {
     ArrayList <String> userIdArrayList=new ArrayList<String>();
     ArrayList <String> userNameArrayList=new ArrayList<String>();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    ArrayList<String> followerList = new ArrayList<String>();
+    ArrayList<String> followerUserNameList = new ArrayList<String>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,12 +94,32 @@ public class FollowersListFragment extends Fragment {
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
-        db.collection("users").document(user.getUid()).get().addOnCompleteListener(task -> {
-            DocumentSnapshot document = task.getResult();
-            userIdArrayList = (ArrayList<String>)document.get("followers");
-            getUserNameById(userIdArrayList);
-            showList(contentView, lvFollowers);
 
+        db.collection("profiles").document(user.getUid()).collection("followers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        followerList.add(document.getId());
+//                        Log.d("followers", followerList.toString());
+                    }
+                    db.collection("users").whereIn(FieldPath.documentId(), followerList).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()){
+                                for (QueryDocumentSnapshot document: task.getResult()) {
+                                    followerUserNameList.add(document.get("userName").toString());
+                                    Log.d("followers", followerUserNameList.toString());
+                                }
+                                showList(contentView, lvFollowers);
+
+                            }
+                        }
+                    });
+                } else {
+                    Log.d("followers", "Error getting documents: ", task.getException());
+                }
+            }
         });
 
 
@@ -108,10 +137,10 @@ public class FollowersListFragment extends Fragment {
     }
 
     void showList(View contentView, ListView lvFollowers) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(contentView.getContext(),
-                android.R.layout.simple_list_item_1,
-                userIdArrayList);
-
-        lvFollowers.setAdapter(adapter);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(contentView.getContext(),
+//                android.R.layout.simple_list_item_1,
+//                followerUserNameList);
+        FollowerAdapter followerAdapter = new FollowerAdapter(contentView.getContext(), followerList, followerUserNameList);
+        lvFollowers.setAdapter(followerAdapter);
     }
 }

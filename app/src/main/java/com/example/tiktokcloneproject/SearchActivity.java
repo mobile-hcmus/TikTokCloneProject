@@ -42,11 +42,6 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searching);
 
-
-
-
-
-
         userArrayList.clear();
         userDB = FirebaseFirestore.getInstance();
 
@@ -116,20 +111,13 @@ public class SearchActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(SearchActivity.this,"da ket noi!2 ",
-                                    Toast.LENGTH_LONG).show();
-
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 userArrayList.add(new User(document.getString("userId"),document.getString("userName")));
 
-
-
-                                Toast.makeText(SearchActivity.this,document.getString("userName"),
-                                        Toast.LENGTH_LONG).show();
                             };
                             userAdapter.notifyDataSetChanged();
                         } else {
-                            Toast.makeText(SearchActivity.this,"Loi ket noi voi Server!2",
+                            Toast.makeText(SearchActivity.this,"Loi ket noi voi Server!",
                                     Toast.LENGTH_LONG).show();
                         }
                     }

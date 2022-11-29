@@ -79,8 +79,6 @@ public class FollowActivity extends Activity {
 
 
 
-
-
         //id nhận từ search Activity
         userId= user.getUserId();
 
@@ -90,18 +88,12 @@ public class FollowActivity extends Activity {
         //id đang đăng nhập
         currentUserID =   currentUser.getUid();
 
-
-
         db = FirebaseFirestore.getInstance();
         //query vào profile, check tồn tại
 
 
         Map<String, Object> Data = new HashMap<>();
         Data.put("userID","2zig2V6vM4bUBefquTud8jHsy6M2");
-
-
-
-
 
 
 

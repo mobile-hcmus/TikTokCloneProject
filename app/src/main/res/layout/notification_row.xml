@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingVertical="8dp"
+    >
+
+    <TextView
+        android:id="@+id/txvUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="\@123"
+        android:fontFamily="@font/montserrat_bold"
+        android:textSize="15dp"
+        android:layout_alignParentTop="true"/>
+    
+    <TextView
+        android:id="@+id/txvContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_medium"
+        android:textSize="15dp"
+        android:text="dhakdhalsdjlsadjfjk"
+        android:layout_below="@+id/txvUsername"/>
+
+    <TextView
+        android:id="@+id/txvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/txvContent"
+        android:layout_alignBottom="@+id/txvContent"
+        android:fontFamily="@font/montserrat_medium"
+        android:textColor="@color/tiktok_grey"
+        android:textSize="12dp"
+        android:text="7w"
+        android:layout_marginLeft="4dp"/>
+
+<!--    <View-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="1dp"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:background="@color/tiktok_grey"-->
+<!--        android:layout_marginBottom="16dp"-->
+<!--        />-->
+
+
+</RelativeLayout>

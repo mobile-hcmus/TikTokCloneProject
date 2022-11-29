@@ -32,7 +32,7 @@ import java.util.List;
 public class HomeScreenActivity extends Activity implements View.OnClickListener{
 
     private Button btnProfile;
-    private Button btnSwipe, btnAddVideo;
+    private Button btnSwipe, btnAddVideo, btnInbox;
     private ImageButton btnSearch;
     private TextView tvVideo; // DE TEST. Sau nay sua thanh clip de xem
     private ViewPager2 viewPager2;
@@ -57,11 +57,13 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
         btnProfile = (Button) findViewById(R.id.btnProfile);
         btnSearch=(ImageButton) findViewById(R.id.btnSearch);
         btnSwipe = (Button) findViewById(R.id.btnSwipe);
+        btnInbox = (Button) findViewById(R.id.btnInbox);
 
 
         btnProfile.setOnClickListener(this);
         btnSearch.setOnClickListener(this);
         btnSwipe.setOnClickListener(this);
+        btnInbox.setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
@@ -150,6 +152,11 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
         if(view.getId() == btnSwipe.getId()) {
 //            Intent intent = new Intent(HomeScreenActivity.this,SwipeVideo.class);
 //            startActivity(intent);
+        }
+
+        if(view.getId() == btnInbox.getId()) {
+            Intent intent = new Intent(HomeScreenActivity.this,InboxActivity.class);
+            startActivity(intent);
         }
     }//on click
 
