@@ -15,9 +15,15 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 public class SplashScreenActivity extends Activity {
 
     private final int SPLASH_DISPLAY_LENGTH = 2000;
+
+    static {
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

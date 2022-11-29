@@ -1,9 +1,12 @@
-package com.example.tiktokcloneproject;
+package com.example.tiktokcloneproject.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import com.example.tiktokcloneproject.FollowersListFragment;
+import com.example.tiktokcloneproject.FollowingListFragment;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
 

@@ -145,6 +145,7 @@
                     android:onClick="onClick"
                     android:layout_marginRight="8dp"/>
                 <Button
+                    android:id="@+id/btnInbox"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
