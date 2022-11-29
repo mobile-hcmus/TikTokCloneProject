@@ -77,6 +77,8 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 
 
 
+
+
 //        VideoObject videoObject1 = new VideoObject("https://firebasestorage.googleapis.com/v0/b/toptop-android.appspot.com/o/video_2022-11-01_10-13-57.mp4?alt=media&token=42fbd886-ec46-418b-aee1-368eafb7167a", "1", "1");
 //        videoObjects.add(videoObject1);
 //
@@ -115,7 +117,7 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 
     @Override public void onStart() {
         super.onStart();
-//        loadVideos();
+        loadVideos();
     }
 
 
@@ -180,7 +182,6 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 
                                 Video video = new Video(videoId,Uri, authorId, authorAvatarId, description, username, totalLikes, totalComments );
                                 videoAdapter.addVideoObject(video);
-
                             }
                             viewPager2.setAdapter(videoAdapter);
                         } else {
