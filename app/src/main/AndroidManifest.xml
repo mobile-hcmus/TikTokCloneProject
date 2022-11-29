@@ -8,13 +8,12 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-
     <uses-feature android:name="android.hardware.camera" />
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
 
     <uses-feature android:name="android.hardware.location.gps" />
 
@@ -29,6 +28,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TikTokCloneProject"
         tools:targetApi="31">
+        <activity
+            android:name=".InboxActivity"
+            android:exported="false" />
         <activity
             android:name=".FollowListActivity"
             android:exported="false" />
@@ -60,8 +62,7 @@
             android:exported="false" />
         <activity
             android:name=".DescriptionVideoActivity"
-            android:exported="false">
-           </activity> <!-- <activity -->
+            android:exported="false"></activity> <!-- <activity -->
         <!-- android:name=".WaitingFragment" -->
         <!-- android:exported="false" /> -->
         <activity

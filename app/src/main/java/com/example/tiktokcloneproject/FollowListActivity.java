@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.tiktokcloneproject.adapters.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.firestore.DocumentSnapshot;

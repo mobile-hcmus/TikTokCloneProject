@@ -15,7 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tiktokcloneproject.FollowActivity;
+import com.example.tiktokcloneproject.MainActivity;
+import com.example.tiktokcloneproject.ProfileActivity;
 import com.example.tiktokcloneproject.R;
+import com.example.tiktokcloneproject.SearchActivity;
 import com.example.tiktokcloneproject.model.User;
 
 import java.util.ArrayList;
@@ -63,10 +66,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.userItems> imp
 //                mainContext.startActivity(intent);
 //                Toast.makeText(view.getContext(), user.getUserName(),
 //                        Toast.LENGTH_LONG).show();
-
-                Intent intent=new Intent(mainContext, FollowActivity.class);
+                Intent intent=new Intent(mainContext, ProfileActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("obj",user);
+                bundle.putString("id",user.getUserId());
                 intent.putExtras(bundle);
 
                 mainContext.startActivity(intent);

@@ -64,7 +64,9 @@ import com.google.firebase.storage.StorageReference;
 import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProfileActivity extends Activity implements View.OnClickListener{
     private TextView txvFollowing, txvFollowers, txvLikes, txvUserName;
@@ -81,7 +83,8 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
     Bitmap bitmap;
     String userId;
     DocumentReference docRef;
-    String oldBioText;
+    String oldBioText, currentUserID;
+    String TAG="test";
     RecyclerView recVideoSummary;
     ArrayList<VideoSummary> videoSummaries;
 
@@ -127,13 +130,75 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
-        if (userId.equals(user.getUid())) {
-            btn = (Button)findViewById(R.id.button_edit_profile);
-        } else {
-            btn = (Button)findViewById(R.id.button_follow);
-        }
-        btn.setVisibility(View.VISIBLE);
 
+
+        //set nút follow/edit profile
+        if (user==null)
+        {//chưa đăng nhập (vào profile thông qua search)
+            handleFollow();
+        }
+        else
+        {
+            currentUserID=user.getUid();
+            if (userId.equals(user.getUid()))
+            {
+
+                //vào profile của mình
+                btn = (Button)findViewById(R.id.button_edit_profile);
+                edtBio.setVisibility(View.VISIBLE);
+                btn.setVisibility(View.VISIBLE);
+
+
+                db  = FirebaseFirestore.getInstance();
+                docRef = db.collection("profiles").document(userId);
+                docRef.get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            txvFollowing.setText(((Long)document.get("following")).toString());
+                            txvFollowers.setText(((Long)document.get("followers")).toString());
+                            txvLikes.setText(((Long)document.get("likes")).toString());
+                            txvUserName.setText("@" + document.getString("userName"));
+                            oldBioText = document.getString("bio");
+                            edtBio.setText(oldBioText);
+
+                        } else { }
+                    } else { }
+                });
+                oldBioText = edtBio.getText().toString();
+                edtBio.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View view, boolean b) {
+                        if (b) {
+                            findViewById(R.id.layout_bio).setVisibility(View.VISIBLE);
+                        } else {
+                            findViewById(R.id.layout_bio).setVisibility(View.GONE);
+                        }
+                    }
+                });
+                btnEditProfile.setOnClickListener(this);
+            }
+            else
+            {//vào profile người khác
+                handleFollow();
+
+            }
+
+        }
+
+
+
+        videoSummaries = new ArrayList<VideoSummary>();
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+        recVideoSummary.setLayoutManager(gridLayoutManager);
+        recVideoSummary.addItemDecoration(new GridSpacingItemDecoration(3, 10, true));
+        setVideoSummaries();
+    }//on create
+
+    private void handleFollow() {
+        //bio cần set lại là text vỉew
+        btn = (Button)findViewById(R.id.button_follow);
+        btn.setVisibility(View.VISIBLE);
         db  = FirebaseFirestore.getInstance();
         docRef = db.collection("profiles").document(userId);
         docRef.get().addOnCompleteListener(task -> {
@@ -144,33 +209,50 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
                     txvFollowers.setText(((Long)document.get("followers")).toString());
                     txvLikes.setText(((Long)document.get("likes")).toString());
                     txvUserName.setText("@" + document.getString("userName"));
-                    oldBioText = document.getString("bio");
-                    edtBio.setText(oldBioText);
+//                        oldBioText = document.getString("bio");
+//                        edtBio.setText(oldBioText);
 
                 } else { }
-            } else {
-
-            }
+            } else { }
         });
-        oldBioText = edtBio.getText().toString();
-        edtBio.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b) {
-                    findViewById(R.id.layout_bio).setVisibility(View.VISIBLE);
-                } else {
-                    findViewById(R.id.layout_bio).setVisibility(View.GONE);
+        if (user !=null)
+        {
+            DocumentReference docRef = db.collection("profiles").document(currentUserID)
+                    .collection("following").document(userId);
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                            handleFollowed();
+
+
+                        } else {
+                            Log.d(TAG, "No such document");
+                            handleUnfollowed();
+
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
                 }
-            }
-        });
-        btnEditProfile.setOnClickListener(this);
+            });
 
-        videoSummaries = new ArrayList<VideoSummary>();
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
-        recVideoSummary.setLayoutManager(gridLayoutManager);
-        recVideoSummary.addItemDecoration(new GridSpacingItemDecoration(3, 10, true));
-        setVideoSummaries();
-    }//on create
+        }
+        else
+        {
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intentMain = new Intent(ProfileActivity.this, MainActivity.class);
+                    startActivity(intentMain);
+                }
+            });
+        }
+
+    }
 
     protected void setVideoSummaries() {
         db.collection("profiles").document(userId).collection("public_videos")
@@ -400,11 +482,115 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
 
     }
 
+    private void handleUnfollowed() {
+        btn.setText("Follow");
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Log.d(TAG, "follow clicked");
+                Map<String, Object> Data = new HashMap<>();
+                Data.put("userID",userId);
+                //thêm following
+                db.collection("profiles").document(currentUserID)
+                        .collection("following").document(userId)
+                        .set(Data)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "DocumentSnapshot successfully written!");
+                                handleFollowed();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error writing document", e);
+                            }
+                        });
+
+                //thêm follower
+
+                Map<String, Object> Data1 = new HashMap<>();
+                Data1.put("userID",currentUserID);
+                Log.d(TAG,currentUserID);
+                db.collection("profiles").document(userId)
+                        .collection("followers").document(currentUserID)
+                        .set(Data1)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "follower added");
+
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "follower fail",e);
+                            }
+                        });
+
+
+            }
+        });
+    }
+
+    private void handleFollowed() {
+        btn.setText("Unfollow");
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "unfollow clicked");
+
+
+                //xóa following
+                db.collection("profiles").document(currentUserID)
+                        .collection("following").document(userId)
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                handleUnfollowed();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error deleting document", e);
+                            }
+                        });
+
+                //xóa follower
+                db.collection("profiles").document(userId)
+                        .collection("followers").document(currentUserID)
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error deleting document", e);
+                            }
+                        });
+
+
+
+            }
+        });
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
 
-        StorageReference download = storageReference.child("/user_avatars").child(user.getUid().toString());
+        //chinh lai avatar user.getUid().toString()
+        StorageReference download = storageReference.child("/user_avatars").child(userId);
 
 
         long MAX_BYTE = 1024*1024;

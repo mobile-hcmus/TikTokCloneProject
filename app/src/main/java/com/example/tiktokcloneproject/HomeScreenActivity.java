@@ -57,11 +57,13 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
         btnProfile = (Button) findViewById(R.id.btnProfile);
         btnSearch=(ImageButton) findViewById(R.id.btnSearch);
         btnSwipe = (Button) findViewById(R.id.btnSwipe);
+        btnInbox = (Button) findViewById(R.id.btnInbox);
 
 
         btnProfile.setOnClickListener(this);
         btnSearch.setOnClickListener(this);
         btnSwipe.setOnClickListener(this);
+        btnInbox.setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
