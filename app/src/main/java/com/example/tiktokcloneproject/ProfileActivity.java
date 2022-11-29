@@ -549,6 +549,8 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
                 });
     }
 
+
+    //
     // NOTE (Quang): These buttons below belong to Setting and Privacy activity
 //    public void privacyPage(View view) {
 //        Intent intent = new Intent(ProfileActivity.this, DeleteAccountActivity.class);
