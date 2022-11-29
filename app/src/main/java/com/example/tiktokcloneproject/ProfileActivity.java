@@ -148,7 +148,9 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
                     edtBio.setText(oldBioText);
 
                 } else { }
-            } else { }
+            } else {
+
+            }
         });
         oldBioText = edtBio.getText().toString();
         edtBio.setOnFocusChangeListener(new View.OnFocusChangeListener() {
