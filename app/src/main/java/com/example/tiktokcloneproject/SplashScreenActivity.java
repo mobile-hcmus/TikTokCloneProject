@@ -16,12 +16,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 public class SplashScreenActivity extends Activity {
 
     private final int SPLASH_DISPLAY_LENGTH = 2000;
 
     static {
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
+                .build();
+        FirebaseFirestore.getInstance().setFirestoreSettings(settings);
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
     }
     @Override
