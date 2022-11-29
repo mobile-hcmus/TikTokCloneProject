@@ -153,6 +153,11 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 //            Intent intent = new Intent(HomeScreenActivity.this,SwipeVideo.class);
 //            startActivity(intent);
         }
+
+        if(view.getId() == btnInbox.getId()) {
+            Intent intent = new Intent(HomeScreenActivity.this,InboxActivity.class);
+            startActivity(intent);
+        }
     }//on click
 
 

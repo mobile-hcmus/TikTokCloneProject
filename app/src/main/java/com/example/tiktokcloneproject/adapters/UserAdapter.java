@@ -70,7 +70,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.userItems> imp
                 Bundle bundle = new Bundle();
                 bundle.putString("id",user.getUserId());
                 intent.putExtras(bundle);
-
                 mainContext.startActivity(intent);
             }
         });
