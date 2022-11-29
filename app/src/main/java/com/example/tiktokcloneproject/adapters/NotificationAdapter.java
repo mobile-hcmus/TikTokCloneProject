@@ -52,16 +52,13 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
         long difference_In_Time = System.currentTimeMillis() - timeInMilliseconds;
         long difference_In_Minutes
                 = (difference_In_Time
-                / (1000 * 60))
-                % 60;
+                / (1000 * 60));
         long difference_In_Hours
                 = (difference_In_Time
-                / (1000 * 60 * 60))
-                % 24;
+                / (1000 * 60 * 60));
         long difference_In_Days
                 = (difference_In_Time
-                / (1000 * 60 * 60 * 24))
-                % 365;
+                / (1000 * 60 * 60 * 24));
         if(difference_In_Minutes <= 60) {
             return difference_In_Minutes + "m";
         }
