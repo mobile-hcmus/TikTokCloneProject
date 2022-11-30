@@ -238,7 +238,7 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
                     while (!uriTask.isSuccessful()) ;
                     // get the link of video
                     String downloadUri = uriTask.getResult().toString();
-                    String description = edtDescription.getText().toString();
+                    String description = edtDescription.getText().toString().trim();
                     Video video = new Video(Id, downloadUri,user.getUid(), username, authorAvatarId, description, hashtags);
                     writeNewVideo(video);
                     // When done, update the notification one more time to remove the progress bar
