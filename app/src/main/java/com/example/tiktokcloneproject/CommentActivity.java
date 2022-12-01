@@ -12,25 +12,40 @@ import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.example.tiktokcloneproject.adapters.CommentAdapter;
+import com.example.tiktokcloneproject.model.Comment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CommentActivity extends Activity implements View.OnClickListener{
     private ImageView imvBack, imvMyAvatarInComment;
@@ -40,12 +55,15 @@ public class CommentActivity extends Activity implements View.OnClickListener{
     private String videoId, userId, avatarName;
     private Uri avatarUri;
     private Bitmap bitmap;
+    private ListView lvComment;
     FirebaseAuth mAuth;
     FirebaseUser user;
     FirebaseFirestore db;
     FirebaseStorage storage;
     StorageReference storageRef, imagesRef;
     DocumentReference docRef;
+
+    ArrayList<Comment> comments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +75,7 @@ public class CommentActivity extends Activity implements View.OnClickListener{
         imvMyAvatarInComment = (ImageView)llComment.findViewById(R.id.imvMyAvatarInComment);
         edtComment = (EditText) llComment.findViewById(R.id.edtComment);
         imbSendComment = (ImageButton) llComment.findViewById(R.id.imbSendComment);
+        lvComment = (ListView) llComment.findViewById(R.id.listViewComment);
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -67,8 +86,38 @@ public class CommentActivity extends Activity implements View.OnClickListener{
         user = mAuth.getCurrentUser();
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
-        userId = user.getUid();
+        comments = new ArrayList<>();
+        CommentAdapter adapter = new CommentAdapter(this, R.layout.layout_row_comment, comments);
+        lvComment.setAdapter(adapter);
 
+
+        db.collection("comments")
+                .whereEqualTo("videoId", videoId)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot snapshots,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(TAG, "listen:error", e);
+                            return;
+                        }
+
+                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                            switch (dc.getType()) {
+                                case ADDED:
+                                    adapter.add(dc.getDocument().toObject(Comment.class));
+                                    break;
+                                case MODIFIED:
+                                    Log.d(TAG, "Modified city: " + dc.getDocument().getData());
+                                    break;
+                                case REMOVED:
+                                    Log.d(TAG, "Removed city: " + dc.getDocument().getData());
+                                    break;
+                            }
+                        }
+
+                    }
+                });
 
         if (user != null) {
 //            docRef = db.collection("profiles").document(userId.toString());
@@ -82,7 +131,8 @@ public class CommentActivity extends Activity implements View.OnClickListener{
 //                        }catch(Exception e){
 //                            //do nothing
 //                        }
-                        StorageReference download = storageRef.child("/user_avatars").child(userId.toString());
+            userId = user.getUid();
+            StorageReference download = storageRef.child("/user_avatars").child(userId.toString());
 //                        StorageReference download = storageRef.child(userId.toString());
                         long MAX_BYTE = 1024*1024;
                         download.getBytes(MAX_BYTE)
@@ -115,7 +165,7 @@ public class CommentActivity extends Activity implements View.OnClickListener{
 
 
         imvBack.setOnClickListener(this);
-
+        imbSendComment.setOnClickListener(this);
 
     }
 
@@ -127,18 +177,33 @@ public class CommentActivity extends Activity implements View.OnClickListener{
             finish();
         }
         if (v.getId() == imbSendComment.getId()){
-            postComment();
+            String cmt = edtComment.getText().toString().trim();
+            if (TextUtils.isEmpty(cmt))
+            {
+                Toast.makeText(this, "Comment is empty...", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            String timeStamp = String.valueOf(System.currentTimeMillis());
+            Comment comment = new Comment(timeStamp, videoId, userId, cmt);
+            postComment(comment);
+            edtComment.setText("");
         }
     }
 
-    private void postComment() {
-        String comment = edtComment.getText().toString().trim();
-        if (TextUtils.isEmpty(comment))
-        {
-            Toast.makeText(this, "Comment is empty...", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        String timeStamp = String.valueOf(System.currentTimeMillis());
+    private void postComment(Comment comment ) {
+        Map<String, Object> values = comment.toMap();
+
+        db.collection("comments").document(comment.getCommentId()).set(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    Toast.makeText(CommentActivity.this, "Comment successfully!", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(CommentActivity.this, "Comment fail!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Comment {
-    private String commentId, videoId, authorId, authorAvatarUri, content;
+    private String commentId, videoId, authorId, content;
     private int totalLikes, totalReplies;
     private ArrayList<String> replyIds;
 
@@ -13,8 +13,13 @@ public class Comment {
         this.commentId = commentId;
         this.videoId = videoId;
         this.authorId = authorId;
-        this.authorAvatarUri = authorAvatarUri;
         this.content = content;
+        totalLikes = 0;
+        totalReplies = 0;
+        replyIds = new ArrayList<>();
+    }
+
+    public Comment() {
     }
 
     public String getCommentId() {
@@ -29,9 +34,6 @@ public class Comment {
         return authorId;
     }
 
-    public String getAuthorAvatarUri() {
-        return authorAvatarUri;
-    }
 
     public String getContent() {
         return content;
