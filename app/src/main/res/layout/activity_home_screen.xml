@@ -1,356 +1,262 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/tiktok_black"
+    android:orientation="vertical"
     android:theme="@style/ThemeOverlay.TikTokCloneProject.FullscreenContainer"
-    tools:context=".HomeScreenActivity"
-    android:orientation="vertical">
+    tools:context=".HomeScreenActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
-            <RelativeLayout
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPager"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" />
+
+            <TextView
+                android:id="@+id/txvFollwing"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                >
+                android:layout_alignTop="@+id/space"
+                android:layout_toStartOf="@id/space"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="@string/following"
+                android:textColor="@color/tiktok_white"
+                android:textSize="20dp" />
 
-                <androidx.viewpager2.widget.ViewPager2
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:id="@+id/viewPager"/>
+            <Space
+                android:id="@+id/space"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginVertical="8dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="12dp" />
 
-                <TextView
-                    android:id="@+id/txvFollwing"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/following"
-                    android:fontFamily="@font/montserrat_medium"
-                    android:textColor="@color/tiktok_white"
-                    android:textSize="20dp"
-                    android:layout_toStartOf="@id/space"
-                    android:layout_alignTop="@+id/space"
-                    />
+            <TextView
+                android:id="@+id/txvForYou"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/space"
+                android:layout_toEndOf="@id/space"
+                android:clickable="true"
+                android:text="@string/for_you"
+                android:textColor="@color/tiktok_white"
+                android:textSize="20dp" />
 
-                <Space
-                    android:id="@+id/space"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginVertical="8dp"
-                    />
-
-                <TextView
-                    android:id="@+id/txvForYou"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/for_you"
-                    android:textColor="@color/tiktok_white"
-                    android:textSize="20dp"
-                    android:layout_toEndOf="@id/space"
-                    android:layout_alignTop="@+id/space"
-                    android:clickable="true"
-                    />
-
-                <ImageButton
-                    android:id="@+id/btnSearch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_search"
-                    android:background="@color/transparent"
-                    android:textColor="@color/tiktok_white"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignTop="@+id/space"
-                    />
+            <ImageButton
+                android:id="@+id/btnSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/space"
+                android:layout_alignParentEnd="true"
+                android:background="@color/transparent"
+                android:src="@drawable/ic_search"
+                android:textColor="@color/tiktok_white" />
 
 
-            </RelativeLayout>
+        </RelativeLayout>
     </FrameLayout>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true">
-
-            <LinearLayout
-                android:id="@+id/fullscreen_content_controls"
-                style="@style/Widget.Theme.TikTokCloneProject.ButtonBar.Fullscreen"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
-                android:orientation="horizontal"
-                tools:ignore="UselessParent"
-                android:background="@color/tiktok_black">
-
-
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                   >
-
-                    <Button
-                        android:background="@color/transparent"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="@color/tiktok_white"
-                        android:drawableTop="@drawable/ic_home"
-                        android:text="@string/home"
-                        android:textSize="10dp"
-                        android:fontFamily="@font/montserrat_medium"
-                        android:inputType="textCapSentences"
-                        android:layout_marginRight="8dp"
-                        android:id="@+id/btnSwipe"
-                        />
-                    <Button
-                        android:background="@color/transparent"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="@color/tiktok_white"
-                        android:drawableTop="@drawable/ic_friend"
-                        android:text="@string/friends"
-                        android:textSize="10dp"
-                        android:fontFamily="@font/montserrat_medium"
-                        android:inputType="textCapSentences"
-                        android:layout_marginRight="8dp"
-                        />
-
-                    <Button
-                        android:id="@+id/btn_add_video"
-
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="@color/tiktok_black"
-                        android:text="@string/ic_add"
-                        android:background="@drawable/btn_add_shape"
-                        android:onClick="onClick"
-                        android:layout_marginRight="8dp"/>
-                    <Button
-                        android:id="@+id/btnInbox"
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="@color/tiktok_white"
-                        android:drawableTop="@drawable/ic_inbox"
-                        android:text="@string/inbox"
-                        android:textSize="10dp"
-                        android:fontFamily="@font/montserrat_medium"
-                        android:inputType="textCapSentences"
-                        android:layout_marginRight="8dp" />
-                    <Button
-                        android:id="@+id/btnProfile"
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="@color/tiktok_white"
-                        android:drawableTop="@drawable/ic_profile"
-                        android:text="@string/profile"
-                        android:textSize="10dp"
-                        android:fontFamily="@font/montserrat_medium"
-                        android:inputType="textCapSentences"
-                        />
-
-                </LinearLayout>
-            </LinearLayout>
-        </FrameLayout>
+    <FrameLayout
+        android:id="@+id/flNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"/>
 
 
 
     <TextView
+        android:id="@+id/tvVideo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
-        android:id="@+id/tvVideo"/>
+        android:visibility="gone" />
 </LinearLayout>
 
-<!--    &lt;!&ndash; The primary full-screen view. This can be replaced with whatever view-->
-<!--         is needed to present your content, e.g. VideoView, SurfaceView,-->
-<!--         TextureView, etc. &ndash;&gt;-->
-<!--        <androidx.viewpager2.widget.ViewPager2-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:orientation="vertical"-->
-<!--            android:id="@+id/viewPager"/>-->
+    <!--    &lt;!&ndash; The primary full-screen view. This can be replaced with whatever view-->
+    <!--         is needed to present your content, e.g. VideoView, SurfaceView,-->
+    <!--         TextureView, etc. &ndash;&gt;-->
+    <!--        <androidx.viewpager2.widget.ViewPager2-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:orientation="vertical"-->
+    <!--            android:id="@+id/viewPager"/>-->
 
 
-<!--<LinearLayout-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent">-->
-<!--    <RelativeLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:padding="8dp"-->
-<!--        >-->
+    <!--<LinearLayout-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="match_parent">-->
+    <!--    <RelativeLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:padding="8dp"-->
+    <!--        >-->
 
-<!--        <TextView-->
-<!--            android:id="@+id/txvFollowing"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="@string/following"-->
-<!--            android:fontFamily="@font/montserrat_medium"-->
-<!--            android:textColor="@color/tiktok_white"-->
-<!--            android:textSize="20dp"-->
-<!--            android:layout_centerVertical="true"-->
-<!--            android:layout_toStartOf="@id/space"-->
-<!--            />-->
+    <!--        <TextView-->
+    <!--            android:id="@+id/txvFollowing"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="@string/following"-->
+    <!--            android:fontFamily="@font/montserrat_medium"-->
+    <!--            android:textColor="@color/tiktok_white"-->
+    <!--            android:textSize="20dp"-->
+    <!--            android:layout_centerVertical="true"-->
+    <!--            android:layout_toStartOf="@id/space"-->
+    <!--            />-->
 
-<!--        <Space-->
-<!--            android:id="@+id/space"-->
-<!--            android:layout_centerInParent="true"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginRight="12dp"-->
-<!--            android:layout_marginLeft="2dp"-->
-<!--            />-->
+    <!--        <Space-->
+    <!--            android:id="@+id/space"-->
+    <!--            android:layout_centerInParent="true"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginRight="12dp"-->
+    <!--            android:layout_marginLeft="2dp"-->
+    <!--            />-->
 
-<!--        <TextView-->
-<!--            android:id="@+id/txvForYou"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="@string/for_you"-->
-<!--            android:textColor="@color/tiktok_white"-->
-<!--            android:textSize="20dp"-->
-<!--            android:layout_centerVertical="true"-->
-<!--            android:layout_toEndOf="@id/space"-->
-<!--            android:clickable="true"-->
-<!--            />-->
+    <!--        <TextView-->
+    <!--            android:id="@+id/txvForYou"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="@string/for_you"-->
+    <!--            android:textColor="@color/tiktok_white"-->
+    <!--            android:textSize="20dp"-->
+    <!--            android:layout_centerVertical="true"-->
+    <!--            android:layout_toEndOf="@id/space"-->
+    <!--            android:clickable="true"-->
+    <!--            />-->
 
-<!--        <ImageButton-->
-<!--            android:id="@+id/btnSearch"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:src="@drawable/ic_search"-->
-<!--            android:background="@color/transparent"-->
-<!--            android:textColor="@color/tiktok_white"-->
-<!--            android:layout_alignParentEnd="true"-->
-<!--            />-->
+    <!--        <ImageButton-->
+    <!--            android:id="@+id/btnSearch"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:src="@drawable/ic_search"-->
+    <!--            android:background="@color/transparent"-->
+    <!--            android:textColor="@color/tiktok_white"-->
+    <!--            android:layout_alignParentEnd="true"-->
+    <!--            />-->
 
-<!--    </RelativeLayout>-->
+    <!--    </RelativeLayout>-->
 
-<!--    <TextView-->
-<!--        android:id="@+id/tvVideo"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:gravity="center"-->
-<!--        android:keepScreenOn="true"-->
-<!--        android:text="video"-->
-<!--        android:textColor="?attr/fullscreenTextColor"-->
-<!--        android:textSize="50sp"-->
-<!--        android:textStyle="bold"-->
-<!--        android:visibility="gone"-->
-<!--        android:layout_weight="2"/>-->
-
-
-<!--    &lt;!&ndash; This FrameLayout insets its children based on system windows using-->
-<!--         android:fitsSystemWindows. &ndash;&gt;-->
-<!--    <FrameLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:fitsSystemWindows="true">-->
-
-<!--        <LinearLayout-->
-<!--            android:id="@+id/fullscreen_content_controls"-->
-<!--            style="@style/Widget.Theme.TikTokCloneProject.ButtonBar.Fullscreen"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="bottom|center_horizontal"-->
-<!--            android:orientation="horizontal"-->
-<!--            tools:ignore="UselessParent"-->
-<!--            android:background="@color/tiktok_black">-->
+    <!--    <TextView-->
+    <!--        android:id="@+id/tvVideo"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:gravity="center"-->
+    <!--        android:keepScreenOn="true"-->
+    <!--        android:text="video"-->
+    <!--        android:textColor="?attr/fullscreenTextColor"-->
+    <!--        android:textSize="50sp"-->
+    <!--        android:textStyle="bold"-->
+    <!--        android:visibility="gone"-->
+    <!--        android:layout_weight="2"/>-->
 
 
+    <!--    &lt;!&ndash; This FrameLayout insets its children based on system windows using-->
+    <!--         android:fitsSystemWindows. &ndash;&gt;-->
+    <!--    <FrameLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:fitsSystemWindows="true">-->
+
+    <!--        <LinearLayout-->
+    <!--            android:id="@+id/fullscreen_content_controls"-->
+    <!--            style="@style/Widget.Theme.TikTokCloneProject.ButtonBar.Fullscreen"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_gravity="bottom|center_horizontal"-->
+    <!--            android:orientation="horizontal"-->
+    <!--            tools:ignore="UselessParent"-->
+    <!--            android:background="@color/tiktok_black">-->
 
 
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:gravity="center"-->
-<!--               >-->
+    <!--            <LinearLayout-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:gravity="center"-->
+    <!--               >-->
 
-<!--                <Button-->
-<!--                    android:background="@color/transparent"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:textColor="@color/tiktok_white"-->
-<!--                    android:drawableTop="@drawable/ic_home"-->
-<!--                    android:text="@string/home"-->
-<!--                    android:textSize="10dp"-->
-<!--                    android:fontFamily="@font/montserrat_medium"-->
-<!--                    android:inputType="textCapSentences"-->
-<!--                    android:layout_marginRight="8dp"-->
-<!--                    android:id="@+id/btnSwipe"-->
-<!--                    />-->
-<!--                <Button-->
-<!--                    android:background="@color/transparent"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:textColor="@color/tiktok_white"-->
-<!--                    android:drawableTop="@drawable/ic_friend"-->
-<!--                    android:text="@string/friends"-->
-<!--                    android:textSize="10dp"-->
-<!--                    android:fontFamily="@font/montserrat_medium"-->
-<!--                    android:inputType="textCapSentences"-->
-<!--                    android:layout_marginRight="8dp"-->
-<!--                    />-->
+    <!--                <Button-->
+    <!--                    android:background="@color/transparent"-->
+    <!--                    android:layout_width="0dp"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:layout_weight="1"-->
+    <!--                    android:textColor="@color/tiktok_white"-->
+    <!--                    android:drawableTop="@drawable/ic_home"-->
+    <!--                    android:text="@string/home"-->
+    <!--                    android:textSize="10dp"-->
+    <!--                    android:fontFamily="@font/montserrat_medium"-->
+    <!--                    android:inputType="textCapSentences"-->
+    <!--                    android:layout_marginRight="8dp"-->
+    <!--                    android:id="@+id/btnSwipe"-->
+    <!--                    />-->
+    <!--                <Button-->
+    <!--                    android:background="@color/transparent"-->
+    <!--                    android:layout_width="0dp"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:layout_weight="1"-->
+    <!--                    android:textColor="@color/tiktok_white"-->
+    <!--                    android:drawableTop="@drawable/ic_friend"-->
+    <!--                    android:text="@string/friends"-->
+    <!--                    android:textSize="10dp"-->
+    <!--                    android:fontFamily="@font/montserrat_medium"-->
+    <!--                    android:inputType="textCapSentences"-->
+    <!--                    android:layout_marginRight="8dp"-->
+    <!--                    />-->
 
-<!--                <Button-->
-<!--                    android:id="@+id/btn_add_video"-->
+    <!--                <Button-->
+    <!--                    android:id="@+id/btn_add_video"-->
 
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:textColor="@color/tiktok_black"-->
-<!--                    android:text="@string/ic_add"-->
-<!--                    android:background="@drawable/btn_add_shape"-->
-<!--                    android:onClick="onClick"-->
-<!--                    android:layout_marginRight="8dp"/>-->
-<!--                <Button-->
-<!--                    android:id="@+id/btnInbox"-->
-<!--                    style="?android:attr/buttonBarButtonStyle"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:textColor="@color/tiktok_white"-->
-<!--                    android:drawableTop="@drawable/ic_inbox"-->
-<!--                    android:text="@string/inbox"-->
-<!--                    android:textSize="10dp"-->
-<!--                    android:fontFamily="@font/montserrat_medium"-->
-<!--                    android:inputType="textCapSentences"-->
-<!--                    android:layout_marginRight="8dp" />-->
-<!--                <Button-->
-<!--                    android:id="@+id/btnProfile"-->
-<!--                    style="?android:attr/buttonBarButtonStyle"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:textColor="@color/tiktok_white"-->
-<!--                    android:drawableTop="@drawable/ic_profile"-->
-<!--                    android:text="@string/profile"-->
-<!--                    android:textSize="10dp"-->
-<!--                    android:fontFamily="@font/montserrat_medium"-->
-<!--                    android:inputType="textCapSentences"-->
-<!--                    />-->
+    <!--                    android:layout_width="0dp"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:layout_weight="1"-->
+    <!--                    android:textColor="@color/tiktok_black"-->
+    <!--                    android:text="@string/ic_add"-->
+    <!--                    android:background="@drawable/btn_add_shape"-->
+    <!--                    android:onClick="onClick"-->
+    <!--                    android:layout_marginRight="8dp"/>-->
+    <!--                <Button-->
+    <!--                    android:id="@+id/btnInbox"-->
+    <!--                    style="?android:attr/buttonBarButtonStyle"-->
+    <!--                    android:layout_width="0dp"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:layout_weight="1"-->
+    <!--                    android:textColor="@color/tiktok_white"-->
+    <!--                    android:drawableTop="@drawable/ic_inbox"-->
+    <!--                    android:text="@string/inbox"-->
+    <!--                    android:textSize="10dp"-->
+    <!--                    android:fontFamily="@font/montserrat_medium"-->
+    <!--                    android:inputType="textCapSentences"-->
+    <!--                    android:layout_marginRight="8dp" />-->
+    <!--                <Button-->
+    <!--                    android:id="@+id/btnProfile"-->
+    <!--                    style="?android:attr/buttonBarButtonStyle"-->
+    <!--                    android:layout_width="0dp"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:layout_weight="1"-->
+    <!--                    android:textColor="@color/tiktok_white"-->
+    <!--                    android:drawableTop="@drawable/ic_profile"-->
+    <!--                    android:text="@string/profile"-->
+    <!--                    android:textSize="10dp"-->
+    <!--                    android:fontFamily="@font/montserrat_medium"-->
+    <!--                    android:inputType="textCapSentences"-->
+    <!--                    />-->
 
-<!--            </LinearLayout>-->
-<!--        </LinearLayout>-->
-<!--    </FrameLayout>-->
+    <!--            </LinearLayout>-->
+    <!--        </LinearLayout>-->
+    <!--    </FrameLayout>-->
 
-<!--</LinearLayout>-->
-<!--    -->
-<!--</LinearLayout>-->
+    <!--</LinearLayout>-->
+    <!--    -->
+    <!--</LinearLayout>-->

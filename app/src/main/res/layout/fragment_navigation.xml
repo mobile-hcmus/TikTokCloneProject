@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.Theme.TikTokCloneProject.ButtonBar.Fullscreen"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|center_horizontal"
+    android:background="@color/tiktok_black"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btnHome"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:drawableTop="@drawable/ic_home"
+            android:fontFamily="@font/montserrat_medium"
+            android:inputType="textCapSentences"
+            android:text="@string/home"
+            android:textColor="@color/tiktok_white"
+            android:textSize="10dp" />
+
+        <Button
+            android:id="@+id/btnFriend"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:drawableTop="@drawable/ic_friend"
+            android:fontFamily="@font/montserrat_medium"
+            android:inputType="textCapSentences"
+            android:text="@string/friends"
+            android:textColor="@color/tiktok_white"
+            android:textSize="10dp" />
+
+        <Button
+            android:id="@+id/btnAddVideo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_add_shape"
+            android:onClick="onClick"
+            android:text="@string/ic_add"
+            android:textColor="@color/tiktok_black" />
+
+        <Button
+            android:id="@+id/btnInbox"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_inbox"
+            android:fontFamily="@font/montserrat_medium"
+            android:inputType="textCapSentences"
+            android:text="@string/inbox"
+            android:textColor="@color/tiktok_white"
+            android:textSize="10dp" />
+
+        <Button
+            android:id="@+id/btnProfile"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_profile"
+            android:fontFamily="@font/montserrat_medium"
+            android:inputType="textCapSentences"
+            android:text="@string/profile"
+            android:textColor="@color/tiktok_white"
+            android:textSize="10dp" />
+
+    </LinearLayout>
+</LinearLayout>

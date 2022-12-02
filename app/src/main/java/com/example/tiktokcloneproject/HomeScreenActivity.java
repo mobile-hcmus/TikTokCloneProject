@@ -2,6 +2,9 @@ package com.example.tiktokcloneproject;
 
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.Activity;
@@ -29,10 +32,8 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeScreenActivity extends Activity implements View.OnClickListener{
+public class HomeScreenActivity extends FragmentActivity implements View.OnClickListener{
 
-    private Button btnProfile;
-    private Button btnSwipe, btnAddVideo, btnInbox;
     private ImageButton btnSearch;
     private TextView tvVideo; // DE TEST. Sau nay sua thanh clip de xem
     private ViewPager2 viewPager2;
@@ -46,6 +47,8 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
     StorageReference storageRef;
     Uri videoUri;
 
+    FragmentTransaction ft;
+    FragmentNavigation navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,16 +57,16 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
         setContentView(R.layout.activity_home_screen);
 
         tvVideo = (TextView) findViewById(R.id.tvVideo);
-        btnProfile = (Button) findViewById(R.id.btnProfile);
+
         btnSearch=(ImageButton) findViewById(R.id.btnSearch);
-        btnSwipe = (Button) findViewById(R.id.btnSwipe);
-        btnInbox = (Button) findViewById(R.id.btnInbox);
 
+        ft = getSupportFragmentManager().beginTransaction();
+        navigation = FragmentNavigation.newInstance("navigation");
+        ft.replace(R.id.flNavigation, navigation);
+        ft.commit();
 
-        btnProfile.setOnClickListener(this);
         btnSearch.setOnClickListener(this);
-        btnSwipe.setOnClickListener(this);
-        btnInbox.setOnClickListener(this);
+
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
@@ -123,43 +126,12 @@ public class HomeScreenActivity extends Activity implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == btnProfile.getId())
-        {
-            if (user!=null)
-            {
-                Bundle bundle = new Bundle();
-                bundle.putString("id", user.getUid());
-                Intent intent = new Intent(HomeScreenActivity.this, ProfileActivity.class);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-            else
-            {
-                Intent intent = new Intent(HomeScreenActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        }
-
         if (view.getId() == btnSearch.getId())
         {
             Intent intent = new Intent(HomeScreenActivity.this, SearchActivity.class);
             startActivity(intent);
         }
 
-        if (view.getId() == R.id.btn_add_video) {
-            Intent intent = new Intent(HomeScreenActivity.this, CameraActivity.class);
-            startActivity(intent);
-        }
-
-        if(view.getId() == btnSwipe.getId()) {
-//            Intent intent = new Intent(HomeScreenActivity.this,SwipeVideo.class);
-//            startActivity(intent);
-        }
-
-        if(view.getId() == btnInbox.getId()) {
-            Intent intent = new Intent(HomeScreenActivity.this,InboxActivity.class);
-            startActivity(intent);
-        }
     }//on click
 
 
