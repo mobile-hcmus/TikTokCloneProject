@@ -12,6 +12,9 @@ public class Video {
     private int totalLikes, totalComments;
     private ArrayList<String> hashtags;
 
+    public Video() {
+    }
+
     public Video(String videoId, String videoUri, String authorId, String username, String authorAvatarUri, String description) {
         this.videoId = videoId;
         this.videoUri = videoUri;

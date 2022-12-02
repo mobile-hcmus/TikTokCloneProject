@@ -1,7 +1,10 @@
 package com.example.tiktokcloneproject;
 
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
@@ -19,12 +22,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tiktokcloneproject.adapters.VideoAdapter;
+import com.example.tiktokcloneproject.model.Comment;
 import com.example.tiktokcloneproject.model.Video;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Source;
@@ -80,6 +88,7 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
         viewPager2 = findViewById(R.id.viewPager);
         videos = new ArrayList<>();
         videoAdapter = new VideoAdapter(this, videos);
+        viewPager2.setAdapter(videoAdapter);
 
 
 
@@ -151,28 +160,31 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
 
     private void loadVideos() {
         db.collection("videos")
-                .get(Source.DEFAULT)
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                String videoId = document.get("videoId", String.class);
-                                String authorId = document.get("authorId", String.class);
-                                String Uri = document.get("videoUri", String.class);
-                                String username = document.get("username", String.class);
-                                String authorAvatarId = document.get("authorAvatarId", String.class);
-                                String description = document.get("description", String.class);
-                                int totalLikes = document.get("totalLikes", Integer.class);
-                                int totalComments = document.get("totalComments", Integer.class);
-
-                                Video video = new Video(videoId,Uri, authorId, authorAvatarId, description, username, totalLikes, totalComments );
-                                videoAdapter.addVideoObject(video);
-                            }
-                            viewPager2.setAdapter(videoAdapter);
-                        } else {
-                            Log.d("ERROR", "Error getting documents: ", task.getException());
+                    public void onEvent(@Nullable QuerySnapshot snapshots,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(TAG, "listen:error", e);
+                            return;
                         }
+
+                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                            switch (dc.getType()) {
+                                case ADDED:
+                                    Video video = dc.getDocument().toObject(Video.class);
+                                    videos.add(video);
+                                    videoAdapter.notifyItemInserted(videos.size() - 1);
+                                    break;
+                                case MODIFIED:
+                                    Log.d(TAG, "Modified city: " + dc.getDocument().getData());
+                                    break;
+                                case REMOVED:
+                                    Log.d(TAG, "Removed city: " + dc.getDocument().getData());
+                                    break;
+                            }
+                        }
+
                     }
                 });
     }
