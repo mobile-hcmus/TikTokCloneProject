@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tiktokcloneproject.adapters.VideoAdapter;
 import com.example.tiktokcloneproject.model.Video;
@@ -49,6 +50,8 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
 
     FragmentTransaction ft;
     FragmentNavigation navigation;
+    private long pressedTime;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +126,17 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
         loadVideos();
     }
 
+    @Override
+    public void onBackPressed() {
+
+        if (pressedTime + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+            finish();
+        } else {
+            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+        }
+        pressedTime = System.currentTimeMillis();
+    }
 
     @Override
     public void onClick(View view) {

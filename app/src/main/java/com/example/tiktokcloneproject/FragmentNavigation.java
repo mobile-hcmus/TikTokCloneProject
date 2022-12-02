@@ -7,11 +7,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -25,6 +27,7 @@ public class FragmentNavigation extends Fragment implements View.OnClickListener
     private String message = "";
     private Button btnHome, btnFriend, btnAddVideo, btnInbox, btnProfile;
     private FirebaseUser user;
+    private static long pressedBackTime = 0;
 
     public static FragmentNavigation newInstance(String strArg) {
         FragmentNavigation fragment = new FragmentNavigation();
@@ -56,6 +59,22 @@ public class FragmentNavigation extends Fragment implements View.OnClickListener
         btnProfile = (Button) layout.findViewById(R.id.btnProfile);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
+
+        layout.setFocusableInTouchMode(true);
+        layout.requestFocus();
+        layout.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int code, KeyEvent keyEvent) {
+                if((keyEvent.getAction() == KeyEvent.ACTION_DOWN) && code == keyEvent.KEYCODE_BACK) {
+                    Log.d("keycode", context.getClass().toString());
+                    Intent intent = new Intent(context, HomeScreenActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    return true;
+                }
+                return false;
+            }
+        });
 
         btnHome.setOnClickListener(this);
         btnFriend.setOnClickListener(this);
@@ -96,6 +115,7 @@ public class FragmentNavigation extends Fragment implements View.OnClickListener
                 Bundle bundle = new Bundle();
                 bundle.putString("id", user.getUid());
                 Intent intent = new Intent(context, ProfileActivity.class);
+
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -168,6 +188,7 @@ public class FragmentNavigation extends Fragment implements View.OnClickListener
         }
         catch (Exception e) { Log.e("Error DialogBox", e.getMessage() ); }
     }
+
 
 
 }
