@@ -108,10 +108,22 @@ public class CameraActivity extends Activity implements View.OnClickListener {
         ORIENTATIONS.append(Surface.ROTATION_270, 270);
     }
 
-    static int sensorToDeviceToRotation(CameraCharacteristics cameraCharacteristics, int deviceOrientation) {
-        int sensorOrientation = cameraCharacteristics.get(CameraCharacteristics.SENSOR_ORIENTATION);
-        deviceOrientation = ORIENTATIONS.get(deviceOrientation);
-        return (sensorOrientation + deviceOrientation + 360) % 360;
+    static int sensorToDeviceToRotation(CameraCharacteristics c, int deviceOrientation) {
+        if (deviceOrientation == android.view.OrientationEventListener.ORIENTATION_UNKNOWN) return 0;
+        int sensorOrientation = c.get(CameraCharacteristics.SENSOR_ORIENTATION);
+
+        // Round device orientation to a multiple of 90
+        deviceOrientation = (deviceOrientation + 45) / 90 * 90;
+
+        // Reverse device orientation for front-facing cameras
+        boolean facingFront = c.get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_FRONT;
+        if (facingFront) deviceOrientation = -deviceOrientation;
+
+        // Calculate desired JPEG orientation relative to camera orientation to make
+        // the image upright relative to the device orientation
+        int jpegOrientation = (sensorOrientation + deviceOrientation + 360) % 360;
+
+        return jpegOrientation;
     }
     CameraDevice mainCamera;
     CameraDevice.StateCallback cameraDeviceCallback = new CameraDevice.StateCallback() {
@@ -326,6 +338,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
                         continue;
                     }
                     defaultId = backId;
+                    Log.i("BACK:", "ok");
                 }
                 int deviceOrientation = getWindowManager().getDefaultDisplay().getRotation();
                 totalRotation = sensorToDeviceToRotation(characteristics, deviceOrientation);
@@ -333,6 +346,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
                 int rotateWidth = width;
                 int rotateHeight = height;
                 if (swapRotation) {
+                    Log.i("BACK:", "not ok");
                     rotateWidth = height;
                     rotateHeight = width;
                 }
@@ -341,11 +355,10 @@ public class CameraActivity extends Activity implements View.OnClickListener {
                             get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
                     Log.i("DIMENSION:", rotateWidth + "," + rotateHeight);
                     previewSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), rotateWidth, rotateHeight);
-                    videoSize = chooseOptimalSize(map.getOutputSizes(MediaRecorder.class), rotateWidth, rotateHeight);
+                    videoSize = chooseOptimalSize(map.getOutputSizes(SurfaceTexture.class), rotateWidth, rotateHeight);
                     setTextureViewSize(previewSize);
-                    Toast.makeText(getApplicationContext(), "preview size:" + previewSize.getWidth() + "," + previewSize.getHeight(), Toast.LENGTH_SHORT).show();
                 } catch (CameraAccessException e) {
-                    Toast.makeText(getApplicationContext(), "failed to load size array", Toast.LENGTH_SHORT).show();
+
                 }
                 break;
             }
@@ -406,7 +419,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
         try {
             setupMediaRecorder();
             SurfaceTexture surfaceTexture = textureFront.getSurfaceTexture();
-            surfaceTexture.setDefaultBufferSize(previewSize.getWidth(), previewSize.getHeight());
+            surfaceTexture.setDefaultBufferSize(videoSize.getWidth(), videoSize.getHeight());
             Surface previewSurface = new Surface(surfaceTexture);
             Surface recordSurface = mediaRecorder.getSurface();
             try {
@@ -494,7 +507,11 @@ public class CameraActivity extends Activity implements View.OnClickListener {
         mediaRecorder.setVideoSize(videoSize.getWidth(), videoSize.getHeight());
         mediaRecorder.setVideoFrameRate(30);
         mediaRecorder.setVideoEncodingBitRate(3000000);
-        mediaRecorder.setOrientationHint(totalRotation);
+        if (defaultId == frontId) {
+            mediaRecorder.setOrientationHint(totalRotation);
+        } else {
+        mediaRecorder.setOrientationHint((totalRotation + 180) % 360);
+        }
         mediaRecorder.prepare();
     }
 
