@@ -1,14 +1,20 @@
 package com.example.tiktokcloneproject;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -103,8 +109,7 @@ public class FragmentNavigation extends Fragment implements View.OnClickListener
 
     private void handleInboxClick() {
         if(user == null) {
-            Intent intent = new Intent(context, MainActivity.class);
-            startActivity(intent);
+            showNiceDialogBox(context, null, null);
             return;
         }
         if(context instanceof InboxActivity) {
@@ -112,6 +117,39 @@ public class FragmentNavigation extends Fragment implements View.OnClickListener
         }
         Intent intent = new Intent(context,InboxActivity.class);
         startActivity(intent);
+    }
+
+    private void showNiceDialogBox(Context context, @Nullable String title, @Nullable String message) {
+        if(title == null) {
+            title = getString(R.string.request_account_title);
+        }
+        if(message == null) {
+            message = getString(R.string.request_account_message);
+        }
+        try {
+            //CAUTION: sometimes TITLE and DESCRIPTION include HTML markers
+            AlertDialog.Builder myBuilder = new AlertDialog.Builder(context);
+            myBuilder.setIcon(R.drawable.splash_background)
+                    .setTitle(title)
+                    .setMessage(message)
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent(context, HomeScreenActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        }
+                    })
+                    .setPositiveButton("Sign up/Sign in", new DialogInterface.OnClickListener()
+                    {
+                        public void onClick(DialogInterface dialog, int whichOne) {
+                            Intent intent = new Intent(context, MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        }}) //setNegativeButton
+                    .show();
+        }
+        catch (Exception e) { Log.e("Error DialogBox", e.getMessage() ); }
     }
 
 

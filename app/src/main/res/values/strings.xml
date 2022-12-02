@@ -48,5 +48,7 @@
     <string name="template_follow">started following you</string>
     <string name="template_comment">commented on your video</string>
     <string name="template_like">liked your video</string>
+    <string name="request_account_title">You are anonymous</string>
+    <string name="request_account_message">Would you like you sign up or sign in?</string>
     <!--   //////////////////////////////////////////////////////////   -->
 </resources>
