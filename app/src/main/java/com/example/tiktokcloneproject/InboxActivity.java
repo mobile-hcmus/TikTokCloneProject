@@ -2,6 +2,9 @@ package com.example.tiktokcloneproject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -28,13 +31,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class InboxActivity extends Activity {
+public class InboxActivity extends FragmentActivity {
     private final String TAG = "InboxActivity";
     private DatabaseReference mDatabase = null;
     private FirebaseUser user;
     private ListView lvNotifications;
     private ArrayList<Notification> notifications;
 
+    FragmentTransaction ft;
+    FragmentNavigation navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +53,11 @@ public class InboxActivity extends Activity {
                 R.layout.notification_row,
                 notifications);
         lvNotifications.setAdapter(adapter);
+
+        ft = getSupportFragmentManager().beginTransaction();
+        navigation = FragmentNavigation.newInstance("navigation");
+        ft.replace(R.id.flNavigation, navigation);
+        ft.commit();
 
         user = FirebaseAuth.getInstance().getCurrentUser();
        mDatabase = FirebaseDatabase.getInstance().getReference();

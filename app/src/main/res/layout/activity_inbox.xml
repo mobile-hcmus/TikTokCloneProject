@@ -5,14 +5,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.tiktokcloneproject.InboxActivity">
 
     <ListView
         android:id="@+id/lvNotifications"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:scrollbarSize="3dp"
         android:padding="8dp"
         />
 
+    <FrameLayout
+        android:id="@+id/flNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"/>
 </LinearLayout>

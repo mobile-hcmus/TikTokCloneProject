@@ -15,9 +15,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class FragmentNavigation extends Fragment implements View.OnClickListener {
-    Context context = null;
-    String message = "";
-    Button btnHome, btnFriend, btnAddVideo, btnInbox, btnProfile;
+    private Context context = null;
+    private String message = "";
+    private Button btnHome, btnFriend, btnAddVideo, btnInbox, btnProfile;
+    private FirebaseUser user;
 
     public static FragmentNavigation newInstance(String strArg) {
         FragmentNavigation fragment = new FragmentNavigation();
@@ -48,6 +49,8 @@ public class FragmentNavigation extends Fragment implements View.OnClickListener
         btnInbox = (Button) layout.findViewById(R.id.btnInbox);
         btnProfile = (Button) layout.findViewById(R.id.btnProfile);
 
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
         btnHome.setOnClickListener(this);
         btnFriend.setOnClickListener(this);
         btnAddVideo.setOnClickListener(this);
@@ -68,8 +71,7 @@ public class FragmentNavigation extends Fragment implements View.OnClickListener
 
         }
         if(view.getId() == btnInbox.getId()) {
-            Intent intent = new Intent(context,InboxActivity.class);
-            startActivity(intent);
+            handleInboxClick();
         }
         if(view.getId() == btnFriend.getId()) {
 
@@ -78,7 +80,7 @@ public class FragmentNavigation extends Fragment implements View.OnClickListener
     }
 
     private void handleProfileClick() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
         if (user!=null)
             {
                 Bundle bundle = new Bundle();
@@ -96,6 +98,19 @@ public class FragmentNavigation extends Fragment implements View.OnClickListener
 
     private void handleAddClick() {
         Intent intent = new Intent(context, CameraActivity.class);
+        startActivity(intent);
+    }
+
+    private void handleInboxClick() {
+        if(user == null) {
+            Intent intent = new Intent(context, MainActivity.class);
+            startActivity(intent);
+            return;
+        }
+        if(context instanceof InboxActivity) {
+            return;
+        }
+        Intent intent = new Intent(context,InboxActivity.class);
         startActivity(intent);
     }
 
