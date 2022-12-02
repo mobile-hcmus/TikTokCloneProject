@@ -74,7 +74,7 @@ public class FragmentNavigation extends Fragment implements View.OnClickListener
             handleAddClick();
         }
         if(view.getId() == btnHome.getId()) {
-
+            handleHomeClick();
         }
         if(view.getId() == btnInbox.getId()) {
             handleInboxClick();
@@ -87,6 +87,10 @@ public class FragmentNavigation extends Fragment implements View.OnClickListener
 
     private void handleProfileClick() {
 
+        if(context instanceof ProfileActivity) {
+            return;
+        }
+
         if (user!=null)
             {
                 Bundle bundle = new Bundle();
@@ -97,8 +101,7 @@ public class FragmentNavigation extends Fragment implements View.OnClickListener
             }
             else
             {
-                Intent intent = new Intent(context, MainActivity.class);
-                startActivity(intent);
+                showNiceDialogBox(context, null, null);
             }
     }
 
@@ -119,6 +122,17 @@ public class FragmentNavigation extends Fragment implements View.OnClickListener
         startActivity(intent);
     }
 
+    private void handleHomeClick() {
+        if(context instanceof HomeScreenActivity) {
+            Intent intent = new Intent(context, HomeScreenActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            return;
+        }
+        Intent intent = new Intent(context, HomeScreenActivity.class);
+        startActivity(intent);
+    }
+
     private void showNiceDialogBox(Context context, @Nullable String title, @Nullable String message) {
         if(title == null) {
             title = getString(R.string.request_account_title);
@@ -135,6 +149,9 @@ public class FragmentNavigation extends Fragment implements View.OnClickListener
                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+                            if(context instanceof HomeScreenActivity) {
+                                return;
+                            }
                             Intent intent = new Intent(context, HomeScreenActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);

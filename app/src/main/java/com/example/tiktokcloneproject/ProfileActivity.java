@@ -2,6 +2,9 @@ package com.example.tiktokcloneproject;
 
 import androidx.annotation.DimenRes;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -68,7 +71,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ProfileActivity extends Activity implements View.OnClickListener{
+public class ProfileActivity extends FragmentActivity implements View.OnClickListener{
     private TextView txvFollowing, txvFollowers, txvLikes, txvUserName;
     private EditText edtBio;
     private Button btn, btnEditProfile;
@@ -88,10 +91,13 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
     RecyclerView recVideoSummary;
     ArrayList<VideoSummary> videoSummaries;
 
+    FragmentTransaction ft;
+    FragmentNavigation navigation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_bottom);
+//        overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_bottom);
         setContentView(R.layout.activity_profile);
         Intent intent = getIntent();
         mAuth = FirebaseAuth.getInstance();
@@ -131,7 +137,10 @@ public class ProfileActivity extends Activity implements View.OnClickListener{
         storageReference = storage.getReference();
 
 
-
+        ft = getSupportFragmentManager().beginTransaction();
+        navigation = FragmentNavigation.newInstance("navigation");
+        ft.replace(R.id.flNavigation, navigation);
+        ft.commit();
         //set nút follow/edit profile
         if (user==null)
         {//chưa đăng nhập (vào profile thông qua search)
