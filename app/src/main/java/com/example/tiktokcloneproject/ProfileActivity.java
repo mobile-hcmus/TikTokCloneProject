@@ -58,6 +58,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -491,6 +492,40 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
 
     }
 
+
+//    public Integer val;
+//    private int readFollow(String id,String type)
+//    {
+//
+//        DocumentReference docRef = db.collection("profiles").document(id);
+//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    DocumentSnapshot document = task.getResult();
+//                    if (document.exists()) {
+//                        //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+//                        val= (Integer) document.get(type);
+//
+//                    } else {
+//                        Log.d(TAG, "No such document");
+//                        val=0;
+//                    }
+//                } else {
+//                    Log.d(TAG, "get failed with ", task.getException());
+//                    val=0;
+//                }
+//            }
+//        });
+//
+//        return val;
+//    }
+//
+//    private void writeFollow()
+//    {
+//
+//    }
+
     private void handleUnfollowed() {
         btn.setText("Follow");
         btn.setOnClickListener(new View.OnClickListener() {
@@ -508,6 +543,12 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Log.d(TAG, "DocumentSnapshot successfully written!");
+
+
+
+                                db.collection("profiles").document(currentUserID)
+                                        .update("following", FieldValue.increment(1));
+
                                 handleFollowed();
                             }
                         })
@@ -529,6 +570,9 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
+
+                                db.collection("profiles").document(userId)
+                                        .update("followers", FieldValue.increment(1));
                                 Log.d(TAG, "follower added");
 
                             }
@@ -561,6 +605,12 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                db.collection("profiles").document(currentUserID)
+                                        .update("following", FieldValue.increment(-1));
+
+
+
+
                                 handleUnfollowed();
                             }
                         })
@@ -578,6 +628,8 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
+                                db.collection("profiles").document(userId)
+                                        .update("followers", FieldValue.increment(-1));
                                 Log.d(TAG, "DocumentSnapshot successfully deleted!");
                             }
                         })
