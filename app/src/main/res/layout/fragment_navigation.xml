@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/Widget.Theme.TikTokCloneProject.ButtonBar.Fullscreen"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="75dp"
     android:layout_gravity="bottom|center_horizontal"
     android:background="@color/tiktok_black"
     android:orientation="horizontal">
@@ -14,6 +14,7 @@
         android:gravity="center">
 
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/btnHome"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -28,6 +29,7 @@
             android:textSize="10dp" />
 
         <Button
+            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/btnFriend"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -40,17 +42,24 @@
             android:text="@string/friends"
             android:textColor="@color/tiktok_white"
             android:textSize="10dp" />
-
-        <Button
-            android:id="@+id/btnAddVideo"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
             android:layout_weight="1"
+            android:gravity="center">
+        <Button
+            android:id="@+id/btnAddVideo"
+            android:layout_width="52dp"
+            android:layout_height="32dp"
+            android:layout_marginRight="8dp"
             android:background="@drawable/btn_add_shape"
             android:onClick="onClick"
             android:text="@string/ic_add"
+            android:textSize="12dp"
+            android:fontFamily="@font/montserrat_extralight"
             android:textColor="@color/tiktok_black" />
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/btnInbox"

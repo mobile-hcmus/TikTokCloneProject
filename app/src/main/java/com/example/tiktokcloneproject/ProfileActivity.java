@@ -366,6 +366,8 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
             updateBio();
             findViewById(R.id.layout_bio).setVisibility(View.GONE);
             View current = getCurrentFocus();
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(current.getWindowToken(), 0);
             if (current != null) current.clearFocus();
         }
         if(v.getId() == R.id.btn_cancel_update_bio) {
@@ -373,7 +375,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
             findViewById(R.id.layout_bio).setVisibility(View.GONE);
             View current = getCurrentFocus();
             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+            imm.hideSoftInputFromWindow(current.getWindowToken(), 0);
             if (current != null) current.clearFocus();
         }
         if (v.getId() == llFollowers.getId()) {

@@ -4,13 +4,15 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/tiktok_white</item>
         <item name="colorPrimaryVariant">@color/tiktok_grey</item>
+        <item name="colorPrimaryDark">@color/black</item>
         <item name="colorOnPrimary">@color/tiktok_black</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/tiktok_red</item>
         <item name="colorSecondaryVariant">@color/tiktok_red</item>
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/tiktok_black</item>
+        <item name="android:navigationBarColor" >@color/tiktok_black</item>
         <!-- Customize your theme here. -->
     </style>
 
