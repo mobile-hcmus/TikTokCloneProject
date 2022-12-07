@@ -3,8 +3,9 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/dialog_bg">
+    android:background="?attr/colorPrimary">
     <TextView
+        android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Share"
@@ -18,11 +19,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="\@"
-        android:textSize="25dp"
+        android:textSize="18dp"
         android:textStyle="bold"></TextView>
     <LinearLayout
         android:id="@+id/share_options"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:gravity="center">
@@ -36,32 +37,39 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/imvAvatarInSharedPlace"
                 android:layout_width="84dp"
                 android:layout_height="83dp"
-                android:background="#AABBCC"
                 android:clickable="true"
-                android:src="@drawable/ic_baseline_account_circle_24"></ImageView>
+                android:src="@drawable/ic_baseline_account_circle_24"></de.hdodenhof.circleimageview.CircleImageView>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginTop="20dp">
 
             <Button
                 android:id="@+id/btnCopyURL"
-                android:layout_width="200dp"
-                android:layout_height="35dp"
-                android:layout_marginTop="25dp"
-                android:background="@color/tiktok_red"
-                android:textColor="@color/tiktok_white"
-                android:textStyle="bold"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                style="@style/tiktok_button_red"
                 android:text="Copy URL"></Button>
+            <TextView
+                android:id="@+id/txvCancelInSharedPlace"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="Cancel"
+                android:textStyle="bold"
+                android:clickable="true"
+                ></TextView>
         </LinearLayout>
     </LinearLayout>
-    <TextView
-        android:id="@+id/txvCancelInSharedPlace"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:text="Cancel"
-        android:textStyle="bold"
-        android:clickable="true"
-        ></TextView>
 </LinearLayout>

@@ -14,11 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ShareAccountActivity extends Activity {
     TextView txvUserName;
     String userId;
 
-    ImageView imvCopyLink;
+    CircleImageView imvCopyLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

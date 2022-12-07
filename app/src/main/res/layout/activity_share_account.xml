@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_weight="1"
-        android:background="#2F000000"
+        android:background="#10000000"
         android:onClick="onClick"
         android:clickable="true"
         ></View>
@@ -20,7 +20,7 @@
         android:gravity="center"
         android:layout_gravity="bottom"
         android:padding="15dp"
-        android:background="@color/design_default_color_background">
+        android:background="?attr/colorPrimary">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,24 +52,23 @@
              android:gravity="center"
              android:orientation="vertical">
 
-             <ImageView
+             <de.hdodenhof.circleimageview.CircleImageView
+             xmlns:app="http://schemas.android.com/apk/res-auto"
                  android:id="@+id/imvCopyLink"
                  android:layout_width="84dp"
                  android:layout_height="83dp"
-                 android:background="#AABBCC"
                  android:clickable="true"
                  android:src="@drawable/ic_baseline_account_circle_24"
-                 android:onClick="onClick"></ImageView>
+                 android:onClick="onClick"></de.hdodenhof.circleimageview.CircleImageView>
 
              <Button
                  android:id="@+id/btn_copy_link"
                  android:layout_width="200dp"
                  android:layout_height="35dp"
                  android:layout_marginTop="25dp"
-                 android:background="@color/tiktok_red"
                  android:onClick="onClick"
-                 android:textColor="@color/tiktok_white"
                  android:textStyle="bold"
+                 android:stateListAnimator="@drawable/button_state_list_anim"
                  android:text="Copy URL"></Button>
          </LinearLayout>
      </LinearLayout>

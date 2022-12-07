@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -371,6 +372,8 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
             edtBio.setText(oldBioText);
             findViewById(R.id.layout_bio).setVisibility(View.GONE);
             View current = getCurrentFocus();
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
             if (current != null) current.clearFocus();
         }
         if (v.getId() == llFollowers.getId()) {
@@ -399,7 +402,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
 
         imvAvatarInSharedPlace.setImageBitmap(bitmap);
 
-        txvUsernameInSharedPlace.setText("@" + user.getUid().toString());
+        txvUsernameInSharedPlace.setText(txvUserName.getText());
 
         btnCopyURL.setOnClickListener(new View.OnClickListener() {
             @Override
