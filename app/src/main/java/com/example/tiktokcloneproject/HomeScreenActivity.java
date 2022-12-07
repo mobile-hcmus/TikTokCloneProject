@@ -127,6 +127,23 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
             tvVideo.setText("Chưa Đăng Nhập");
         }
 
+        db.collection("users")
+                .whereGreaterThanOrEqualTo("userName", "m")
+                .whereLessThanOrEqualTo("userName", "m" + "~")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("DATA", document.getId() + " => " + document.get("userName", String.class));
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
 
     }//on Create
 

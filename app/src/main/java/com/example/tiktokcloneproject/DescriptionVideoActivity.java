@@ -80,6 +80,7 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
 
     ArrayList<String> hashtags;
     String Id;
+    VideoSummary videoSummary;
     final String TAG = "DescriptionVideoActivity";
 
     Handler handler = new Handler();
@@ -191,7 +192,7 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
                 hashtags.add(matcher.group(0));
             }
             Id = String.valueOf(System.currentTimeMillis());
-            writeHashtags(hashtags);
+//            writeHashtags(hashtags);
             uploadThumbnail();
             DocumentReference docRef = db.collection("users").document(user.getUid());
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -281,6 +282,7 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
                         String downloadUri = uriTask.getResult().toString();
                         VideoSummary videoSummary = new VideoSummary(Id, downloadUri, new Long(0));
                         writeNewVideoSummary(videoSummary);
+                        writeHashtags(hashtags, videoSummary);
                         Log.i(TAG, "Upload thumbnail successfully");
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -341,29 +343,23 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
 
     }
 
-    private void writeHashtags(ArrayList<String> hashtags) {
-        ArrayList<String> videoIds = new ArrayList<>();
-        videoIds.add(Id);
-        Map<String, Object> docData = new HashMap<>();
-        docData.put("videoIds", videoIds);
+    private void writeHashtags(ArrayList<String> hashtags, VideoSummary video) {
+        Map<String, Object> videoValues = video.toMap();
          hashtags.forEach((hashtag) -> {
-            DocumentReference docRef = db.collection("hashtags").document(hashtag);
-                    docRef.get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                        docRef.update("videoIds", FieldValue.arrayUnion(Id));
-                                } else {
-                                    docRef.set(docData);
+            DocumentReference docRef = db.collection("hashtags").document(hashtag).collection("video_summaries").document(Id);
+                    docRef.set(videoValues)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "DocumentSnapshot successfully written!");
                                 }
-                            } else {
-                                Log.d(TAG, "Failed with: ", task.getException());
-                            }
-                        }
-                    });
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error writing document", e);
+                                }
+                            });
 
         });
     }
