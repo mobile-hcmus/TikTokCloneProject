@@ -149,7 +149,7 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
 
     @Override public void onStart() {
         super.onStart();
-//        loadVideos();
+        loadVideos();
     }
 
     @Override

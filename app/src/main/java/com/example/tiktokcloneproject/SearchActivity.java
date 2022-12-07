@@ -136,8 +136,6 @@ public class SearchActivity extends Activity {
     }
 
 
-
-
     @Override
     protected void onDestroy() {
 
@@ -202,15 +200,6 @@ public class SearchActivity extends Activity {
 
 
 
-    @Override
-    public void onBackPressed() {
-        if (!searchView.isIconified()){
-            searchView.setIconified(true);
-            return;
-        }
-        super.onBackPressed();
-
-    }
 
     private boolean checkIsFollowing(ArrayList<String> userIDFollowingList, String anotherUserID) {
         return userIDFollowingList.contains(anotherUserID);
