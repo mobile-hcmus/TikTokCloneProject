@@ -16,6 +16,9 @@ public class VideoSummary {
         this.watchCount = watchCount;
     }
 
+    public VideoSummary() {
+    }
+
     public String getVideoId() {
         return videoId;
     }

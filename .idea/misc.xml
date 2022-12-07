@@ -71,7 +71,7 @@
         <entry key="..\:/Mobile/TikTokCloneProject/app/src/main/res/layout/activity_phone_signup.xml" value="0.1" />
         <entry key="..\:/Mobile/TikTokCloneProject/app/src/main/res/layout/activity_signin_page.xml" value="0.1078125" />
         <entry key="..\:/Mobile/TikTokCloneProject/app/src/main/res/layout/fragment_waiting.xml" value="0.1" />
-        <entry key="..\:/TikTok/app/src/main/res/drawable/btn_add_shape.xml" value="0.14666666666666667" />
+        <entry key="..\:/TikTok/app/src/main/res/drawable/btn_add_shape.xml" value="0.12" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/btn_red_shape.xml" value="0.1485" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/btn_white_shape.xml" value="0.1485" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/click_shape.xml" value="0.1" />
@@ -80,6 +80,7 @@
         <entry key="..\:/TikTok/app/src/main/res/drawable/ic_home.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/ic_inbox.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/ic_next.xml" value="0.1485" />
+        <entry key="..\:/TikTok/app/src/main/res/drawable/ic_phone.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/ic_profile.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/ic_search.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/ic_upload.xml" value="0.1485" />
@@ -95,6 +96,7 @@
         <entry key="..\:/TikTok/app/src/main/res/layout/activity_phone_signin.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/layout/activity_phone_signup.xml" value="0.22" />
         <entry key="..\:/TikTok/app/src/main/res/layout/activity_profile.xml" value="0.1" />
+        <entry key="..\:/TikTok/app/src/main/res/layout/activity_searching.xml" value="0.16666666666666666" />
         <entry key="..\:/TikTok/app/src/main/res/layout/activity_signin_choice.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/layout/activity_signin_page.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/layout/activity_signup_choice.xml" value="0.16666666666666666" />
@@ -102,6 +104,8 @@
         <entry key="..\:/TikTok/app/src/main/res/layout/message.xml" value="0.10520833333333333" />
         <entry key="..\:/TikTok/app/src/main/res/layout/notification_row.xml" value="0.14666666666666667" />
         <entry key="..\:/TikTok/app/src/main/res/layout/video_container.xml" value="0.17552083333333332" />
+        <entry key="..\:/TikTok/app/src/main/res/layout/video_summary_item.xml" value="0.1" />
+        <entry key="..\:/TikTok/app/src/main/res/menu/main_menu.xml" value="0.1" />
       </map>
     </option>
   </component>
