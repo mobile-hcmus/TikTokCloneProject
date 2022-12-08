@@ -35,6 +35,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     private final static String TAG = "NavigationFragment";
     private String avatarUri;
 
+
     public static NavigationFragment newInstance(String strArg) {
         NavigationFragment fragment = new NavigationFragment();
         Bundle args = new Bundle();

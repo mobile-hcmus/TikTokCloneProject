@@ -1,10 +1,6 @@
 package com.example.tiktokcloneproject;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import static android.content.ContentValues.TAG;
 
 import android.app.Dialog;
 import android.content.ClipData;
@@ -20,18 +16,29 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.example.tiktokcloneproject.adapters.VideoAdapter;
 import com.example.tiktokcloneproject.adapters.VideoSummaryAdapter;
+import com.example.tiktokcloneproject.model.Video;
 import com.example.tiktokcloneproject.model.VideoSummary;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -42,10 +49,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -56,8 +66,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ProfileActivity extends FragmentActivity implements View.OnClickListener{
-    private TextView txvFollowing, txvFollowers, txvLikes, txvUserName;
+public class ProfileFragment extends Fragment implements View.OnClickListener {
+    private Context context = null;
+    private TextView txvFollowing, txvFollowers, txvLikes, txvUserName, txvMenu;
     private EditText edtBio;
     private Button btn, btnEditProfile;
     private LinearLayout llFollowing, llFollowers;
@@ -76,41 +87,54 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
     RecyclerView recVideoSummary;
     ArrayList<VideoSummary> videoSummaries;
 
+    public static ProfileFragment newInstance(String strArg,  String profileLinkId) {
+        ProfileFragment fragment = new ProfileFragment();
+        Bundle args = new Bundle();
+        args.putString("name", strArg);
+        args.putString("id", profileLinkId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_bottom);
-        setContentView(R.layout.activity_profile);
-        Intent intent = getIntent();
+        Bundle idBundle = getArguments();
+        userId = idBundle.getString("id");
+        try {
+            context = getActivity(); // use this reference to invoke main callbacks
+        }
+        catch (IllegalStateException e) {
+            throw new IllegalStateException();
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+// inflate res/layout_blue.xml to make GUI holding a TextView and a ListView
+        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_profile, null);
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-        if (intent.getExtras() != null) {
-            if (intent.hasExtra("id")) {
-                userId = intent.getStringExtra("id");
-            } else {
-                String action = intent.getAction();
-                Uri data = intent.getData();
-                List<String> segmentsList = data.getPathSegments();
-                userId = segmentsList.get(segmentsList.size() - 1);
-            }
-        } else {
+        if (userId == "") {
             userId =  user.getUid();
-
         }
-        setContentView(R.layout.activity_profile);
-        txvFollowing = (TextView)findViewById(R.id.text_following);
-        txvFollowers = (TextView)findViewById(R.id.text_followers);
-        txvLikes = (TextView)findViewById(R.id.text_likes);
-        txvUserName = (TextView)findViewById(R.id.txv_username);
-        edtBio = (EditText)findViewById(R.id.edt_bio);
-        btnEditProfile =(Button)findViewById(R.id.button_edit_profile);
-        imvAvatarProfile = (ImageView) findViewById(R.id.imvAvatarProfile);
-        llFollowers = (LinearLayout) findViewById(R.id.ll_followers);
-        llFollowing = (LinearLayout) findViewById(R.id.ll_following);
-        recVideoSummary = (RecyclerView)findViewById(R.id.recycle_view_video_summary);
+
+        txvFollowing = (TextView)layout.findViewById(R.id.text_following);
+        txvFollowers = (TextView)layout.findViewById(R.id.text_followers);
+        txvLikes = (TextView)layout.findViewById(R.id.text_likes);
+        txvUserName = (TextView)layout.findViewById(R.id.txv_username);
+        txvMenu = (TextView)layout.findViewById(R.id.text_menu);
+        edtBio = (EditText)layout.findViewById(R.id.edt_bio);
+        btnEditProfile =(Button)layout.findViewById(R.id.button_edit_profile);
+        imvAvatarProfile = (ImageView) layout.findViewById(R.id.imvAvatarProfile);
+        llFollowers = (LinearLayout) layout.findViewById(R.id.ll_followers);
+        llFollowing = (LinearLayout) layout.findViewById(R.id.ll_following);
+        recVideoSummary = (RecyclerView)layout.findViewById(R.id.recycle_view_video_summary);
 
         llFollowers.setOnClickListener(this);
         llFollowing.setOnClickListener(this);
+        txvMenu.setOnClickListener(this);
+        imvAvatarProfile.setOnClickListener(this);
 //        avatarUri = getIntent().getParcelableExtra("uri");
 
         imvAvatarProfile.setImageURI(avatarUri);
@@ -129,7 +153,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
             {
 
                 //vào profile của mình
-                btn = (Button)findViewById(R.id.button_edit_profile);
+                btn = (Button)layout.findViewById(R.id.button_edit_profile);
                 edtBio.setVisibility(View.VISIBLE);
                 btn.setVisibility(View.VISIBLE);
 
@@ -155,9 +179,9 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
                     @Override
                     public void onFocusChange(View view, boolean b) {
                         if (b) {
-                            findViewById(R.id.layout_bio).setVisibility(View.VISIBLE);
+                            layout.findViewById(R.id.layout_bio).setVisibility(View.VISIBLE);
                         } else {
-                            findViewById(R.id.layout_bio).setVisibility(View.GONE);
+                            layout.findViewById(R.id.layout_bio).setVisibility(View.GONE);
                         }
                     }
                 });
@@ -174,15 +198,17 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
 
 
         videoSummaries = new ArrayList<VideoSummary>();
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3);
         recVideoSummary.setLayoutManager(gridLayoutManager);
-        recVideoSummary.addItemDecoration(new GridSpacingItemDecoration(3, 10, true));
+        recVideoSummary.addItemDecoration(new ProfileFragment.GridSpacingItemDecoration(3, 10, true));
         setVideoSummaries();
-    }//on create
+
+        return layout;
+    }
 
     private void handleFollow() {
         //bio cần set lại là text vỉew
-        btn = (Button)findViewById(R.id.button_follow);
+        btn = (Button)getView().findViewById(R.id.button_follow);
         btn.setVisibility(View.VISIBLE);
         db  = FirebaseFirestore.getInstance();
         docRef = db.collection("profiles").document(userId);
@@ -231,7 +257,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intentMain = new Intent(ProfileActivity.this, MainActivity.class);
+                    Intent intentMain = new Intent(context, MainActivity.class);
                     startActivity(intentMain);
                 }
             });
@@ -254,7 +280,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
                             if (videoSummaries.size() == 0) {
                                 return;
                             }
-                            VideoSummaryAdapter videoSummaryAdapter =new VideoSummaryAdapter(getApplicationContext(), videoSummaries);
+                            VideoSummaryAdapter videoSummaryAdapter =new VideoSummaryAdapter(context, videoSummaries);
                             recVideoSummary.setAdapter(videoSummaryAdapter);
                         } else {
                             Log.d("error", "Error getting documents: ", task.getException());
@@ -262,6 +288,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
                     }
                 });
     }
+
 
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
@@ -298,9 +325,8 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
         }
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
+    @Override public void onStart() {
+        super.onStart();
     }
 
     void updateBio() {
@@ -308,7 +334,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
         oldBioText = edtBio.getText().toString();
     }
 
-
+    @Override
     public void onClick(View v) {
         if (v.getId() == R.id.text_menu) {
             showDialog();
@@ -326,7 +352,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
             return;
         }
         if (v.getId() == R.id.btn_temporary) {
-            Intent intent = new Intent(ProfileActivity.this, HomeScreenActivity.class);
+            Intent intent = new Intent(context, HomeScreenActivity.class);
             startActivity(intent);
             return;
         }
@@ -338,36 +364,36 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
 
         if(v.getId() == R.id.btn_update_bio) {
             updateBio();
-            findViewById(R.id.layout_bio).setVisibility(View.GONE);
-            View current = getCurrentFocus();
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            getView().findViewById(R.id.layout_bio).setVisibility(View.GONE);
+            View current = getActivity().getCurrentFocus();
+            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(current.getWindowToken(), 0);
             if (current != null) current.clearFocus();
         }
         if(v.getId() == R.id.btn_cancel_update_bio) {
             edtBio.setText(oldBioText);
-            findViewById(R.id.layout_bio).setVisibility(View.GONE);
-            View current = getCurrentFocus();
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            getView().findViewById(R.id.layout_bio).setVisibility(View.GONE);
+            View current = getActivity().getCurrentFocus();
+            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(current.getWindowToken(), 0);
             if (current != null) current.clearFocus();
         }
         if (v.getId() == llFollowers.getId()) {
-            Intent intent = new Intent(ProfileActivity.this, FollowListActivity.class);
+            Intent intent = new Intent(context, FollowListActivity.class);
             intent.putExtra("pageIndex", 1);
 
             startActivity(intent);
         }
         if (v.getId() == llFollowing.getId()) {
-            Intent intent = new Intent(ProfileActivity.this, FollowListActivity.class);
+            Intent intent = new Intent(context, FollowListActivity.class);
             intent.putExtra("pageIndex", 0);
 
             startActivity(intent);
         }
-    }
 
+    }//on click
     private void showShareAccountDialog() {
-        final Dialog dialog = new Dialog(this);
+        final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.share_account_layout);
 
@@ -383,17 +409,17 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
         btnCopyURL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText("toptop-link", "http://toptoptoptop.com/" + user.getUid().toString());
                 clipboard.setPrimaryClip(clip);
-                Toast.makeText(ProfileActivity.this, "Profile link has been saved to clipboard", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Profile link has been saved to clipboard", Toast.LENGTH_SHORT).show();
             }
         });
 
         imvAvatarInSharedPlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ProfileActivity.this, FullScreenAvatarActivity.class);
+                Intent intent = new Intent(context, FullScreenAvatarActivity.class);
                 startActivity(intent);
             }
         });
@@ -412,7 +438,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
     }
 
     private void showDialog() {
-        final Dialog dialog = new Dialog(this);
+        final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.bottom_sheet_layout);
 
@@ -422,7 +448,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
         llSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ProfileActivity.this, SettingsAndPrivacyActivity.class);
+                Intent intent = new Intent(context, SettingsAndPrivacyActivity.class);
                 startActivity(intent);
             }
         });
@@ -431,7 +457,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
             public void onClick(View view) {
                 signOut(view);
 
-                finish();
+                getActivity().finish();
             }
         });
 
@@ -444,66 +470,32 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
     }
 
     public void signOut (View v)
+    {
+        FirebaseAuth.getInstance().signOut();
+        if(user.getPhoneNumber() == null)
         {
-            FirebaseAuth.getInstance().signOut();
-            if(user.getPhoneNumber() == null)
-            {
-                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken(getString(R.string.default_web_client_id))
-                        .requestEmail()
-                        .build();
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build();
 
-                GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-                mGoogleSignInClient.signOut();
-            }
-
-            Intent intent = new Intent(ProfileActivity.this, HomeScreenActivity.class);
-            startActivity(intent);
-
-            finish();
+            GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
+            mGoogleSignInClient.signOut();
         }
 
+        Intent intent = new Intent(context, HomeScreenActivity.class);
+        startActivity(intent);
+
+        getActivity().finish();
+    }
+
     private void moveToAnotherActivity(Class<?> cls) {
-        Intent intent = new Intent(ProfileActivity.this, cls);
+        Intent intent = new Intent(context, cls);
 
         startActivity(intent);
 
 
     }
-
-
-//    public Integer val;
-//    private int readFollow(String id,String type)
-//    {
-//
-//        DocumentReference docRef = db.collection("profiles").document(id);
-//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//                        //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-//                        val= (Integer) document.get(type);
-//
-//                    } else {
-//                        Log.d(TAG, "No such document");
-//                        val=0;
-//                    }
-//                } else {
-//                    Log.d(TAG, "get failed with ", task.getException());
-//                    val=0;
-//                }
-//            }
-//        });
-//
-//        return val;
-//    }
-//
-//    private void writeFollow()
-//    {
-//
-//    }
 
     private void handleUnfollowed() {
         btn.setText("Follow");
@@ -626,7 +618,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
 
         //chinh lai avatar user.getUid().toString()
@@ -649,5 +641,4 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
                     }
                 });
     }
-
 }
