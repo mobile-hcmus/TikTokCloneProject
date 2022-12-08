@@ -3,12 +3,15 @@ package com.example.tiktokcloneproject;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,7 +36,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class SearchActivity extends Activity {
+public class SearchActivity extends Activity implements View.OnClickListener {
 
 
      RecyclerView rcv_users;
@@ -45,6 +48,9 @@ public class SearchActivity extends Activity {
      VideoSummaryAdapter videoSummaryAdapter;
      RecyclerView rcvVideoSummary;
      Handler handler = new Handler();
+
+     ImageButton imbBackToHome;
+     TextView tvSubmitSearch;
 
     final String TAG = "SearchActivity";
      ArrayList <User> userArrayList=new ArrayList<User>();;
@@ -60,6 +66,8 @@ public class SearchActivity extends Activity {
         userArrayList.clear();
         db = FirebaseFirestore.getInstance();
 
+        imbBackToHome = (ImageButton) findViewById(R.id.imbBackToHome);
+        tvSubmitSearch = (TextView) findViewById(R.id.tvSubmitSearch);
 
 
         rcv_users=(RecyclerView) findViewById(R.id.rcv_users);
@@ -84,6 +92,9 @@ public class SearchActivity extends Activity {
         rcvVideoSummary.setLayoutManager(gridLayoutManager);
         rcvVideoSummary.addItemDecoration(new SearchActivity.GridSpacingItemDecoration(3, 10, true));
         rcvVideoSummary.setAdapter(videoSummaryAdapter);
+
+        imbBackToHome.setOnClickListener(this);
+        tvSubmitSearch.setOnClickListener(this);
 
         searchView = (SearchView) findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -117,7 +128,6 @@ public class SearchActivity extends Activity {
                     }
                     else {
                         getData(newText);
-                        userAdapter.notifyDataSetChanged();
                     }
                 }
                 else {
@@ -182,9 +192,9 @@ public class SearchActivity extends Activity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 userArrayList.add(new User(document.getString("userId"),document.getString("userName")));
-
+                                userAdapter.notifyItemInserted(userArrayList.size() - 1);
                             };
-                            userAdapter.notifyDataSetChanged();
+
                         } else {
                             Toast.makeText(SearchActivity.this,"Loi ket noi voi Server!",
                                     Toast.LENGTH_LONG).show();
@@ -224,6 +234,18 @@ public class SearchActivity extends Activity {
                             }
                         }
                     });
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == imbBackToHome.getId()) {
+            Intent intent = new Intent(SearchActivity.this, HomeScreenActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+        if(view.getId() == tvSubmitSearch.getId()) {
+            searchView.clearFocus();
+        }
     }
 
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {

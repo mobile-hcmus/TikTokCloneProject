@@ -19,6 +19,7 @@
         android:layout_marginHorizontal="4dp">
 
         <ImageButton
+            android:id="@+id/imbBackToHome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_back"
@@ -42,9 +43,10 @@
             <requestFocus />
         </androidx.appcompat.widget.SearchView>
         <TextView
+            android:id="@+id/tvSubmitSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search"
+            android:text="@string/search"
             android:fontFamily="@font/montserrat_bold"
             android:textColor="@color/tiktok_red"
             android:clickable="true"

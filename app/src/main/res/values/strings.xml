@@ -43,6 +43,7 @@
     <string name="for_you">For you</string>
     <string name="hint_description">Enter your description</string>
     <string name="post">Post</string>
+    <string name="search">Search</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="template_follow">started following you</string>
