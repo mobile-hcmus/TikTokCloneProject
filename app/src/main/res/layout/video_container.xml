@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,32 +9,31 @@
         android:id="@+id/videoView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintVertical_bias="1.0"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
         />
     <ProgressBar
         android:id="@+id/pgbWait"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_width="50dp"
-        android:layout_height="50dp"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imvPause"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ic_pause"
+        android:visibility="gone"/>
     <LinearLayout
         android:id="@+id/linearLayout"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.888"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+       >
         <LinearLayout
             android:layout_weight="1"
             android:orientation="vertical"
@@ -55,7 +55,9 @@
                 android:shadowDy="0"
                 android:shadowRadius="15"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_bold"
+                />
             <TextView
                 android:id="@+id/txvDescription"
                 android:layout_width="match_parent"
@@ -68,7 +70,8 @@
                 android:shadowRadius="15"
                 android:text="@string/app_name"
                 android:textColor="#fff"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:fontFamily="@font/montserrat_medium"/>
 
         </LinearLayout>
         <LinearLayout
@@ -77,31 +80,52 @@
             android:gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <ImageView
-                android:src="@drawable/ic_person_pin"
-                android:layout_gravity="end"
-                android:padding="2dp"
-                android:layout_marginEnd="18dp"
+            <androidx.cardview.widget.CardView
                 android:layout_width="40dp"
-                android:layout_height="40dp"/>
-            <ImageView
-                android:id="@+id/imvFavorites"
-                android:src="@drawable/ic_favorite"
+                android:layout_height="40dp"
+                app:cardCornerRadius="50dp"
+                android:layout_marginEnd="18dp"
+                android:layout_marginBottom="5dp"
+                android:elevation="10dp"
+                >
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/imvAvatar"
+                    android:src="@mipmap/ic_launcher"
+                    android:layout_gravity="end"
+                    android:scaleType="centerCrop"/>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tvFavorites"
+                android:background="@color/transparent"
+                android:drawableTop="@drawable/ic_favorite"
+                android:layout_gravity="end"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="18dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="0"
+                android:gravity="center_horizontal"
+                android:textColor="@color/tiktok_white"
+                android:fontFamily="@font/montserrat_medium"
+                />
+            <TextView
+                android:id="@+id/tvComment"
+                android:drawableTop="@drawable/ic_comment"
                 android:layout_gravity="end"
                 android:padding="2dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="18dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"/>
-            <ImageView
-                android:id="@+id/imvComment"
-                android:src="@drawable/ic_comment"
-                android:layout_gravity="end"
-                android:padding="2dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="18dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="0"
+                android:gravity="center_horizontal"
+                android:textColor="@color/tiktok_white"
+                android:fontFamily="@font/montserrat_medium"/>
             <ImageView
                 android:src="@drawable/ic_share"
                 android:layout_gravity="end"
@@ -127,4 +151,4 @@
     </LinearLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

@@ -1,15 +1,11 @@
 package com.example.tiktokcloneproject;
 
-import androidx.annotation.DimenRes;
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -22,8 +18,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -37,17 +31,8 @@ import android.widget.TextView;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.tiktokcloneproject.adapters.UserAdapter;
 import com.example.tiktokcloneproject.adapters.VideoSummaryAdapter;
-import com.example.tiktokcloneproject.model.Video;
 import com.example.tiktokcloneproject.model.VideoSummary;
-import com.google.android.gms.auth.api.identity.BeginSignInRequest;
-import com.google.android.gms.auth.api.identity.BeginSignInResult;
-import com.google.android.gms.auth.api.identity.GetPhoneNumberHintIntentRequest;
-import com.google.android.gms.auth.api.identity.GetSignInIntentRequest;
-import com.google.android.gms.auth.api.identity.SignInClient;
-import com.google.android.gms.auth.api.identity.SignInCredential;
-import com.google.android.gms.auth.api.identity.zbn;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -65,8 +50,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,7 +77,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
     ArrayList<VideoSummary> videoSummaries;
 
     FragmentTransaction ft;
-    FragmentNavigation navigation;
+    NavigationFragment navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +123,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
 
 
         ft = getSupportFragmentManager().beginTransaction();
-        navigation = FragmentNavigation.newInstance("navigation");
+        navigation = NavigationFragment.newInstance("navigation");
         ft.replace(R.id.flNavigation, navigation);
         ft.commit();
         //set nút follow/edit profile

@@ -2,19 +2,13 @@ package com.example.tiktokcloneproject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.tiktokcloneproject.adapters.NotificationAdapter;
 import com.example.tiktokcloneproject.model.Notification;
@@ -26,10 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class InboxActivity extends FragmentActivity {
     private final String TAG = "InboxActivity";
@@ -39,7 +30,7 @@ public class InboxActivity extends FragmentActivity {
     private ArrayList<Notification> notifications;
 
     FragmentTransaction ft;
-    FragmentNavigation navigation;
+    NavigationFragment navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +46,7 @@ public class InboxActivity extends FragmentActivity {
         lvNotifications.setAdapter(adapter);
 
         ft = getSupportFragmentManager().beginTransaction();
-        navigation = FragmentNavigation.newInstance("navigation");
+        navigation = NavigationFragment.newInstance("navigation");
         ft.replace(R.id.flNavigation, navigation);
         ft.commit();
 

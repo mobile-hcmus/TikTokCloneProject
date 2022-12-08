@@ -4,6 +4,6 @@
     android:viewportWidth="40"
     android:viewportHeight="40">
   <path
-      android:fillColor="#FF000000"
-      android:pathData="M15,31.667 L3.333,20 15,8.333l1.958,1.959 -8.333,8.333h28.042v2.75H8.625l8.333,8.333Z"/>
+      android:fillColor="@color/tiktok_white"
+      android:pathData="M13.333,31.583V8.25l18.334,11.667Z"/>
 </vector>

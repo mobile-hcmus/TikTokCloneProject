@@ -66,7 +66,7 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
     private FragmentTransaction ft;
     private FragmentManager fm;
 
-    String username, authorAvatarId;
+    String username;
 
     Uri videoUri;
 //    final float maximumResolution = 1280 * 720; //720p
@@ -106,7 +106,6 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
         db = FirebaseFirestore.getInstance();
 
         fm = getSupportFragmentManager();
-
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -194,15 +193,14 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
             Id = String.valueOf(System.currentTimeMillis());
 //            writeHashtags(hashtags);
             uploadThumbnail();
-            DocumentReference docRef = db.collection("users").document(user.getUid());
+            DocumentReference docRef = db.collection("profiles").document(user.getUid());
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            authorAvatarId = document.get("authorAvatarId", String.class);
-                            username = document.get("username", String.class);
+                            username = document.get("userName", String.class);
                             if(videoUri != null) {
                                 handler.post(DescriptionVideoActivity.this::uploadVideo);
                             }
@@ -240,7 +238,7 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
                     // get the link of video
                     String downloadUri = uriTask.getResult().toString();
                     String description = edtDescription.getText().toString().trim();
-                    Video video = new Video(Id, downloadUri,user.getUid(), username, authorAvatarId, description, hashtags);
+                    Video video = new Video(Id, downloadUri, user.getUid(), username, description);
                     writeNewVideo(video);
                     // When done, update the notification one more time to remove the progress bar
                     mBuilder.setContentText("Upload complete")
