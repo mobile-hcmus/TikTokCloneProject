@@ -1,0 +1,196 @@
+Index: app/src/main/res/layout/video_container.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<RelativeLayout\r\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    android:background=\"@color/black\">\r\n    <VideoView\r\n        android:id=\"@+id/videoView\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\"\r\n        android:layout_alignParentTop=\"true\"\r\n        android:layout_alignParentBottom=\"true\"\r\n        android:layout_alignParentEnd=\"true\"\r\n        android:layout_alignParentStart=\"true\"\r\n        />\r\n    <ProgressBar\r\n        android:id=\"@+id/pgbWait\"\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_centerInParent=\"true\"\r\n        />\r\n    <ImageView\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:id=\"@+id/imvPause\"\r\n        android:layout_centerInParent=\"true\"\r\n        android:src=\"@drawable/ic_pause\"\r\n        android:visibility=\"gone\"/>\r\n    <LinearLayout\r\n        android:id=\"@+id/linearLayout\"\r\n        android:orientation=\"horizontal\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_alignParentBottom=\"true\"\r\n       >\r\n        <LinearLayout\r\n            android:layout_weight=\"1\"\r\n            android:orientation=\"vertical\"\r\n            android:gravity=\"bottom\"\r\n            android:layout_gravity=\"bottom\"\r\n            android:layout_marginBottom=\"10dp\"\r\n            android:layout_width=\"0dp\"\r\n            android:layout_height=\"wrap_content\">\r\n            <TextView\r\n                android:id=\"@+id/txvTitle\"\r\n                android:paddingStart=\"9dp\"\r\n                android:paddingTop=\"5dp\"\r\n                android:paddingEnd=\"5dp\"\r\n                android:text=\"@string/app_name\"\r\n                android:textColor=\"@color/white\"\r\n                android:textSize=\"25sp\"\r\n                android:textStyle=\"bold\"\r\n                android:shadowDx=\"0\"\r\n                android:shadowDy=\"0\"\r\n                android:shadowRadius=\"15\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:fontFamily=\"@font/montserrat_bold\"\r\n                />\r\n            <TextView\r\n                android:id=\"@+id/txvDescription\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:paddingStart=\"5dp\"\r\n                android:paddingTop=\"5dp\"\r\n                android:paddingEnd=\"5dp\"\r\n                android:shadowDx=\"0\"\r\n                android:shadowDy=\"0\"\r\n                android:shadowRadius=\"15\"\r\n                android:text=\"@string/app_name\"\r\n                android:textColor=\"#fff\"\r\n                android:textSize=\"16sp\"\r\n                android:fontFamily=\"@font/montserrat_medium\"/>\r\n\r\n        </LinearLayout>\r\n        <LinearLayout\r\n            android:orientation=\"vertical\"\r\n            android:layout_gravity=\"end\"\r\n            android:gravity=\"end\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\">\r\n            <androidx.cardview.widget.CardView\r\n                android:layout_width=\"40dp\"\r\n                android:layout_height=\"40dp\"\r\n                app:cardCornerRadius=\"50dp\"\r\n                android:layout_marginEnd=\"18dp\"\r\n                android:layout_marginBottom=\"5dp\"\r\n                android:elevation=\"10dp\"\r\n                >\r\n                <ImageView\r\n                    android:layout_width=\"match_parent\"\r\n                    android:layout_height=\"match_parent\"\r\n                    android:id=\"@+id/imvAvatar\"\r\n                    android:src=\"@mipmap/ic_launcher\"\r\n                    android:layout_gravity=\"end\"\r\n                    android:scaleType=\"centerCrop\"/>\r\n            </androidx.cardview.widget.CardView>\r\n\r\n            <TextView\r\n                android:id=\"@+id/tvFavorites\"\r\n                android:background=\"@color/transparent\"\r\n                android:drawableTop=\"@drawable/ic_favorite\"\r\n                android:layout_gravity=\"end\"\r\n                android:layout_marginTop=\"5dp\"\r\n                android:layout_marginEnd=\"18dp\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:clickable=\"true\"\r\n                android:text=\"0\"\r\n                android:gravity=\"center_horizontal\"\r\n                android:textColor=\"@color/tiktok_white\"\r\n                android:fontFamily=\"@font/montserrat_medium\"\r\n                />\r\n            <TextView\r\n                android:id=\"@+id/tvComment\"\r\n                android:drawableTop=\"@drawable/ic_comment\"\r\n                android:layout_gravity=\"end\"\r\n                android:padding=\"2dp\"\r\n                android:layout_marginTop=\"5dp\"\r\n                android:layout_marginEnd=\"18dp\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"wrap_content\"\r\n                android:clickable=\"true\"\r\n                android:text=\"0\"\r\n                android:gravity=\"center_horizontal\"\r\n                android:textColor=\"@color/tiktok_white\"\r\n                android:fontFamily=\"@font/montserrat_medium\"/>\r\n            <ImageView\r\n                android:src=\"@drawable/ic_share\"\r\n                android:layout_gravity=\"end\"\r\n                android:padding=\"6dp\"\r\n                android:layout_marginTop=\"5dp\"\r\n                android:layout_marginEnd=\"18dp\"\r\n                android:layout_width=\"40dp\"\r\n                android:layout_height=\"40dp\"/>\r\n            <ImageView\r\n                android:src=\"@drawable/ic_more\"\r\n                android:layout_gravity=\"end\"\r\n                android:padding=\"2dp\"\r\n                android:layout_marginTop=\"5dp\"\r\n                android:layout_marginEnd=\"18dp\"\r\n                android:layout_width=\"40dp\"\r\n                android:layout_height=\"40dp\"/>\r\n\r\n\r\n        </LinearLayout>\r\n\r\n\r\n\r\n    </LinearLayout>\r\n\r\n\r\n</RelativeLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/video_container.xml b/app/src/main/res/layout/video_container.xml
+--- a/app/src/main/res/layout/video_container.xml	(revision 6370f96c533daaa193aeaa1f2812e98e45153fe5)
++++ b/app/src/main/res/layout/video_container.xml	(date 1670503572871)
+@@ -5,15 +5,15 @@
+     android:layout_height="match_parent"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     android:background="@color/black">
++
+     <VideoView
+         android:id="@+id/videoView"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
++        android:layout_alignParentStart="true"
+         android:layout_alignParentTop="true"
+-        android:layout_alignParentBottom="true"
+         android:layout_alignParentEnd="true"
+-        android:layout_alignParentStart="true"
+-        />
++        android:layout_alignParentBottom="true" />
+     <ProgressBar
+         android:id="@+id/pgbWait"
+         android:layout_width="wrap_content"
+@@ -43,7 +43,7 @@
+             android:layout_width="0dp"
+             android:layout_height="wrap_content">
+             <TextView
+-                android:id="@+id/txvTitle"
++                android:id="@+id/tvTitle"
+                 android:paddingStart="9dp"
+                 android:paddingTop="5dp"
+                 android:paddingEnd="5dp"
+@@ -54,9 +54,10 @@
+                 android:shadowDx="0"
+                 android:shadowDy="0"
+                 android:shadowRadius="15"
+-                android:layout_width="match_parent"
++                android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:fontFamily="@font/montserrat_bold"
++                android:clickable="true"
+                 />
+             <TextView
+                 android:id="@+id/txvDescription"
+@@ -85,7 +86,7 @@
+                 android:layout_height="40dp"
+                 app:cardCornerRadius="50dp"
+                 android:layout_marginEnd="18dp"
+-                android:layout_marginBottom="5dp"
++                android:layout_marginBottom="10dp"
+                 android:elevation="10dp"
+                 >
+                 <ImageView
+Index: app/src/main/java/com/example/tiktokcloneproject/adapters/VideoAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.tiktokcloneproject.adapters;\r\n\r\nimport android.animation.ObjectAnimator;\r\nimport android.annotation.SuppressLint;\r\nimport android.content.Context;\r\nimport android.content.Intent;\r\nimport android.graphics.Bitmap;\r\nimport android.graphics.BitmapFactory;\r\nimport android.media.MediaPlayer;\r\nimport android.net.Uri;\r\nimport android.os.Bundle;\r\nimport android.view.LayoutInflater;\r\nimport android.view.MotionEvent;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.view.animation.AccelerateDecelerateInterpolator;\r\nimport android.widget.ImageView;\r\nimport android.widget.MediaController;\r\nimport android.widget.ProgressBar;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\nimport android.widget.VideoView;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\n\r\nimport com.example.tiktokcloneproject.CommentActivity;\r\nimport com.example.tiktokcloneproject.ProfileActivity;\r\nimport com.example.tiktokcloneproject.R;\r\nimport com.example.tiktokcloneproject.model.Video;\r\nimport com.google.android.gms.tasks.OnFailureListener;\r\nimport com.google.android.gms.tasks.OnSuccessListener;\r\nimport com.google.firebase.storage.FirebaseStorage;\r\nimport com.google.firebase.storage.StorageReference;\r\n\r\nimport java.util.List;\r\n\r\npublic class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {\r\n\r\n    private List<Video> videos;\r\n    Context context;\r\n\r\n    public VideoAdapter(Context context, List<Video> videos) {\r\n        this.context = context;\r\n        this.videos = videos;\r\n    }\r\n\r\n    public void addVideoObject(Video video) {\r\n        this.videos.add(video);\r\n    }\r\n\r\n    @NonNull\r\n    @Override\r\n    public VideoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {\r\n        return new VideoViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.video_container, parent, false ));\r\n    }\r\n\r\n    @Override\r\n    public void onBindViewHolder(@NonNull VideoViewHolder holder, int position) {\r\n\r\n        holder.setVideoObjects(videos.get(position));\r\n    }\r\n\r\n    @Override\r\n    public int getItemCount() {\r\n        return videos.size();\r\n    }\r\n\r\n    static class VideoViewHolder extends RecyclerView.ViewHolder {\r\n\r\n        VideoView videoView;\r\n        ImageView imvAvatar, imvPause;\r\n        TextView txvDescription, txvTitle;\r\n        TextView tvComment, tvFavorites;\r\n        ProgressBar pgbWait;\r\n\r\n\r\n        public VideoViewHolder(@NonNull View itemView) {\r\n            super(itemView);\r\n            videoView = itemView.findViewById(R.id.videoView);\r\n            txvTitle = itemView.findViewById(R.id.txvTitle);\r\n            txvDescription = itemView.findViewById(R.id.txvDescription);\r\n            tvComment = itemView.findViewById(R.id.tvComment);\r\n            tvFavorites = itemView.findViewById(R.id.tvFavorites);\r\n            imvAvatar = itemView.findViewById(R.id.imvAvatar);\r\n            imvPause = itemView.findViewById(R.id.imvPause);\r\n            pgbWait = itemView.findViewById(R.id.pgbWait);\r\n\r\n        }\r\n\r\n        @SuppressLint(\"ClickableViewAccessibility\")\r\n        public void setVideoObjects(final Video videoObjects) {\r\n            txvTitle.setText(\"@\" + videoObjects.getUsername());\r\n            txvDescription.setText(videoObjects.getDescription());\r\n            videoView.setVideoPath(videoObjects.getVideoUri());\r\n\r\n            FirebaseStorage storage = FirebaseStorage.getInstance();\r\n            StorageReference storageRef = storage.getReference();\r\n            StorageReference download = storageRef.child(\"/user_avatars\").child(videoObjects.getAuthorId());\r\n//                        StorageReference download = storageRef.child(userId.toString());\r\n            long MAX_BYTE = 1024*1024;\r\n            download.getBytes(MAX_BYTE)\r\n                    .addOnSuccessListener(new OnSuccessListener<byte[]>() {\r\n                        @Override\r\n                        public void onSuccess(byte[] bytes) {\r\n                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);\r\n                            imvAvatar.setImageBitmap(bitmap);\r\n                        }\r\n                    })\r\n                    .addOnFailureListener(new OnFailureListener() {\r\n                        @Override\r\n                        public void onFailure(@NonNull Exception e) {\r\n                            // Do nothing\r\n                        }\r\n                    });\r\n\r\n            videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {\r\n                @Override\r\n                public void onPrepared(MediaPlayer mediaPlayer) {\r\n                    pgbWait.setVisibility(View.GONE);\r\n                    mediaPlayer.start();\r\n                }\r\n            });\r\n\r\n            videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {\r\n                @Override\r\n                public void onCompletion(MediaPlayer mediaPlayer) {\r\n                    Toast.makeText(videoView.getContext(), \"Finish\", Toast.LENGTH_SHORT).show();\r\n                }\r\n            });\r\n            videoView.setOnTouchListener(new View.OnTouchListener() {\r\n                @Override\r\n                public boolean onTouch(View view, MotionEvent motionEvent) {\r\n                    if(videoView.isPlaying()) {\r\n                        videoView.pause();\r\n                        imvPause.setVisibility(View.VISIBLE);\r\n                        return false;\r\n                    }\r\n                    else {\r\n                        imvPause.setVisibility(View.GONE);\r\n                        videoView.start();\r\n                        return false;\r\n                    }\r\n                }\r\n            });\r\n\r\n           tvComment.setOnClickListener(new View.OnClickListener() {\r\n                @Override\r\n                public void onClick(View view) {\r\n                Intent intent = new Intent(view.getContext(), CommentActivity.class);\r\n                Bundle bundle = new Bundle();\r\n                bundle.putString(\"videoId\", videoObjects.getVideoId());\r\n                intent.putExtras(bundle);\r\n                view.getContext().startActivity(intent);\r\n                }\r\n            });\r\n        }\r\n    } // class ViewHolder\r\n\r\n\r\n}// class adapter\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/tiktokcloneproject/adapters/VideoAdapter.java b/app/src/main/java/com/example/tiktokcloneproject/adapters/VideoAdapter.java
+--- a/app/src/main/java/com/example/tiktokcloneproject/adapters/VideoAdapter.java	(revision 6370f96c533daaa193aeaa1f2812e98e45153fe5)
++++ b/app/src/main/java/com/example/tiktokcloneproject/adapters/VideoAdapter.java	(date 1670503802741)
+@@ -70,7 +70,7 @@
+ 
+         VideoView videoView;
+         ImageView imvAvatar, imvPause;
+-        TextView txvDescription, txvTitle;
++        TextView txvDescription, tvTitle;
+         TextView tvComment, tvFavorites;
+         ProgressBar pgbWait;
+ 
+@@ -78,7 +78,7 @@
+         public VideoViewHolder(@NonNull View itemView) {
+             super(itemView);
+             videoView = itemView.findViewById(R.id.videoView);
+-            txvTitle = itemView.findViewById(R.id.txvTitle);
++            tvTitle = itemView.findViewById(R.id.tvTitle);
+             txvDescription = itemView.findViewById(R.id.txvDescription);
+             tvComment = itemView.findViewById(R.id.tvComment);
+             tvFavorites = itemView.findViewById(R.id.tvFavorites);
+@@ -90,29 +90,11 @@
+ 
+         @SuppressLint("ClickableViewAccessibility")
+         public void setVideoObjects(final Video videoObjects) {
+-            txvTitle.setText("@" + videoObjects.getUsername());
++            tvTitle.setText("@" + videoObjects.getUsername());
+             txvDescription.setText(videoObjects.getDescription());
+             videoView.setVideoPath(videoObjects.getVideoUri());
+ 
+-            FirebaseStorage storage = FirebaseStorage.getInstance();
+-            StorageReference storageRef = storage.getReference();
+-            StorageReference download = storageRef.child("/user_avatars").child(videoObjects.getAuthorId());
+-//                        StorageReference download = storageRef.child(userId.toString());
+-            long MAX_BYTE = 1024*1024;
+-            download.getBytes(MAX_BYTE)
+-                    .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+-                        @Override
+-                        public void onSuccess(byte[] bytes) {
+-                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);
+-                            imvAvatar.setImageBitmap(bitmap);
+-                        }
+-                    })
+-                    .addOnFailureListener(new OnFailureListener() {
+-                        @Override
+-                        public void onFailure(@NonNull Exception e) {
+-                            // Do nothing
+-                        }
+-                    });
++            String authorId = videoObjects.getAuthorId();
+ 
+             videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                 @Override
+@@ -144,7 +126,28 @@
+                 }
+             });
+ 
+-           tvComment.setOnClickListener(new View.OnClickListener() {
++            FirebaseStorage storage = FirebaseStorage.getInstance();
++            StorageReference storageRef = storage.getReference();
++            StorageReference download = storageRef.child("/user_avatars").child(videoObjects.getAuthorId());
++//                        StorageReference download = storageRef.child(userId.toString());
++            long MAX_BYTE = 1024*1024;
++            download.getBytes(MAX_BYTE)
++                    .addOnSuccessListener(new OnSuccessListener<byte[]>() {
++                        @Override
++                        public void onSuccess(byte[] bytes) {
++                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);
++                            imvAvatar.setImageBitmap(bitmap);
++                        }
++                    })
++                    .addOnFailureListener(new OnFailureListener() {
++                        @Override
++                        public void onFailure(@NonNull Exception e) {
++                            // Do nothing
++                        }
++                    });
++
++
++            tvComment.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View view) {
+                 Intent intent = new Intent(view.getContext(), CommentActivity.class);
+@@ -154,6 +157,28 @@
+                 view.getContext().startActivity(intent);
+                 }
+             });
++
++           imvAvatar.setOnClickListener(new View.OnClickListener() {
++               @Override
++               public void onClick(View view) {
++                   moveToProfile(videoView.getContext(), authorId);
++               }
++           });
++
++           tvTitle.setOnClickListener(new View.OnClickListener() {
++               @Override
++               public void onClick(View view) {
++                   moveToProfile(videoView.getContext(), authorId);
++               }
++           });
++        }
++
++        private void moveToProfile(Context context, String authorId) {
++            Intent intent=new Intent(context, ProfileActivity.class);
++            Bundle bundle = new Bundle();
++            bundle.putString("id", authorId);
++            intent.putExtras(bundle);
++            context.startActivity(intent);
+         }
+     } // class ViewHolder
+ 
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"DesignSurface\">\r\n    <option name=\"filePathToZoomLevelMap\">\r\n      <map>\r\n        <entry key=\"..\\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/drawable/btn_login_shape.xml\" value=\"0.1765\" />\r\n        <entry key=\"..\\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/drawable/dialog_bg.xml\" value=\"0.2985\" />\r\n        <entry key=\"..\\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/drawable/ic_phone.xml\" value=\"0.2985\" />\r\n        <entry key=\"..\\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_account_setting.xml\" value=\"0.34479166666666666\" />\r\n        <entry key=\"..\\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_delete_account.xml\" value=\"0.16770833333333332\" />\r\n        <entry key=\"..\\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_email_log_in.xml\" value=\"0.16770833333333332\" />\r\n        <entry key=\"..\\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_follow_list.xml\" value=\"0.16770833333333332\" />\r\n        <entry key=\"..\\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_full_screeen_avatar.xml\" value=\"0.16770833333333332\" />\r\n        <entry key=\"..\\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_full_screen_avatar.xml\" value=\"0.34479166666666666\" />\r\n        <entry key=\"..\\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_fullscreen_avatar.xml\" value=\"0.34479166666666666\" />\r\n        <entry key=\"..\\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_home_screen.xml\" value=\"0.2\" />\r\n        <entry key=\"..\\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_login_options.xml\" value=\"0.16770833333333332\" />\r\n        <entry key=\"..\\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_main.xml\" value=\"0.14722222222222223\" />\r\n        <entry key=\"..\\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_phone_signup.xml\" value=\"0.16770833333333332\" />\r\n        <entry key=\"..\\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_profile.xml\" value=\"0.33\" />\r\n        <entry key=\"..\\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_settings_and_privacy.xml\" value=\"0.34479166666666666\" />\r\n        <entry key=\"..\\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_share_account.xml\" value=\"0.34479166666666666\" />\r\n        <entry key=\"..\\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_sign_in_to_delete.xml\" value=\"0.34479166666666666\" />\r\n        <entry key=\"..\\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_signin_page.xml\" value=\"0.16770833333333332\" />\r\n        <entry key=\"..\\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/bottom_sheet_layout.xml\" value=\"0.33\" />\r\n        <entry key=\"..\\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/fragment_followers_list.xml\" value=\"0.16770833333333332\" />\r\n        <entry key=\"..\\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/fragment_following_list.xml\" value=\"0.16770833333333332\" />\r\n        <entry key=\"..\\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/item_user.xml\" value=\"0.16770833333333332\" />\r\n        <entry key=\"..\\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/share_account_layout.xml\" value=\"0.33\" />\r\n        <entry key=\"..\\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/menu/main_menu.xml\" value=\"0.16770833333333332\" />\r\n        <entry key=\"..\\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/drawable/gradient_background.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_camera.xml\" value=\"0.20677083333333332\" />\r\n        <entry key=\"..\\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_comment.xml\" value=\"0.25\" />\r\n        <entry key=\"..\\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_delete_account.xml\" value=\"0.25\" />\r\n        <entry key=\"..\\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_edit_profile.xml\" value=\"0.18489583333333334\" />\r\n        <entry key=\"..\\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_full_screen_avatar.xml\" value=\"0.25\" />\r\n        <entry key=\"..\\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_home_screen.xml\" value=\"0.2078125\" />\r\n        <entry key=\"..\\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_inbox.xml\" value=\"0.21666666666666667\" />\r\n        <entry key=\"..\\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_main.xml\" value=\"0.25\" />\r\n        <entry key=\"..\\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_phone_signin.xml\" value=\"0.25\" />\r\n        <entry key=\"..\\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_phone_signup.xml\" value=\"0.25\" />\r\n        <entry key=\"..\\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_profile.xml\" value=\"0.264\" />\r\n        <entry key=\"..\\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_searching.xml\" value=\"0.25\" />\r\n        <entry key=\"..\\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_video_summary.xml\" value=\"0.2\" />\r\n        <entry key=\"..\\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/bottom_sheet_layout.xml\" value=\"0.25\" />\r\n        <entry key=\"..\\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/dialog_progress.xml\" value=\"0.25\" />\r\n        <entry key=\"..\\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/fragment_waiting.xml\" value=\"0.25\" />\r\n        <entry key=\"..\\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/item_user.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/layout_row_comment.xml\" value=\"0.25\" />\r\n        <entry key=\"..\\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/notification_row.xml\" value=\"0.21666666666666667\" />\r\n        <entry key=\"..\\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/share_account_layout.xml\" value=\"0.25\" />\r\n        <entry key=\"..\\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/video_container.xml\" value=\"0.25\" />\r\n        <entry key=\"..\\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/video_summary_item.xml\" value=\"0.16990291262135923\" />\r\n        <entry key=\"..\\:/C3MCJ/Mobile/Android/TikTokCloneProject/app/src/main/res/layout/activity_share_account.xml\" value=\"0.10625\" />\r\n        <entry key=\"..\\:/Mobile/Final_project/app/src/main/res/drawable/btn_login_shape.xml\" value=\"0.176\" />\r\n        <entry key=\"..\\:/Mobile/Final_project/app/src/main/res/drawable/btn_shape.xml\" value=\"0.11\" />\r\n        <entry key=\"..\\:/Mobile/Final_project/app/src/main/res/layout/activity_delete_account.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Mobile/Final_project/app/src/main/res/layout/activity_main.xml\" value=\"0.14130434782608695\" />\r\n        <entry key=\"..\\:/Mobile/Final_project/app/src/main/res/layout/activity_phone_login.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Mobile/Final_project/app/src/main/res/layout/activity_phone_register.xml\" value=\"0.14130434782608695\" />\r\n        <entry key=\"..\\:/Mobile/Final_project/app/src/main/res/layout/activity_phone_signup.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Mobile/TikTokCloneProject/app/src/main/res/drawable/ic_baseline_account_circle_24.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Mobile/TikTokCloneProject/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Mobile/TikTokCloneProject/app/src/main/res/drawable/ic_baseline_keyboard_arrow_right_24.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Mobile/TikTokCloneProject/app/src/main/res/drawable/ic_baseline_lock_24.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Mobile/TikTokCloneProject/app/src/main/res/drawable/ic_launcher_background.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Mobile/TikTokCloneProject/app/src/main/res/layout/activity_account_setting.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Mobile/TikTokCloneProject/app/src/main/res/layout/activity_change_password.xml\" value=\"0.17552083333333332\" />\r\n        <entry key=\"..\\:/Mobile/TikTokCloneProject/app/src/main/res/layout/activity_edit_profile.xml\" value=\"0.17552083333333332\" />\r\n        <entry key=\"..\\:/Mobile/TikTokCloneProject/app/src/main/res/layout/activity_login_options.xml\" value=\"0.1078125\" />\r\n        <entry key=\"..\\:/Mobile/TikTokCloneProject/app/src/main/res/layout/activity_phone_signup.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/Mobile/TikTokCloneProject/app/src/main/res/layout/activity_signin_page.xml\" value=\"0.1078125\" />\r\n        <entry key=\"..\\:/Mobile/TikTokCloneProject/app/src/main/res/layout/fragment_waiting.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/drawable/btn_add_shape.xml\" value=\"0.12\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/drawable/btn_red_shape.xml\" value=\"0.1485\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/drawable/btn_white_shape.xml\" value=\"0.1485\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/drawable/click_shape.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/drawable/edt_shape.xml\" value=\"0.1485\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/drawable/ic_comment.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/drawable/ic_favorite.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/drawable/ic_friend.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/drawable/ic_home.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/drawable/ic_inbox.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/drawable/ic_next.xml\" value=\"0.1485\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/drawable/ic_pause.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/drawable/ic_phone.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/drawable/ic_profile.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/drawable/ic_search.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/drawable/ic_share.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/drawable/ic_test.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/drawable/ic_upload.xml\" value=\"0.1485\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/drawable/no_border_shape.xml\" value=\"0.1485\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/drawable/progressbar_custom.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/drawable/splash_background.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/layout/activity_camera.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/layout/activity_change_password.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/layout/activity_comment.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/layout/activity_description_video.xml\" value=\"0.13333333333333333\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/layout/activity_home_screen.xml\" value=\"0.16666666666666666\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/layout/activity_inbox.xml\" value=\"0.17552083333333332\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/layout/activity_main.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/layout/activity_phone_signin.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/layout/activity_phone_signup.xml\" value=\"0.22\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/layout/activity_profile.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/layout/activity_searching.xml\" value=\"0.16666666666666666\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/layout/activity_signin_choice.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/layout/activity_signin_page.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/layout/activity_signup_choice.xml\" value=\"0.16666666666666666\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/layout/fragment_navigation.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/layout/layout_row_comment.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/layout/message.xml\" value=\"0.10520833333333333\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/layout/notification_row.xml\" value=\"0.14666666666666667\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/layout/video_container.xml\" value=\"0.17552083333333332\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/layout/video_summary_item.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/TikTok/app/src/main/res/menu/main_menu.xml\" value=\"0.1\" />\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_11\" default=\"true\" project-jdk-name=\"Android Studio default JDK\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"Android\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 6370f96c533daaa193aeaa1f2812e98e45153fe5)
++++ b/.idea/misc.xml	(date 1670503491666)
+@@ -91,6 +91,7 @@
+         <entry key="..\:/TikTok/app/src/main/res/drawable/ic_upload.xml" value="0.1485" />
+         <entry key="..\:/TikTok/app/src/main/res/drawable/no_border_shape.xml" value="0.1485" />
+         <entry key="..\:/TikTok/app/src/main/res/drawable/progressbar_custom.xml" value="0.1" />
++        <entry key="..\:/TikTok/app/src/main/res/drawable/red_button.xml" value="0.1" />
+         <entry key="..\:/TikTok/app/src/main/res/drawable/splash_background.xml" value="0.1" />
+         <entry key="..\:/TikTok/app/src/main/res/layout/activity_camera.xml" value="0.1" />
+         <entry key="..\:/TikTok/app/src/main/res/layout/activity_change_password.xml" value="0.1" />

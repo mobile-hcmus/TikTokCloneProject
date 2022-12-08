@@ -70,7 +70,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
         VideoView videoView;
         ImageView imvAvatar, imvPause;
-        TextView txvDescription, txvTitle;
+        TextView txvDescription, tvTitle;
         TextView tvComment, tvFavorites;
         ProgressBar pgbWait;
 
@@ -78,7 +78,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         public VideoViewHolder(@NonNull View itemView) {
             super(itemView);
             videoView = itemView.findViewById(R.id.videoView);
-            txvTitle = itemView.findViewById(R.id.txvTitle);
+            tvTitle = itemView.findViewById(R.id.tvTitle);
             txvDescription = itemView.findViewById(R.id.txvDescription);
             tvComment = itemView.findViewById(R.id.tvComment);
             tvFavorites = itemView.findViewById(R.id.tvFavorites);
@@ -90,29 +90,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
         @SuppressLint("ClickableViewAccessibility")
         public void setVideoObjects(final Video videoObjects) {
-            txvTitle.setText("@" + videoObjects.getUsername());
+            tvTitle.setText("@" + videoObjects.getUsername());
             txvDescription.setText(videoObjects.getDescription());
             videoView.setVideoPath(videoObjects.getVideoUri());
 
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageRef = storage.getReference();
-            StorageReference download = storageRef.child("/user_avatars").child(videoObjects.getAuthorId());
-//                        StorageReference download = storageRef.child(userId.toString());
-            long MAX_BYTE = 1024*1024;
-            download.getBytes(MAX_BYTE)
-                    .addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                        @Override
-                        public void onSuccess(byte[] bytes) {
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);
-                            imvAvatar.setImageBitmap(bitmap);
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            // Do nothing
-                        }
-                    });
+            String authorId = videoObjects.getAuthorId();
 
             videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
@@ -144,7 +126,28 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 }
             });
 
-           tvComment.setOnClickListener(new View.OnClickListener() {
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReference();
+            StorageReference download = storageRef.child("/user_avatars").child(videoObjects.getAuthorId());
+//                        StorageReference download = storageRef.child(userId.toString());
+            long MAX_BYTE = 1024*1024;
+            download.getBytes(MAX_BYTE)
+                    .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);
+                            imvAvatar.setImageBitmap(bitmap);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // Do nothing
+                        }
+                    });
+
+
+            tvComment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), CommentActivity.class);
@@ -154,6 +157,28 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 view.getContext().startActivity(intent);
                 }
             });
+
+           imvAvatar.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View view) {
+                   moveToProfile(videoView.getContext(), authorId);
+               }
+           });
+
+           tvTitle.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View view) {
+                   moveToProfile(videoView.getContext(), authorId);
+               }
+           });
+        }
+
+        private void moveToProfile(Context context, String authorId) {
+            Intent intent=new Intent(context, ProfileActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("id", authorId);
+            intent.putExtras(bundle);
+            context.startActivity(intent);
         }
     } // class ViewHolder
 
