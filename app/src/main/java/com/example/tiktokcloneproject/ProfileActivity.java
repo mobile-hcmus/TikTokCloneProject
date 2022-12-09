@@ -335,6 +335,10 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
             moveToAnotherActivity(EditProfileActivity.class);
 
         }
+        if(v.getId() == R.id.btnBackProfile) {
+            finish();
+
+        }
 
         if(v.getId() == R.id.btn_update_bio) {
             updateBio();

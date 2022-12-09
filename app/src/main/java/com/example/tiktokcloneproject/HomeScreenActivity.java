@@ -1,11 +1,16 @@
 package com.example.tiktokcloneproject;
 
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -28,14 +33,19 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
     private FirebaseFirestore db;
     private static long pressedBackTime = 0;
     private final static String TAG = "NavigationFragment";
-    private String avatarUri;
+    Intent profileIdIntent = null;
+    Boolean openAppFromLink = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.Theme_TikTokCloneProject);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
-        Intent intent = getIntent();
+        profileIdIntent = getIntent();
+        if (profileIdIntent.getExtras() != null) {
+            openAppFromLink = profileIdIntent.hasExtra("id");
+        }
+
         ft = getSupportFragmentManager().beginTransaction();
         videoFragment = VideoFragment.newInstance("video");
         ft.replace(R.id.main_fragment, videoFragment);
@@ -71,31 +81,128 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == btnProfile.getId()) {
-            ft = getSupportFragmentManager().beginTransaction();
-            profileFragment = ProfileFragment.newInstance("profile", "");
-            ft.replace(R.id.main_fragment, profileFragment);
-            ft.commit();
-            return;
+//        if (view.getId() == btnProfile.getId()) {
+//            ft = getSupportFragmentManager().beginTransaction();
+//            profileFragment = ProfileFragment.newInstance("profile", "");
+//            ft.replace(R.id.main_fragment, profileFragment);
+//            ft.commit();
+//            return;
+//        }
+        if(view.getId() == btnProfile.getId()) {
+            handleProfileClick();
         }
-        if (view.getId() == btnHome.getId()) {
-            ft = getSupportFragmentManager().beginTransaction();
-            videoFragment = VideoFragment.newInstance("video");
-            ft.replace(R.id.main_fragment, videoFragment);
-            ft.commit();
-            return;
+        if(view.getId() == btnAddVideo.getId()) {
+            handleAddClick();
         }
-        if (view.getId() == btnInbox.getId()) {
-            ft = getSupportFragmentManager().beginTransaction();
-            inboxFragment = InboxFragment.newInstance("inbox");
-            ft.replace(R.id.main_fragment, inboxFragment);
-            ft.commit();
-            return;
+        if(view.getId() == btnHome.getId()) {
+            handleHomeClick();
         }
-        if (view.getId() == btnAddVideo.getId()) {
-            Intent intent = new Intent(this, CameraActivity.class);
-            startActivity(intent);
+        if(view.getId() == btnInbox.getId()) {
+            handleInboxClick();
+        }
+        if(view.getId() == btnFriend.getId()) {
+
         }
     }//on click
+
+    private void handleProfileClick() {
+
+        if(getSupportFragmentManager().findFragmentById(R.id.main_fragment) instanceof ProfileFragment) {
+            return;
+        }
+
+        if (user!=null)
+        {
+            if (openAppFromLink) {
+                Intent intent = new Intent(this, ProfileActivity.class);
+                intent.putExtras(profileIdIntent.getExtras());
+                startActivity(intent);
+            } else {
+                ft = getSupportFragmentManager().beginTransaction();
+                profileFragment = ProfileFragment.newInstance("profile", "");
+                ft.replace(R.id.main_fragment, profileFragment);
+                ft.commit();
+            }
+        }
+        else
+        {
+            showNiceDialogBox(this, null, null);
+        }
+    }
+
+    private void handleAddClick() {
+        if(user == null) {
+            showNiceDialogBox(this, null, null);
+            return;
+        }
+        Intent intent = new Intent(this, CameraActivity.class);
+        startActivity(intent);
+    }
+
+    private void handleInboxClick() {
+        if(user == null) {
+            showNiceDialogBox(this, null, null);
+            return;
+        }
+        if(getSupportFragmentManager().findFragmentById(R.id.main_fragment) instanceof InboxFragment) {
+            return;
+        }
+        ft = getSupportFragmentManager().beginTransaction();
+        inboxFragment = InboxFragment.newInstance("inbox");
+        ft.replace(R.id.main_fragment, inboxFragment);
+        ft.commit();
+    }
+
+    private void handleHomeClick() {
+//        if(getSupportFragmentManager().findFragmentById(R.id.main_fragment) instanceof VideoFragment) {
+//            Intent intent = new Intent(context, HomeScreenActivity.class);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            startActivity(intent);
+//            return;
+//        }
+//        Intent intent = new Intent(context, HomeScreenActivity.class);
+//        startActivity(intent);
+        ft = getSupportFragmentManager().beginTransaction();
+        videoFragment = VideoFragment.newInstance("inbox");
+        ft.replace(R.id.main_fragment, videoFragment);
+        ft.commit();
+    }
+
+    private void showNiceDialogBox(Context context, @Nullable String title, @Nullable String message) {
+        if(title == null) {
+            title = getString(R.string.request_account_title);
+        }
+        if(message == null) {
+            message = getString(R.string.request_account_message);
+        }
+        try {
+            //CAUTION: sometimes TITLE and DESCRIPTION include HTML markers
+            AlertDialog.Builder myBuilder = new AlertDialog.Builder(context);
+            myBuilder.setIcon(R.drawable.splash_background)
+                    .setTitle(title)
+                    .setMessage(message)
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            if(context instanceof HomeScreenActivity) {
+                                return;
+                            }
+                            Intent intent = new Intent(context, HomeScreenActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        }
+                    })
+                    .setPositiveButton("Sign up/Sign in", new DialogInterface.OnClickListener()
+                    {
+                        public void onClick(DialogInterface dialog, int whichOne) {
+                            Intent intent = new Intent(context, MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        }}) //setNegativeButton
+                    .show();
+        }
+        catch (Exception e) { Log.e("Error DialogBox", e.getMessage() ); }
+    }
+
 
 }// activity

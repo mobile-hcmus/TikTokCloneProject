@@ -6,26 +6,42 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ProfileActivity">
-    <LinearLayout
-        android:orientation="horizontal"
-        android:id="@+id/top_menu_bar"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="right"
-        >
-
-        <TextView
-            android:id="@+id/text_menu"
+        android:layout_height="wrap_content">
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="26dp"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:clickable="true"
-            android:onClick="onClick"
-            android:text="&#9776;"
-            android:textAlignment="gravity"
-            android:textSize="20sp"></TextView>
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btnBackProfile"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/ic_back"
+                android:onClick="onClick"/>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/top_menu_bar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="right"
+            >
+
+            <TextView
+                android:id="@+id/text_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="26dp"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:clickable="true"
+                android:onClick="onClick"
+                android:text="&#9776;"
+                android:textAlignment="gravity"
+                android:textSize="20sp"></TextView>
+        </LinearLayout>
+    </FrameLayout>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imvAvatarProfile"
