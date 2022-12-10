@@ -177,7 +177,7 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
         }
         try {
             //CAUTION: sometimes TITLE and DESCRIPTION include HTML markers
-            AlertDialog.Builder myBuilder = new AlertDialog.Builder(context);
+            AlertDialog.Builder myBuilder = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
             myBuilder.setIcon(R.drawable.splash_background)
                     .setTitle(title)
                     .setMessage(message)
