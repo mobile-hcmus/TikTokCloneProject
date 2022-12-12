@@ -21,8 +21,8 @@
         android:fontFamily="@font/montserrat_medium"
         android:textSize="15dp"
         android:text="dhakdhalsdjlsadjfjk"
-        android:layout_below="@+id/txvUsername"/>
-
+        android:layout_below="@+id/txvUsername"
+        android:textColor="?android:attr/textColorPrimary"/>
     <TextView
         android:id="@+id/txvTime"
         android:layout_width="wrap_content"
@@ -43,5 +43,10 @@
 <!--        android:layout_marginBottom="16dp"-->
 <!--        />-->
 
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/txvTime"
+        android:layout_marginTop="12dp"
+        android:background="@color/tiktok_grey"/>
 </RelativeLayout>
