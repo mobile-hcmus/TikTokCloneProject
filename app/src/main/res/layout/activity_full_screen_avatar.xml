@@ -7,7 +7,7 @@
     android:layout_gravity="center"
     android:gravity="center"
     android:background="@color/black_overlay"
-    tools:context=".FullScreenAvatarActivity">
+    tools:context=".activity.FullScreenAvatarActivity">
     <ImageView
         android:id="@+id/imvFullscreen"
         android:layout_width="match_parent"

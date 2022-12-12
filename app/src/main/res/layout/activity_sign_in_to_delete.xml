@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:gravity="center"
-    tools:context=".SignInToDeleteActivity"
+    tools:context=".activity.SignInToDeleteActivity"
     android:layout_margin="40dp"
     android:orientation="vertical">
 

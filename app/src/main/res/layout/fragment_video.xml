@@ -7,7 +7,7 @@
     android:background="@color/tiktok_black"
     android:orientation="vertical"
     android:theme="@style/ThemeOverlay.TikTokCloneProject.FullscreenContainer"
-    tools:context=".HomeScreenActivity">
+    tools:context=".activity.HomeScreenActivity">
 
         <RelativeLayout
             android:layout_width="match_parent"

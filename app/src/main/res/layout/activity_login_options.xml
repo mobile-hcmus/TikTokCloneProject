@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    tools:context=".LoginOptionsActivity">
+    tools:context=".activity.LoginOptionsActivity">
 
     <Button
         android:layout_width="218dp"

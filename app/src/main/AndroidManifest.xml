@@ -18,7 +18,7 @@
     <uses-feature android:name="android.hardware.location.gps" />
 
     <application
-        android:name=".GlobalVariable"
+        android:name=".helper.GlobalVariable"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -29,19 +29,19 @@
         android:theme="@style/Theme.TikTokCloneProject"
         tools:targetApi="31">
         <activity
-            android:name=".InboxActivity"
+            android:name=".activity.InboxActivity"
             android:exported="false" />
         <activity
-            android:name=".FollowListActivity"
+            android:name=".activity.FollowListActivity"
             android:exported="false" />
         <activity
-            android:name=".HomeScreenActivity"
+            android:name=".activity.HomeScreenActivity"
             android:exported="false" />
         <activity
-            android:name=".EmailSignInActivity"
+            android:name=".activity.EmailSignInActivity"
             android:exported="false" />
         <activity
-            android:name=".EmailSignupActivity"
+            android:name=".activity.EmailSignupActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -55,39 +55,39 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SignupChoiceActivity"
+            android:name=".activity.SignupChoiceActivity"
             android:exported="false" />
         <activity
-            android:name=".SigninChoiceActivity"
+            android:name=".activity.SigninChoiceActivity"
             android:exported="false" />
         <activity
-            android:name=".DescriptionVideoActivity"
+            android:name=".activity.DescriptionVideoActivity"
             android:exported="false"></activity> <!-- <activity -->
         <!-- android:name=".WaitingFragment" -->
         <!-- android:exported="false" /> -->
         <activity
-            android:name=".ChangePasswordActivity"
+            android:name=".activity.ChangePasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".FullScreenAvatarActivity"
+            android:name=".activity.FullScreenAvatarActivity"
             android:exported="false" />
         <activity
-            android:name=".SignInToDeleteActivity"
+            android:name=".activity.SignInToDeleteActivity"
             android:exported="false" />
         <activity
-            android:name=".AccountSettingActivity"
+            android:name=".activity.AccountSettingActivity"
             android:exported="false" />
         <activity
-            android:name=".SettingsAndPrivacyActivity"
+            android:name=".activity.SettingsAndPrivacyActivity"
             android:exported="false" />
         <activity
-            android:name=".PhoneSigninActivity"
+            android:name=".activity.PhoneSigninActivity"
             android:exported="false" />
         <activity
-            android:name=".DeleteAccountActivity"
+            android:name=".activity.DeleteAccountActivity"
             android:exported="false" />
         <activity
-            android:name=".ProfileActivity"
+            android:name=".activity.ProfileActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -101,7 +101,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SplashScreenActivity"
+            android:name=".activity.SplashScreenActivity"
             android:exported="true"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -111,34 +111,34 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".EditProfileActivity"
+            android:name=".activity.EditProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".EmailLogInActivity"
+            android:name=".activity.EmailLogInActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginOptionsActivity"
+            android:name=".activity.LoginOptionsActivity"
             android:exported="false" /> <!-- HomeScreenActivity   PhoneSignupActivity  MainActivity -->
         <activity
-            android:name=".PhoneSignupActivity"
+            android:name=".activity.PhoneSignupActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".SearchActivity"
+            android:name=".activity.SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".FollowActivity"
+            android:name=".activity.FollowActivity"
             android:exported="false" />
         <activity
-            android:name=".CameraActivity"
+            android:name=".activity.CameraActivity"
             android:exported="false" />
         <activity
-            android:name=".CommentActivity"
+            android:name=".activity.CommentActivity"
             android:exported="false" />
         <activity
-            android:name=".ShareAccountActivity"
+            android:name=".activity.ShareAccountActivity"
             android:exported="false"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
     </application>

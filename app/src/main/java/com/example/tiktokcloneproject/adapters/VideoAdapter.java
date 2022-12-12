@@ -1,21 +1,17 @@
 package com.example.tiktokcloneproject.adapters;
 
-import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
-import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,8 +20,8 @@ import android.widget.VideoView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.tiktokcloneproject.CommentActivity;
-import com.example.tiktokcloneproject.ProfileActivity;
+import com.example.tiktokcloneproject.activity.CommentActivity;
+import com.example.tiktokcloneproject.activity.ProfileActivity;
 import com.example.tiktokcloneproject.R;
 import com.example.tiktokcloneproject.model.Video;
 import com.google.android.gms.tasks.OnFailureListener;

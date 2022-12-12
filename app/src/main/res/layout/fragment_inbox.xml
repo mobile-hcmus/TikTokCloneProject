@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.tiktokcloneproject.InboxActivity">
+    tools:context="com.example.tiktokcloneproject.activity.InboxActivity">
 
     <ListView
         android:id="@+id/lvNotifications"

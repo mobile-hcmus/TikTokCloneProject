@@ -1,10 +1,8 @@
 package com.example.tiktokcloneproject.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.tiktokcloneproject.DescriptionVideoActivity;
-import com.example.tiktokcloneproject.ProfileActivity;
 import com.example.tiktokcloneproject.R;
-import com.example.tiktokcloneproject.model.Video;
 import com.example.tiktokcloneproject.model.VideoSummary;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

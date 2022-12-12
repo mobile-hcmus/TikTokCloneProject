@@ -9,7 +9,7 @@
     android:gravity="center"
     android:orientation="vertical"
     android:padding="15dp"
-    tools:context=".EmailLogInActivity">
+    tools:context=".activity.EmailLogInActivity">
 
     <!-- TextView for heading -->
 

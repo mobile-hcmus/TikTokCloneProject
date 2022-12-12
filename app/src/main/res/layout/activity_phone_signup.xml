@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/tiktok_black"
     android:orientation="vertical"
-    tools:context=".PhoneSignupActivity"
+    tools:context=".activity.PhoneSignupActivity"
     android:id="@+id/llSignupPage">
 
 

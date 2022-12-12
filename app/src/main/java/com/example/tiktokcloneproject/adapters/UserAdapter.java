@@ -14,11 +14,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.tiktokcloneproject.FollowActivity;
-import com.example.tiktokcloneproject.MainActivity;
-import com.example.tiktokcloneproject.ProfileActivity;
+import com.example.tiktokcloneproject.activity.ProfileActivity;
 import com.example.tiktokcloneproject.R;
-import com.example.tiktokcloneproject.SearchActivity;
 import com.example.tiktokcloneproject.model.User;
 
 import java.util.ArrayList;
