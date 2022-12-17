@@ -33,6 +33,8 @@
     <string name="error_upload_video">Video must have duration less than 15s and maximum resolution is 720p</string>
     <string name="sign_up">Sign Up</string>
     <string name="sign_in">Sign In</string>
+    <string name="sign_up_alt">Already have an account? Sign in.</string>
+    <string name="sign_in_alt">Don\'t have an account yet? Sign up.</string>
     <string name="ic_add">"&#10133;"</string>
     <string name="hint_enter_email">Enter your email</string>
     <string name="home">Home</string>

@@ -115,22 +115,15 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
             return;
         }
 
-        if (user!=null)
-        {
-            if (openAppFromLink) {
-                Intent intent = new Intent(this, ProfileActivity.class);
-                intent.putExtras(profileIdIntent.getExtras());
-                startActivity(intent);
-            } else {
-                ft = getSupportFragmentManager().beginTransaction();
-                profileFragment = ProfileFragment.newInstance("profile", "");
-                ft.replace(R.id.main_fragment, profileFragment);
-                ft.commit();
-            }
-        }
-        else
-        {
-            showNiceDialogBox(this, null, null);
+        if (openAppFromLink) {
+            Intent intent = new Intent(this, ProfileActivity.class);
+            intent.putExtras(profileIdIntent.getExtras());
+            startActivity(intent);
+        } else {
+            ft = getSupportFragmentManager().beginTransaction();
+            profileFragment = ProfileFragment.newInstance("profile", "");
+            ft.replace(R.id.main_fragment, profileFragment);
+            ft.commit();
         }
     }
 

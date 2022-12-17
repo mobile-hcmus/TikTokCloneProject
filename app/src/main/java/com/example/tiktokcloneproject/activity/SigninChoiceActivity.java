@@ -11,7 +11,7 @@ import com.example.tiktokcloneproject.R;
 
 public class SigninChoiceActivity extends Activity implements View.OnClickListener {
     Button btnChoicePhone, btnChoiceEmail;
-    TextView txvTitle;
+    TextView txvTitle, txvAlt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,9 +21,10 @@ public class SigninChoiceActivity extends Activity implements View.OnClickListen
         btnChoicePhone = (Button) findViewById(R.id.btnChoicePhone);
         btnChoiceEmail = (Button) findViewById(R.id.btnChoiceEmail);
         txvTitle = (TextView) findViewById(R.id.txvTitle);
+        txvAlt = (TextView) findViewById(R.id.txv_alternative);
 
         txvTitle.setText(getString(R.string.sign_in));
-
+        txvAlt.setText(getString(R.string.sign_in_alt));
         btnChoicePhone.setOnClickListener(this);
         btnChoiceEmail.setOnClickListener(this);
     }
@@ -36,6 +37,10 @@ public class SigninChoiceActivity extends Activity implements View.OnClickListen
         }
         if(view.getId() == btnChoiceEmail.getId()) {
             Intent intent = new Intent(SigninChoiceActivity.this, EmailSignInActivity.class);
+            startActivity(intent);
+        }
+        if(view.getId() == txvAlt.getId()) {
+            Intent intent = new Intent(SigninChoiceActivity.this, SignupChoiceActivity.class);
             startActivity(intent);
         }
     }

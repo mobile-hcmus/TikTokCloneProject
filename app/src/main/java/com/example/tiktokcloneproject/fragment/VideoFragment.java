@@ -89,13 +89,12 @@ public class VideoFragment extends Fragment implements View.OnClickListener {
         videos = new ArrayList<>();
         videoAdapter = new VideoAdapter(context, videos);
         viewPager2.setAdapter(videoAdapter);
-
+        loadVideos();
         return layout;
     }
 
     @Override public void onStart() {
         super.onStart();
-        loadVideos();
     }
 
     @Override

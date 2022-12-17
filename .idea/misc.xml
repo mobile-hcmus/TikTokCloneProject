@@ -29,21 +29,31 @@
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/share_account_layout.xml" value="0.33" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/menu/main_menu.xml" value="0.16770833333333332" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/drawable/gradient_background.xml" value="0.1" />
+        <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/drawable/ic_google.xml" value="0.1315" />
+        <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/drawable/splash_background.xml" value="0.149" />
+        <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/drawable/toptopfull.xml" value="0.149" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_camera.xml" value="0.20677083333333332" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_comment.xml" value="0.25" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_delete_account.xml" value="0.25" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_edit_profile.xml" value="0.18489583333333334" />
+        <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_email_log_in.xml" value="0.234375" />
+        <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_email_signin.xml" value="0.234375" />
+        <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_email_signup.xml" value="0.234375" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_full_screen_avatar.xml" value="0.25" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_home_screen.xml" value="0.2078125" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_inbox.xml" value="0.21666666666666667" />
+        <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_login_options.xml" value="0.234375" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_phone_signin.xml" value="0.25" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_phone_signup.xml" value="0.25" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_profile.xml" value="0.264" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_searching.xml" value="0.25" />
+        <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_signup_choice.xml" value="0.234375" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_video_summary.xml" value="0.2" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.25" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/dialog_progress.xml" value="0.25" />
+        <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/fragment_navigation.xml" value="0.1359375" />
+        <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/fragment_profile.xml" value="0.234375" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/fragment_waiting.xml" value="0.25" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/item_user.xml" value="0.1" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/layout_row_comment.xml" value="0.25" />

@@ -38,6 +38,8 @@ import com.example.tiktokcloneproject.activity.HomeScreenActivity;
 import com.example.tiktokcloneproject.activity.MainActivity;
 import com.example.tiktokcloneproject.R;
 import com.example.tiktokcloneproject.activity.SettingsAndPrivacyActivity;
+import com.example.tiktokcloneproject.activity.SigninChoiceActivity;
+import com.example.tiktokcloneproject.activity.SignupChoiceActivity;
 import com.example.tiktokcloneproject.adapters.VideoSummaryAdapter;
 import com.example.tiktokcloneproject.model.VideoSummary;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -82,6 +84,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     String TAG="test";
     RecyclerView recVideoSummary;
     ArrayList<VideoSummary> videoSummaries;
+    LinearLayout layout;
 
     public static ProfileFragment newInstance(String strArg,  String profileLinkId) {
         ProfileFragment fragment = new ProfileFragment();
@@ -103,17 +106,23 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         catch (IllegalStateException e) {
             throw new IllegalStateException();
         }
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        if (userId == "") {
+            if (user != null) {
+                userId = user.getUid();
+                Toast.makeText(getActivity().getApplicationContext(), "id: " + userId, Toast.LENGTH_SHORT).show();
+            } else {
+                Intent intent = new Intent(context, SignupChoiceActivity.class);
+                startActivity(intent);
+            }
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 // inflate res/layout_blue.xml to make GUI holding a TextView and a ListView
-        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_profile, null);
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
-        if (userId == "") {
-            userId =  user.getUid();
-        }
+        layout = (LinearLayout) inflater.inflate(R.layout.fragment_profile, null);
 
         txvFollowing = (TextView)layout.findViewById(R.id.text_following);
         txvFollowers = (TextView)layout.findViewById(R.id.text_followers);
@@ -204,7 +213,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private void handleFollow() {
         //bio cần set lại là text vỉew
-        btn = (Button)getView().findViewById(R.id.button_follow);
+        btn = (Button)layout.findViewById(R.id.button_follow);
         btn.setVisibility(View.VISIBLE);
         db  = FirebaseFirestore.getInstance();
         docRef = db.collection("profiles").document(userId);
