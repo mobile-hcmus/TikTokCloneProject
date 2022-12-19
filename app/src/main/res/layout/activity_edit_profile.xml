@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_back"
         android:layout_margin="5dp"
-        android:contentDescription="Go back to ProfileActivity" />
+        />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -53,7 +53,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -150,7 +151,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
-                    android:src="@drawable/ic_more_20"
+                    android:paddingVertical="4dp"
+                    android:src="@drawable/ic_more"
+                    android:background="@drawable/btn_red_shape"
                     android:layout_weight="2"/>
 
             </LinearLayout>

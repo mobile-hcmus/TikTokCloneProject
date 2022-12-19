@@ -7,17 +7,17 @@ import java.util.Map;
 
 public class Profile implements Serializable {
 
-    private String userId, userName,  avatarUri, bio;
+    private String userId, username,  avatarUri, bio;
     private int followers, following, likes;
     private boolean isPrivate;
 
     public Profile(String userName) {
-        this.userName = userName;
+        this.username = userName;
     }
 
     public Profile(String userId, String userName) {
         this.userId = userId;
-        this.userName = userName;
+        this.username = userName;
         followers = following = likes = 0;
         avatarUri = "";
         bio = "Adđ your bio.";
@@ -31,7 +31,7 @@ public class Profile implements Serializable {
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("userId", userId);
-        result.put("userName", userName);
+        result.put("username", username);
         result.put("avatarName", avatarUri);
         result.put("isPrivate", isPrivate);
         result.put("following", following);
@@ -47,7 +47,7 @@ public class Profile implements Serializable {
     }
 
     public String getUserName() {
-        return userName;
+        return username;
     }
 
 

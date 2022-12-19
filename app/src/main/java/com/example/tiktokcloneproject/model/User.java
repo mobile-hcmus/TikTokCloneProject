@@ -12,24 +12,24 @@ import java.util.Map;
 
 public class User implements Serializable {
 
-    private String userId, userName, birthdate, phone, avatarUri, email;
+    private String userId, username, birthdate, phone, avatarUri, email;
 //    private ArrayList<String> followers, following, myVideoUri, myFavoriteVideoUri;
     private boolean isPrivate;
     List<String> followers;
 //    private int totalLikes;
 
     public User(String userName) {
-        this.userName = userName;
+        this.username = userName;
     }
 
     public User(String userId, String userName) {
         this.userId = userId;
-        this.userName = userName;
+        this.username = userName;
     }
 
     public User(String userId, String userName, String phone, String email) {
         this.userId = userId;
-        this.userName = userName;
+        this.username = userName;
         this.phone = phone;
         this.email = email;
         this.birthdate = this.avatarUri = "";
@@ -43,7 +43,7 @@ public class User implements Serializable {
 
     public User(String userId, String userName, String phone, String email, List<String> followers) {
         this.userId = userId;
-        this.userName = userName;
+        this.username = userName;
         this.phone = phone;
         this.email = email;
         this.birthdate = this.avatarUri = "";
@@ -59,7 +59,7 @@ public class User implements Serializable {
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("userId", userId);
-        result.put("userName", userName);
+        result.put("username", username);
         result.put("birthdate", birthdate);
         result.put("avatarrUri", avatarUri);
         result.put("email", email);
@@ -79,7 +79,7 @@ public class User implements Serializable {
     }
 
     public String getUserName() {
-        return userName;
+        return username;
     }
 
     public String getBirthdate() {

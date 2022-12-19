@@ -60,6 +60,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
     private StorageReference storageReference;
 
     final Calendar myCalendar= Calendar.getInstance();
+    private final String TAG = "EditProfileActivity";
 
     FirebaseUser user;
 
@@ -227,27 +228,46 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
     }//on click
 
     private void update(String name, String username, String phone, String email, String birthdate) {
-        HashMap newData = new HashMap();
+        HashMap<String, Object> newData = new HashMap<>();
         newData.put("userName", username);
         newData.put("phone", phone);
         newData.put("email", email);
         newData.put("birthdate", birthdate);
 
-        db.collection("users").document(user.getUid()).update(newData).addOnCompleteListener(this, new OnCompleteListener() {
-            @Override
-            public void onComplete(@NonNull Task task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(EditProfileActivity.this, "Update successfully!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(EditProfileActivity.this, "Update fail!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        DocumentReference userDoc = db.collection("users").document(user.getUid());
+        DocumentReference profileDoc = db.collection("profiles").document(user.getUid());
+
+       userDoc.update(newData)
+               .addOnSuccessListener(new OnSuccessListener<Void>() {
+                   @Override
+                   public void onSuccess(Void aVoid) {
+                       Log.d(TAG, "DocumentSnapshot successfully updated!");
+                   }
+               })
+               .addOnFailureListener(new OnFailureListener() {
+                   @Override
+                   public void onFailure(@NonNull Exception e) {
+                       Log.w(TAG, "Error updating document", e);
+                   }
+               });
+       profileDoc.update("username", username)
+               .addOnSuccessListener(new OnSuccessListener<Void>() {
+                   @Override
+                   public void onSuccess(Void aVoid) {
+                       Log.d(TAG, "DocumentSnapshot successfully updated!");
+                   }
+               })
+               .addOnFailureListener(new OnFailureListener() {
+                   @Override
+                   public void onFailure(@NonNull Exception e) {
+                       Log.w(TAG, "Error updating document", e);
+                   }
+               });;
 
         setEnableEdt(false);
         btnApply.setVisibility(View.GONE);
         btnEdit.setVisibility(View.VISIBLE);
-        imbPhoto.setVisibility(View.VISIBLE);
+        llChangePhoto.setVisibility(View.VISIBLE);
 }
 
     private void setEnableEdt(boolean value) {
