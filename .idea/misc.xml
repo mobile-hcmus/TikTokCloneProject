@@ -87,6 +87,7 @@
         <entry key="..\:/TikTok/app/src/main/res/drawable/click_shape.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/edt_shape.xml" value="0.1485" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/ic_comment.xml" value="0.1" />
+        <entry key="..\:/TikTok/app/src/main/res/drawable/ic_download.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/ic_favorite.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/ic_friend.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/ic_home.xml" value="0.1" />
@@ -101,6 +102,7 @@
         <entry key="..\:/TikTok/app/src/main/res/drawable/ic_share.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/ic_test.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/ic_upload.xml" value="0.1485" />
+        <entry key="..\:/TikTok/app/src/main/res/drawable/icons.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/no_border_shape.xml" value="0.1485" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/progressbar_custom.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/red_button.xml" value="0.1" />
@@ -129,7 +131,11 @@
         <entry key="..\:/TikTok/app/src/main/res/layout/notification_row.xml" value="0.14666666666666667" />
         <entry key="..\:/TikTok/app/src/main/res/layout/video_container.xml" value="0.17552083333333332" />
         <entry key="..\:/TikTok/app/src/main/res/layout/video_summary_item.xml" value="0.1" />
+        <entry key="..\:/TikTok/app/src/main/res/layouts/activities/layout/activity_sign_in_to_delete.xml" value="0.1" />
+        <entry key="..\:/TikTok/app/src/main/res/layouts/content/layout/share_account_layout.xml" value="0.1" />
+        <entry key="..\:/TikTok/app/src/main/res/layouts/fragments/layout/fragment_waiting.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/menu/main_menu.xml" value="0.1" />
+        <entry key="..\:/TikTok/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
       </map>
     </option>
   </component>

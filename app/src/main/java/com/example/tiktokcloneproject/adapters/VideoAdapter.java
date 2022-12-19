@@ -6,12 +6,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -88,7 +90,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         public void setVideoObjects(final Video videoObjects) {
             tvTitle.setText("@" + videoObjects.getUsername());
             txvDescription.setText(videoObjects.getDescription());
-            videoView.setVideoPath(videoObjects.getVideoUri());
+           videoView.setVideoPath(videoObjects.getVideoUri());
 
             String authorId = videoObjects.getAuthorId();
 

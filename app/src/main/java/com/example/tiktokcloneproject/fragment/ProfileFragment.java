@@ -113,8 +113,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 userId = user.getUid();
                 Toast.makeText(getActivity().getApplicationContext(), "id: " + userId, Toast.LENGTH_SHORT).show();
             } else {
-                Intent intent = new Intent(context, SignupChoiceActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(context, SignupChoiceActivity.class);
+//                startActivity(intent);
             }
         }
     }

@@ -111,6 +111,12 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
 
     private void handleProfileClick() {
 
+        if(user == null) {
+            Intent intent = new Intent(this, SignupChoiceActivity.class);
+            startActivity(intent);
+            return;
+        }
+
         if(getSupportFragmentManager().findFragmentById(R.id.main_fragment) instanceof ProfileFragment) {
             return;
         }
