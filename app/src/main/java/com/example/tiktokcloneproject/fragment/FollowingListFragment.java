@@ -2,8 +2,10 @@ package com.example.tiktokcloneproject.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.tiktokcloneproject.R;
+import com.example.tiktokcloneproject.adapters.FollowerAdapter;
+import com.example.tiktokcloneproject.adapters.FollowingAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -61,6 +73,11 @@ public class FollowingListFragment extends Fragment {
         }
     }
 
+    ArrayList <String> userIdArrayList=new ArrayList<String>();
+    ArrayList <String> userNameArrayList=new ArrayList<String>();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    ArrayList<String> followingList = new ArrayList<String>();
+    ArrayList<String> followingUserNameList = new ArrayList<String>();
 
 
 
@@ -82,12 +99,52 @@ public class FollowingListFragment extends Fragment {
 
 
         View contentView = inflater.inflate(R.layout.fragment_following_list, container, false);
-        ListView lv_following= (ListView) contentView.findViewById(R.id.lv_following);
-        lv_following.setAdapter(new ArrayAdapter<>(contentView.getContext(), android.R.layout.simple_list_item_1,test));
+        ListView lvFollowing= (ListView) contentView.findViewById(R.id.lv_following);
 
 
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        db.collection("profiles").document(user.getUid()).collection("following").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        followingList.add(document.getId());
+//                        Log.d("followers", followerList.toString());
+                    }
+                    db.collection("users").whereIn(FieldPath.documentId(), followingList).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()){
+                                for (QueryDocumentSnapshot document: task.getResult()) {
+                                    followingUserNameList.add(document.get("userName").toString());
+                                    Log.d("followers", followingUserNameList.toString());
+                                }
+                                //lvFollowing.setAdapter(new ArrayAdapter<>(contentView.getContext(), android.R.layout.simple_list_item_1,followingUserNameList));
+                                showList(contentView, lvFollowing);
+
+                            }
+                        }
+                    });
+                } else {
+                    String[] message = {"Không tìm thấy"};
+                    lvFollowing.setAdapter(new ArrayAdapter<>(contentView.getContext(), android.R.layout.simple_list_item_1,message));
+                    Log.d("following", "Error getting documents: ", task.getException());
+                }
+            }
+        });
 
         return contentView;
 
+    }
+
+    void showList(View contentView, ListView lvFollowers) {
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(contentView.getContext(),
+//                android.R.layout.simple_list_item_1,
+//                followerUserNameList);
+        FollowingAdapter followingAdapter = new FollowingAdapter(contentView.getContext(), followingList, followingUserNameList);
+        lvFollowers.setAdapter(followingAdapter);
     }
 }

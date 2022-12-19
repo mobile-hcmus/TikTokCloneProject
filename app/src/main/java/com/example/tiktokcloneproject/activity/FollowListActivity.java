@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.tiktokcloneproject.R;
 import com.example.tiktokcloneproject.adapters.ViewPagerAdapter;
@@ -42,11 +43,12 @@ public class FollowListActivity extends AppCompatActivity {
                 new TabLayoutMediator.TabConfigurationStrategy() {
                     @Override
                     public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+
                         if (position == 0) {
-                            tab.setText("Following");
+                            tab.setText("Followers");
                         }
                         if (position == 1) {
-                            tab.setText("Followers");
+                            tab.setText("Following");
                         }
                     }
                 }).attach();
