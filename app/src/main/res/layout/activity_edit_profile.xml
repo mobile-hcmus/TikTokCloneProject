@@ -8,95 +8,123 @@
     android:id="@+id/llEditProfile"
     android:orientation="vertical"
     tools:context=".activity.EditProfileActivity">
+
     <ImageView
         android:id="@+id/imvBackToProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_arrow_back_24"
+        android:src="@drawable/ic_back"
         android:layout_margin="5dp"
         android:contentDescription="Go back to ProfileActivity" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="40dp"
+            android:layout_margin="20dp"
             android:orientation="vertical">
             <LinearLayout
+                android:id="@+id/llChangePhoto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:orientation="vertical"
                 android:layout_marginBottom="20dp">
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:padding="40dp"
+                    android:id="@+id/imbPhoto"
+                    android:src="@drawable/ic_camera"
+                    android:background="@drawable/btn_rounded_shape"
+                    />
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="Name"
-                    android:textSize="20sp"/>
+                    android:text="@string/change_photo"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="@color/tiktok_grey"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:paddingEnd="4dp"
+                    android:textColor="@color/tiktok_black"
+                    android:text="@string/name_label"
+                    />
                 <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:id="@+id/edtName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat_medium"
                     android:text=""
-                    android:textSize="20sp"/>
+                    />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp">
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="Username"
-                    android:textSize="20sp"/>
+                    android:fontFamily="@font/montserrat_bold"
+                    android:paddingEnd="4dp"
+                    android:textColor="@color/tiktok_black"
+                    android:text="@string/username_label"/>
                 <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:id="@+id/edtUsername"
-                    android:text=""
-                    android:textSize="20sp"/>
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat_medium"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp">
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="Email"
-                    android:textSize="20sp"/>
+                    android:fontFamily="@font/montserrat_bold"
+                    android:paddingEnd="4dp"
+                    android:textColor="@color/tiktok_black"
+                    android:text="@string/email_label"/>
                 <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:id="@+id/edtEmail"
-                    android:text=""
-                    android:textSize="20sp"/>
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat_medium"/>
             </LinearLayout>
-            <!-- ProgressBar for Loading Time -->
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="invisible" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp">
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="Phone"
-                    android:textSize="20sp"/>
+                    android:fontFamily="@font/montserrat_bold"
+                    android:paddingEnd="4dp"
+                    android:textColor="@color/tiktok_black"
+                    android:text="@string/phone_label"/>
                 <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:id="@+id/edtPhone"
-                    android:text=""
-                    android:textSize="20sp"/>
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat_medium"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -104,47 +132,51 @@
                 android:layout_marginBottom="50dp"
                 android:orientation="horizontal">
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="Birthdate"
-                    android:textSize="20sp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:paddingEnd="4dp"
+                    android:textColor="@color/tiktok_black"
+                    android:text="@string/birthdate_label"
                     />
                 <EditText
+                    android:id="@+id/edtBirthdate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:id="@+id/edtBirthdate"
-                    android:text=""
-                    android:textSize="20sp"
-                    android:layout_weight="7"/>
-                <Button
-                    android:id="@+id/btnSelect"
+                    android:layout_weight="7"
+                    android:fontFamily="@font/montserrat_medium"/>
+                <ImageButton
+                    android:id="@+id/imbSelect"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
-                    android:text="..."
+                    android:src="@drawable/ic_more_20"
                     android:layout_weight="2"/>
 
             </LinearLayout>
+
             <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:id="@+id/btnPhoto"
-                android:text="Change Profile Photo"></Button>
-            <Button
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:id="@+id/btnEditProfile"
-                android:text="Edit Profile"></Button>
+                android:fontFamily="@font/montserrat_bold"
+                android:textColor="@color/tiktok_white"
+                android:textSize="15sp"
+                android:text="@string/edit"
+                android:background="@drawable/btn_red_shape"
+                android:layout_gravity="center"/>
             <Button
-                android:layout_width="match_parent"
+                android:id="@+id/btnApply"
+                android:text="@string/apply"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:id="@+id/btnApply"
-                android:text="Apply"></Button>
+                android:fontFamily="@font/montserrat_bold"
+                android:textColor="@color/tiktok_white"
+                android:textSize="15sp"
+                android:background="@drawable/btn_red_shape"
+                android:layout_gravity="center"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

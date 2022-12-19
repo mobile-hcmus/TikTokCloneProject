@@ -53,5 +53,13 @@
     <string name="template_like">liked your video</string>
     <string name="request_account_title">You are anonymous</string>
     <string name="request_account_message">Would you like you sign up or sign in?</string>
+    <string name="change_photo">Change Photo</string>
+    <string name="edit">Edit</string>
+    <string name="apply">Apply</string>
+    <string name="name_label">Name:</string>
+    <string name="username_label">Username:</string>
+    <string name="email_label">Email:</string>
+    <string name="phone_label">Phone:</string>
+    <string name="birthdate_label">Birthdate:</string>
     <!--   //////////////////////////////////////////////////////////   -->
 </resources>

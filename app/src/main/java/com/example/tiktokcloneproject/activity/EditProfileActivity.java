@@ -1,7 +1,9 @@
 package com.example.tiktokcloneproject.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,9 +15,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -45,15 +47,15 @@ import java.util.Locale;
 public class EditProfileActivity extends Activity implements View.OnClickListener {
     private EditText edtName, edtUsername, edtPhone, edtEmail, edtBirthdate;
     private String Name, Username, Phone, Email, Birthdate;
-    private Button btnEdit, btnPhoto, btnApply, btnSelect;
-    private LinearLayout llEditProfile;
+    private Button btnEdit, btnApply;
+    private ImageButton imbPhoto, imbSelect;
+    private LinearLayout llEditProfile, llChangePhoto;
     private FirebaseFirestore db;
     private Validator validator;
     private Uri avatarUri;
     private final int SELECT_IMAGE_CODE = 10;
-    private ProgressBar progressbar;
     private ImageView imvBackToProfile;
-
+    private Dialog dialog;
     private FirebaseStorage storage;
     private StorageReference storageReference;
 
@@ -79,34 +81,38 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         storageReference = storage.getReference();
 
         llEditProfile = (LinearLayout) findViewById(R.id.llEditProfile);
+        llChangePhoto = (LinearLayout) llEditProfile.findViewById(R.id.llChangePhoto);
         edtName = (EditText) llEditProfile.findViewById(R.id.edtName);
         edtUsername = (EditText) llEditProfile.findViewById(R.id.edtUsername);
         edtPhone = (EditText) llEditProfile.findViewById(R.id.edtPhone);
         edtEmail = (EditText) llEditProfile.findViewById(R.id.edtEmail);
         edtBirthdate = (EditText) llEditProfile.findViewById(R.id.edtBirthdate);
         btnEdit = (Button) llEditProfile.findViewById(R.id.btnEditProfile);
-        btnPhoto = (Button) llEditProfile.findViewById(R.id.btnPhoto);
+        imbPhoto = (ImageButton) llEditProfile.findViewById(R.id.imbPhoto);
         btnApply = (Button) llEditProfile.findViewById(R.id.btnApply);
-        btnSelect = (Button) llEditProfile.findViewById(R.id.btnSelect);
+        imbSelect = (ImageButton) llEditProfile.findViewById(R.id.imbSelect);
         imvBackToProfile = (ImageView) findViewById(R.id.imvBackToProfile);
-        progressbar = findViewById(R.id.progressBar);
 
         validator = Validator.getInstance();
         setEnableEdt(false);
         btnApply.setVisibility(View.GONE);
-        btnSelect.setVisibility(View.GONE);
+        imbSelect.setVisibility(View.GONE);
 
         btnEdit.setOnClickListener(this);
         btnApply.setOnClickListener(this);
-        btnPhoto.setOnClickListener(this);
-        btnSelect.setOnClickListener(this);
+        imbPhoto.setOnClickListener(this);
+        imbSelect.setOnClickListener(this);
         imvBackToProfile.setOnClickListener(this);
 
         setOnTextChanged();
         db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        progressbar.setVisibility(View.VISIBLE);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false); // if you want user to wait for some process to finish,
+        builder.setView(R.layout.dialog_progress);
+        dialog = builder.create();
+        dialog.show();
 
         if (user != null) {
             String TAG = "LOG";
@@ -122,6 +128,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
                             edtPhone.setText(getData(document.get("phone")));
                             edtEmail.setText(getData(document.get("email")));
                             edtBirthdate.setText(getData(document.get("birthdate")));
+                            dialog.dismiss();
                             Log.d(TAG, "DocumentSnapshot data: " + document.get("following"));
                         } else {
                             Log.d(TAG, "No such document");
@@ -132,7 +139,6 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
                 }
             });
         }
-        progressbar.setVisibility(View.GONE);
 
 
     }//on create
@@ -183,9 +189,9 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         if (v.getId() == btnEdit.getId()) {
             btnApply.setVisibility(View.VISIBLE);
             btnEdit.setVisibility(View.GONE);
-            btnPhoto.setVisibility(View.GONE);
-            btnSelect.bringToFront();
-            btnSelect.setVisibility(View.VISIBLE);
+            llChangePhoto.setVisibility(View.GONE);
+            imbSelect.bringToFront();
+            imbSelect.setVisibility(View.VISIBLE);
 
             Name = edtName.getText().toString();
             setEnableEdt(true);
@@ -196,7 +202,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
             update(Name, Username, Phone, Email, Birthdate);
         }
 
-        if (v.getId() == btnPhoto.getId()) {
+        if (v.getId() == imbPhoto.getId()) {
             Intent intent = new Intent();
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -206,7 +212,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
             onBackPressed();
             finish();
         }
-        if (v.getId() == btnSelect.getId()){
+        if (v.getId() == imbSelect.getId()){
             DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker datePicker, int year, int month, int day) {
@@ -241,7 +247,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         setEnableEdt(false);
         btnApply.setVisibility(View.GONE);
         btnEdit.setVisibility(View.VISIBLE);
-        btnPhoto.setVisibility(View.VISIBLE);
+        imbPhoto.setVisibility(View.VISIBLE);
 }
 
     private void setEnableEdt(boolean value) {
