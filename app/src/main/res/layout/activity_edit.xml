@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.EditActivity"
+    android:orientation="vertical"
+    android:layout_margin="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/imbBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back"
+            android:background="@color/transparent"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"/>
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_bold"
+            android:textColor="@color/tiktok_red_50"
+            android:background="@color/transparent"
+            android:layout_alignParentEnd="true"
+            android:text="@string/save"
+            android:layout_centerVertical="true"
+            android:enabled="false"
+            android:textSize="15sp"
+            android:textAlignment="textEnd"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_bold"
+        android:paddingEnd="4dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/tiktok_black"
+        android:layout_marginBottom="10dp"
+        android:textSize="15sp"
+        android:text="Name:"
+        />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:endIconMode="clear_text"
+        app:errorEnabled="true"
+        app:helperTextEnabled="true"
+        android:focusedByDefault="false"
+        app:boxStrokeColor="@color/tiktok_black"
+        app:boxStrokeWidthFocused="1dp"
+        app:boxStrokeErrorColor="@color/tiktok_red"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textCursorDrawable="@null"
+            android:textColor="@color/tiktok_black"
+            android:fontFamily="@font/montserrat_medium"
+            >
+            <requestFocus/>
+        </com.google.android.material.textfield.TextInputEditText>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</LinearLayout>

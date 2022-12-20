@@ -37,7 +37,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:padding="40dp"
+                    android:padding="30dp"
                     android:id="@+id/imbPhoto"
                     android:src="@drawable/ic_camera"
                     android:background="@drawable/btn_rounded_shape"
@@ -48,65 +48,6 @@
                     android:text="@string/change_photo"
                     android:fontFamily="@font/montserrat_medium"
                     android:textColor="@color/tiktok_grey"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal"
-                android:visibility="gone">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:paddingEnd="4dp"
-                    android:textColor="@color/tiktok_black"
-                    android:text="@string/name_label"
-                    />
-                <EditText
-                    android:id="@+id/edtName"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserrat_medium"
-                    android:text=""
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:paddingEnd="4dp"
-                    android:textColor="@color/tiktok_black"
-                    android:text="@string/username_label"/>
-                <EditText
-                    android:id="@+id/edtUsername"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserrat_medium"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:paddingEnd="4dp"
-                    android:textColor="@color/tiktok_black"
-                    android:text="@string/email_label"/>
-                <EditText
-                    android:id="@+id/edtEmail"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/montserrat_medium"/>
             </LinearLayout>
 
             <LinearLayout
@@ -119,9 +60,54 @@
                     android:fontFamily="@font/montserrat_bold"
                     android:paddingEnd="4dp"
                     android:textColor="@color/tiktok_black"
+                    android:text="@string/username_label"/>
+                <TextView
+                    android:id="@+id/tvUsername"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat_medium"/>
+                <ImageButton
+                    android:id="@+id/imbUsername"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_foward"
+                    android:background="@color/transparent"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/llEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:paddingEnd="4dp"
+                    android:textColor="@color/tiktok_black"
+                    android:text="@string/email_label"/>
+                <TextView
+                    android:id="@+id/tvEmail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat_medium"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:paddingEnd="4dp"
+                    android:textColor="@color/tiktok_black"
                     android:text="@string/phone_label"/>
-                <EditText
-                    android:id="@+id/edtPhone"
+                <TextView
+                    android:id="@+id/tvPhone"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -140,12 +126,18 @@
                     android:textColor="@color/tiktok_black"
                     android:text="@string/birthdate_label"
                     />
-                <EditText
-                    android:id="@+id/edtBirthdate"
+                <TextView
+                    android:id="@+id/tvBirthdate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
                     android:fontFamily="@font/montserrat_medium"/>
+                <ImageButton
+                    android:id="@+id/imbBirthdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_foward"
+                    android:background="@color/transparent"/>
                 <ImageButton
                     android:id="@+id/imbSelect"
                     android:layout_width="0dp"
@@ -154,32 +146,10 @@
                     android:paddingVertical="4dp"
                     android:src="@drawable/ic_more"
                     android:background="@drawable/btn_red_shape"
-                    android:layout_weight="2"/>
+                    android:layout_weight="2"
+                    android:visibility="gone"/>
 
             </LinearLayout>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:id="@+id/btnEditProfile"
-                android:fontFamily="@font/montserrat_bold"
-                android:textColor="@color/tiktok_white"
-                android:textSize="15sp"
-                android:text="@string/edit"
-                android:background="@drawable/btn_red_shape"
-                android:layout_gravity="center"/>
-            <Button
-                android:id="@+id/btnApply"
-                android:text="@string/apply"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:fontFamily="@font/montserrat_bold"
-                android:textColor="@color/tiktok_white"
-                android:textSize="15sp"
-                android:background="@drawable/btn_red_shape"
-                android:layout_gravity="center"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

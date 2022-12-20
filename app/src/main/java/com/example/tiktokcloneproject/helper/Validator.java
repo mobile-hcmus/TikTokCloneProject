@@ -3,6 +3,9 @@ package com.example.tiktokcloneproject.helper;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Year;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,7 +18,7 @@ public class Validator {
     private final String regexEmail = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{3,}$";
     private  final  String regexUsername = "^[a-zA-Z_][a-zA-Z_0-9]{2,}$";
     private final String regexPassword = "^[a-zA-Z0-9]{2,}$";
-    private final String regexBirthdate = "";
+    private final String regexDate = "^(0?[1-9]|1\\d|2\\d|3[01])/(0[1-9]|1[0-2])/(\\d{4})$";
     private Validator() {
 
     }
@@ -51,10 +54,20 @@ public class Validator {
     }
 
     public boolean isValidDate(String dateStr) {
+        pattern = Pattern.compile(regexDate);
+        matcher = pattern.matcher(dateStr);
+        if(!matcher.matches()) return false;
         DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         sdf.setLenient(false);
         try {
-            sdf.parse(dateStr);
+            Date date = sdf.parse(dateStr);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            int year = calendar.get(Calendar.YEAR);
+            int currentYear = Year.now().getValue();
+            if(currentYear - year < 16) {
+                return false;
+            }
         } catch (ParseException e) {
             return false;
         }

@@ -28,7 +28,6 @@
     <string name="action_search">Search...</string>
     <string name="title_activity_fullscreen_avatar">FullscreenAvatarActivity</string>
     <string name="hint_username">Enter username</string>
-    <string name="error_username">%1$s is invalid</string>
     <string name="error_undefined">Something is wrong. Please try again!</string>
     <string name="error_upload_video">Video must have duration less than 15s and maximum resolution is 720p</string>
     <string name="sign_up">Sign Up</string>
@@ -61,5 +60,10 @@
     <string name="email_label">Email:</string>
     <string name="phone_label">Phone:</string>
     <string name="birthdate_label">Birthdate:</string>
+    <string name="save">Save</string>
+    <string name="error_username">Usernames can contain letters, numbers, \"_\" but the first character must not be a number and the minimum length is 3
+    </string>
+    <string name="error_birthdate">Birhdate is invalid or under 16 years old</string>
+    <string name="exist_username">This username has existed</string>
     <!--   //////////////////////////////////////////////////////////   -->
 </resources>

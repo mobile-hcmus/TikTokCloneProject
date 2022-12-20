@@ -29,6 +29,9 @@
         android:theme="@style/Theme.TikTokCloneProject"
         tools:targetApi="31">
         <activity
+            android:name=".activity.EditActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.InboxActivity"
             android:exported="false" />
         <activity
@@ -62,7 +65,7 @@
             android:exported="false" />
         <activity
             android:name=".activity.DescriptionVideoActivity"
-            android:exported="false"></activity> <!-- <activity -->
+            android:exported="false" /> <!-- <activity -->
         <!-- android:name=".WaitingFragment" -->
         <!-- android:exported="false" /> -->
         <activity

@@ -18,12 +18,15 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.tiktokcloneproject.R;
+import com.example.tiktokcloneproject.helper.GlobalVariable;
+import com.example.tiktokcloneproject.helper.StaticVariable;
 import com.example.tiktokcloneproject.helper.Validator;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -45,13 +48,10 @@ import java.util.Locale;
 
 
 public class EditProfileActivity extends Activity implements View.OnClickListener {
-    private EditText edtName, edtUsername, edtPhone, edtEmail, edtBirthdate;
-    private String Name, Username, Phone, Email, Birthdate;
-    private Button btnEdit, btnApply;
-    private ImageButton imbPhoto, imbSelect;
-    private LinearLayout llEditProfile, llChangePhoto;
+    private TextView tvUsername, tvPhone, tvEmail, tvBirthdate;
+    private ImageButton imbPhoto, imbSelect, imbUsername, imbBirthdate;
+    private LinearLayout llEditProfile, llChangePhoto, llPhone, llEmail;
     private FirebaseFirestore db;
-    private Validator validator;
     private Uri avatarUri;
     private final int SELECT_IMAGE_CODE = 10;
     private ImageView imvBackToProfile;
@@ -59,17 +59,9 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
     private FirebaseStorage storage;
     private StorageReference storageReference;
 
-    final Calendar myCalendar= Calendar.getInstance();
     private final String TAG = "EditProfileActivity";
 
     FirebaseUser user;
-
-    enum Flag {
-        USERNAME,
-        EMAIL,
-        PHONE,
-        BIRTHDATE
-    }
 
 
     @Override
@@ -77,35 +69,32 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
         llEditProfile = (LinearLayout) findViewById(R.id.llEditProfile);
         llChangePhoto = (LinearLayout) llEditProfile.findViewById(R.id.llChangePhoto);
-        edtName = (EditText) llEditProfile.findViewById(R.id.edtName);
-        edtUsername = (EditText) llEditProfile.findViewById(R.id.edtUsername);
-        edtPhone = (EditText) llEditProfile.findViewById(R.id.edtPhone);
-        edtEmail = (EditText) llEditProfile.findViewById(R.id.edtEmail);
-        edtBirthdate = (EditText) llEditProfile.findViewById(R.id.edtBirthdate);
-        btnEdit = (Button) llEditProfile.findViewById(R.id.btnEditProfile);
+        llPhone = (LinearLayout) llEditProfile.findViewById(R.id.llPhone);
+        llEmail = (LinearLayout) llEditProfile.findViewById(R.id.llEmail);
+        tvUsername = (TextView) llEditProfile.findViewById(R.id.tvUsername);
+        tvPhone = (TextView) llEditProfile.findViewById(R.id.tvPhone);
+        tvEmail = (TextView) llEditProfile.findViewById(R.id.tvEmail);
+        tvBirthdate = (TextView) llEditProfile.findViewById(R.id.tvBirthdate);
         imbPhoto = (ImageButton) llEditProfile.findViewById(R.id.imbPhoto);
-        btnApply = (Button) llEditProfile.findViewById(R.id.btnApply);
         imbSelect = (ImageButton) llEditProfile.findViewById(R.id.imbSelect);
+        imbUsername = (ImageButton) llEditProfile.findViewById(R.id.imbUsername);
+        imbBirthdate = (ImageButton) llEditProfile.findViewById(R.id.imbBirthdate);
         imvBackToProfile = (ImageView) findViewById(R.id.imvBackToProfile);
 
-        validator = Validator.getInstance();
-        setEnableEdt(false);
-        btnApply.setVisibility(View.GONE);
         imbSelect.setVisibility(View.GONE);
 
-        btnEdit.setOnClickListener(this);
-        btnApply.setOnClickListener(this);
+
         imbPhoto.setOnClickListener(this);
         imbSelect.setOnClickListener(this);
         imvBackToProfile.setOnClickListener(this);
+        imbUsername.setOnClickListener(this);
+        imbBirthdate.setOnClickListener(this);
 
-        setOnTextChanged();
         db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -116,7 +105,12 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         dialog.show();
 
         if (user != null) {
-            String TAG = "LOG";
+            if(user.getPhoneNumber() == null) {
+                llPhone.setVisibility(View.GONE);
+            }
+            else {
+                llEmail.setVisibility(View.GONE);
+            }
             DocumentReference docRef = db.collection("users").document(user.getUid().toString());
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -125,10 +119,10 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             Toast.makeText(EditProfileActivity.this, "success", Toast.LENGTH_SHORT).show();
-                            edtUsername.setText(getData(document.get("userName")));
-                            edtPhone.setText(getData(document.get("phone")));
-                            edtEmail.setText(getData(document.get("email")));
-                            edtBirthdate.setText(getData(document.get("birthdate")));
+                            tvUsername.setText(getData(document.get("userName")));
+                            tvPhone.setText(getData(document.get("phone")));
+                            tvEmail.setText(getData(document.get("email")));
+                            tvBirthdate.setText(getData(document.get("birthdate")));
                             dialog.dismiss();
                             Log.d(TAG, "DocumentSnapshot data: " + document.get("following"));
                         } else {
@@ -187,21 +181,6 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == btnEdit.getId()) {
-            btnApply.setVisibility(View.VISIBLE);
-            btnEdit.setVisibility(View.GONE);
-            llChangePhoto.setVisibility(View.GONE);
-            imbSelect.bringToFront();
-            imbSelect.setVisibility(View.VISIBLE);
-
-            Name = edtName.getText().toString();
-            setEnableEdt(true);
-
-        }
-        if (v.getId() == btnApply.getId()) {
-            setOnTextChanged();
-            update(Name, Username, Phone, Email, Birthdate);
-        }
 
         if (v.getId() == imbPhoto.getId()) {
             Intent intent = new Intent();
@@ -213,165 +192,22 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
             onBackPressed();
             finish();
         }
-        if (v.getId() == imbSelect.getId()){
-            DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                    myCalendar.set(Calendar.YEAR, year);
-                    myCalendar.set(Calendar.MONTH, month);
-                    myCalendar.set(Calendar.DAY_OF_MONTH, day);
-                    updateLabel();
-                }
-            };
-            new DatePickerDialog(this,date,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+
+        if(v.getId() == imbUsername.getId()) {
+            moveToEdit(StaticVariable.USERNAME, tvUsername.getText().toString());
+        }
+
+        if(v.getId() == imbBirthdate.getId()) {
+            moveToEdit(StaticVariable.BIRTHDATE, tvBirthdate.getText().toString());
         }
     }//on click
 
-    private void update(String name, String username, String phone, String email, String birthdate) {
-        HashMap<String, Object> newData = new HashMap<>();
-        newData.put("userName", username);
-        newData.put("phone", phone);
-        newData.put("email", email);
-        newData.put("birthdate", birthdate);
-
-        DocumentReference userDoc = db.collection("users").document(user.getUid());
-        DocumentReference profileDoc = db.collection("profiles").document(user.getUid());
-
-       userDoc.update(newData)
-               .addOnSuccessListener(new OnSuccessListener<Void>() {
-                   @Override
-                   public void onSuccess(Void aVoid) {
-                       Log.d(TAG, "DocumentSnapshot successfully updated!");
-                   }
-               })
-               .addOnFailureListener(new OnFailureListener() {
-                   @Override
-                   public void onFailure(@NonNull Exception e) {
-                       Log.w(TAG, "Error updating document", e);
-                   }
-               });
-       profileDoc.update("username", username)
-               .addOnSuccessListener(new OnSuccessListener<Void>() {
-                   @Override
-                   public void onSuccess(Void aVoid) {
-                       Log.d(TAG, "DocumentSnapshot successfully updated!");
-                   }
-               })
-               .addOnFailureListener(new OnFailureListener() {
-                   @Override
-                   public void onFailure(@NonNull Exception e) {
-                       Log.w(TAG, "Error updating document", e);
-                   }
-               });;
-
-        setEnableEdt(false);
-        btnApply.setVisibility(View.GONE);
-        btnEdit.setVisibility(View.VISIBLE);
-        llChangePhoto.setVisibility(View.VISIBLE);
-}
-
-    private void setEnableEdt(boolean value) {
-        edtName.setEnabled(value);
-        edtUsername.setEnabled(value);
-        edtPhone.setEnabled(value);
-        edtEmail.setEnabled(value);
-        edtBirthdate.setEnabled(value);
+    private void moveToEdit(String mode, String content) {
+        Intent intent = new Intent(this, EditActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("mode", mode);
+        bundle.putString("content", content);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
-
-    private void setOnTextChanged() {
-        edtUsername.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!validator.isValidUsername(charSequence.toString())) {
-                    edtUsername.setTextColor(getResources().getColor(R.color.tiktok_red));
-                } else {
-                    edtUsername.setTextColor(getResources().getColor(R.color.black));
-                    Username = edtUsername.getText().toString();
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-
-        edtPhone.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!validator.isValidPhone(charSequence.toString())) {
-                    edtPhone.setTextColor(getResources().getColor(R.color.tiktok_red));
-                } else {
-                    edtPhone.setTextColor(getResources().getColor(R.color.black));
-                    Phone = edtPhone.getText().toString();
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-        edtEmail.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!validator.isValidEmail(charSequence.toString())) {
-                    edtEmail.setTextColor(getResources().getColor(R.color.tiktok_red));
-                } else {
-                    edtEmail.setTextColor(getResources().getColor(R.color.black));
-                    Email = edtEmail.getText().toString();
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-        edtBirthdate.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!validator.isValidBirthdate(charSequence.toString())) {
-                    edtBirthdate.setTextColor(getResources().getColor(R.color.tiktok_red));
-                } else {
-                    edtBirthdate.setTextColor(getResources().getColor(R.color.black));
-                    Birthdate = edtBirthdate.getText().toString();
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-    }
-    private void updateLabel()
-    {
-        String myFormat="dd/MM/yyyy";
-        SimpleDateFormat dateFormat=new SimpleDateFormat(myFormat, Locale.US);
-        edtBirthdate.setText(dateFormat.format(myCalendar.getTime()));
-    };
 }
