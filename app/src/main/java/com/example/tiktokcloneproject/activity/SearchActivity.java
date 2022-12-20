@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tiktokcloneproject.R;
+import com.example.tiktokcloneproject.WrapContentLinearLayoutManager;
 import com.example.tiktokcloneproject.adapters.UserAdapter;
 import com.example.tiktokcloneproject.adapters.VideoSummaryAdapter;
 import com.example.tiktokcloneproject.model.User;
@@ -30,12 +31,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+
 import java.util.ArrayList;
 
 public class SearchActivity extends Activity implements View.OnClickListener {
 
 
      RecyclerView rcv_users;
+
+
      UserAdapter userAdapter;
      SearchView searchView;
 
@@ -67,11 +71,9 @@ public class SearchActivity extends Activity implements View.OnClickListener {
 
 
         rcv_users=(RecyclerView) findViewById(R.id.rcv_users);
+        rcv_users.setLayoutManager(new WrapContentLinearLayoutManager(SearchActivity.this, LinearLayoutManager.VERTICAL, false));
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-
-        rcv_users.setLayoutManager(linearLayoutManager);
-
         String key="";
 
 //        getData(key);
@@ -153,30 +155,6 @@ public class SearchActivity extends Activity implements View.OnClickListener {
 
     private void getData(String key) {
         userArrayList.clear();
-//        userDB.collection("users").orderBy("userName", Query.Direction.ASCENDING)
-//                .whereEqualTo("userName", true)
-//                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-//                if (error != null){
-//                    Toast.makeText(SearchActivity.this,"Loi ket noi voi Server!",
-//                            Toast.LENGTH_LONG).show();
-//                    return;
-//                };
-//
-//                Toast.makeText(SearchActivity.this, value.getDocuments().toString(),
-//                        Toast.LENGTH_LONG).show();
-//
-//                for (DocumentChange dc : value.getDocumentChanges()){
-//                        userArrayList.add(dc.getDocument().toObject(User.class));
-//
-//                }
-//                userAdapter.notifyDataSetChanged();
-//
-//            }
-//        });
-
-
         db.collection("users")
                 .orderBy("userName")
                 .startAt(key)
@@ -197,20 +175,11 @@ public class SearchActivity extends Activity implements View.OnClickListener {
                         }
                     }
                 });
-
-
-
     }
-
-
-
-
-
 
     private boolean checkIsFollowing(ArrayList<String> userIDFollowingList, String anotherUserID) {
         return userIDFollowingList.contains(anotherUserID);
     }
-
 
     private void setVideoSummaries(String hashtag) {
 
@@ -245,7 +214,6 @@ public class SearchActivity extends Activity implements View.OnClickListener {
     }
 
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
-
         private int spanCount;
         private int spacing;
         private boolean includeEdge;
