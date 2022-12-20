@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -23,7 +24,10 @@ import androidx.annotation.Nullable;
 
 import com.example.tiktokcloneproject.R;
 import com.example.tiktokcloneproject.adapters.CommentAdapter;
+import com.example.tiktokcloneproject.helper.StaticVariable;
 import com.example.tiktokcloneproject.model.Comment;
+import com.example.tiktokcloneproject.model.Notification;
+import com.example.tiktokcloneproject.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,6 +36,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -57,6 +62,11 @@ public class CommentActivity extends Activity implements View.OnClickListener{
     FirebaseStorage storage;
     StorageReference storageRef, imagesRef;
     DocumentReference docRef;
+    String username;
+    String authorVideoId;
+    int totalComments;
+
+    Handler handler = new Handler();
 
     ArrayList<Comment> comments;
 
@@ -75,6 +85,8 @@ public class CommentActivity extends Activity implements View.OnClickListener{
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         videoId = bundle.getString("videoId");
+        authorVideoId = bundle.getString("authorId");
+        totalComments = bundle.getInt("totalComments");
 
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -85,6 +97,23 @@ public class CommentActivity extends Activity implements View.OnClickListener{
         CommentAdapter adapter = new CommentAdapter(this, R.layout.layout_row_comment, comments);
         lvComment.setAdapter(adapter);
 
+        db.collection("users").document(user.getUid())
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                username = document.get("username", String.class);
+                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    }
+                });
 
         db.collection("comments")
                 .whereEqualTo("videoId", videoId)
@@ -192,6 +221,8 @@ public class CommentActivity extends Activity implements View.OnClickListener{
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
+                    Notification.pushNotification(username, authorVideoId, StaticVariable.COMMENT);
+                    handler.post(CommentActivity.this::updateTotal);
                     Toast.makeText(CommentActivity.this, "Comment successfully!", Toast.LENGTH_SHORT).show();
                 }
                 else{
@@ -199,6 +230,23 @@ public class CommentActivity extends Activity implements View.OnClickListener{
                 }
             }
         });
+    }
+
+    private void updateTotal() {
+        db.collection("videos").document(videoId)
+                .update("totalComments", totalComments + 1)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error updating document", e);
+                    }
+                });
     }
 
 

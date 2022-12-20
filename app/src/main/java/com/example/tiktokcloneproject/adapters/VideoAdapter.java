@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ import com.example.tiktokcloneproject.R;
 import com.example.tiktokcloneproject.model.Video;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -64,13 +66,16 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         return videos.size();
     }
 
-    static class VideoViewHolder extends RecyclerView.ViewHolder {
+    static class VideoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         VideoView videoView;
         ImageView imvAvatar, imvPause;
         TextView txvDescription, tvTitle;
         TextView tvComment, tvFavorites;
         ProgressBar pgbWait;
+        String authorId;
+        String videoId;
+        int totalComments;
 
 
         public VideoViewHolder(@NonNull View itemView) {
@@ -84,15 +89,42 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             imvPause = itemView.findViewById(R.id.imvPause);
             pgbWait = itemView.findViewById(R.id.pgbWait);
 
+
+            imvAvatar.setOnClickListener(this);
+            tvTitle.setOnClickListener(this);
+            tvComment.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View view) {
+            if(view.getId() == imvAvatar.getId()) {
+                moveToProfile(videoView.getContext(), authorId);
+            }
+            if(view.getId() == tvTitle.getId()) {
+                moveToProfile(videoView.getContext(), authorId);
+            }
+            if(view.getId() == tvComment.getId()) {
+                Intent intent = new Intent(view.getContext(), CommentActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("videoId", videoId);
+                bundle.putString("authorId", authorId);
+                bundle.putInt("totalComments", totalComments);
+                intent.putExtras(bundle);
+                view.getContext().startActivity(intent);
+            }
+        }
+
 
         @SuppressLint("ClickableViewAccessibility")
         public void setVideoObjects(final Video videoObjects) {
             tvTitle.setText("@" + videoObjects.getUsername());
             txvDescription.setText(videoObjects.getDescription());
+            tvComment.setText(String.valueOf(videoObjects.getTotalComments()));
            videoView.setVideoPath(videoObjects.getVideoUri());
 
-            String authorId = videoObjects.getAuthorId();
+            authorId = videoObjects.getAuthorId();
+            videoId = videoObjects.getVideoId();
+            totalComments = videoObjects.getTotalComments();
 
             videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
@@ -124,51 +156,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 }
             });
 
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageRef = storage.getReference();
-            StorageReference download = storageRef.child("/user_avatars").child(videoObjects.getAuthorId());
-//                        StorageReference download = storageRef.child(userId.toString());
-            long MAX_BYTE = 1024*1024;
-            download.getBytes(MAX_BYTE)
-                    .addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                        @Override
-                        public void onSuccess(byte[] bytes) {
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);
-                            imvAvatar.setImageBitmap(bitmap);
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            // Do nothing
-                        }
-                    });
-
-
-            tvComment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), CommentActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("videoId", videoObjects.getVideoId());
-                intent.putExtras(bundle);
-                view.getContext().startActivity(intent);
-                }
-            });
-
-           imvAvatar.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View view) {
-                   moveToProfile(videoView.getContext(), authorId);
-               }
-           });
-
-           tvTitle.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View view) {
-                   moveToProfile(videoView.getContext(), authorId);
-               }
-           });
+            showAvt(imvAvatar, videoObjects.getAuthorId());
         }
 
         private void moveToProfile(Context context, String authorId) {
@@ -178,6 +166,30 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             intent.putExtras(bundle);
             context.startActivity(intent);
         }
+
+        private void showAvt(ImageView imv, String authorId) {
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReference();
+            StorageReference download = storageRef.child("/user_avatars").child(authorId);
+
+            long MAX_BYTE = 1024*1024;
+            download.getBytes(MAX_BYTE)
+                    .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);
+                            imv.setImageBitmap(bitmap);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // Do nothing
+                        }
+                    });
+        }
+
+
     } // class ViewHolder
 
 

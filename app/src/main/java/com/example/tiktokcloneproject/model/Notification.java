@@ -3,9 +3,6 @@ package com.example.tiktokcloneproject.model;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Notification {
-    public static final String FOLLOW = "0";
-    public static final String COMMENT = "1";
-    public static final String LIKE = "2";
 
     private String fromUsername;
     private String action;

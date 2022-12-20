@@ -5,4 +5,7 @@ public class StaticVariable {
     public final static String EMAIL = "email";
     public final static String PHONE = "phone";
     public final static String BIRTHDATE = "birthdate";
+    public static final String FOLLOW = "0";
+    public static final String COMMENT = "1";
+    public static final String LIKE = "2";
 }

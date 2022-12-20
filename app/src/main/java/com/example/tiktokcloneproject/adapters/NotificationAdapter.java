@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.tiktokcloneproject.R;
+import com.example.tiktokcloneproject.helper.StaticVariable;
 import com.example.tiktokcloneproject.model.Notification;
 
 import java.util.ArrayList;
@@ -72,11 +73,11 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
 
     private String handleAction(String action) {
         switch (action) {
-            case Notification.COMMENT:
+            case StaticVariable.COMMENT:
                 return context.getString(R.string.template_comment);
-            case Notification.FOLLOW:
+            case StaticVariable.FOLLOW:
                 return context.getString(R.string.template_follow);
-            case Notification.LIKE:
+            case StaticVariable.LIKE:
                 return context.getString(R.string.template_like);
         }
         return "";
