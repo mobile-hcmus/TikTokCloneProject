@@ -16,6 +16,8 @@ import com.example.tiktokcloneproject.adapters.VideoAdapter;
 import com.example.tiktokcloneproject.model.Video;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -27,6 +29,8 @@ public class VideoActivity extends Activity {
     private ViewPager2 viewPager2;
     private ArrayList<Video> videos;
     private VideoAdapter videoAdapter;
+    private FirebaseAuth mAuth;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +41,15 @@ public class VideoActivity extends Activity {
         Bundle bundle = intent.getExtras();
         videoId = bundle.getString("videoId");
 
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
         viewPager2 = findViewById(R.id.viewPager);
         videos = new ArrayList<>();
         videoAdapter = new VideoAdapter(this, videos);
+        VideoAdapter.setUser(user);
         viewPager2.setAdapter(videoAdapter);
+
 
         db = FirebaseFirestore.getInstance();
         db.collection("videos").document(videoId)

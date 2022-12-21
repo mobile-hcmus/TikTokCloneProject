@@ -88,6 +88,7 @@ public class VideoFragment extends Fragment implements View.OnClickListener {
         viewPager2 = layout.findViewById(R.id.viewPager);
         videos = new ArrayList<>();
         videoAdapter = new VideoAdapter(context, videos);
+        VideoAdapter.setUser(user);
         viewPager2.setAdapter(videoAdapter);
         loadVideos();
         return layout;

@@ -2,12 +2,14 @@ package com.example.tiktokcloneproject.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,15 +23,20 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tiktokcloneproject.activity.CommentActivity;
+import com.example.tiktokcloneproject.activity.MainActivity;
 import com.example.tiktokcloneproject.activity.ProfileActivity;
 import com.example.tiktokcloneproject.R;
+import com.example.tiktokcloneproject.activity.VideoActivity;
 import com.example.tiktokcloneproject.model.Video;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -38,11 +45,16 @@ import java.util.List;
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
 
     private List<Video> videos;
-    Context context;
+    private Context context;
+    private static FirebaseUser user = null;
 
     public VideoAdapter(Context context, List<Video> videos) {
         this.context = context;
         this.videos = videos;
+    }
+
+    public static void setUser(FirebaseUser user) {
+        VideoAdapter.user = user;
     }
 
     public void addVideoObject(Video video) {
@@ -66,7 +78,38 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         return videos.size();
     }
 
-    static class VideoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public void showNiceDialogBox(Context context, @Nullable String title, @Nullable String message) {
+        if(title == null) {
+            title = context.getString(R.string.request_account_title);
+        }
+        if(message == null) {
+            message = context.getString(R.string.request_account_message);
+        }
+        try {
+            //CAUTION: sometimes TITLE and DESCRIPTION include HTML markers
+            AlertDialog.Builder myBuilder = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
+            myBuilder.setIcon(R.drawable.splash_background)
+                    .setTitle(title)
+                    .setMessage(message)
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            return;
+                        }
+                    })
+                    .setPositiveButton("Sign up/Sign in", new DialogInterface.OnClickListener()
+                    {
+                        public void onClick(DialogInterface dialog, int whichOne) {
+                            Intent intent = new Intent(context, MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            context.startActivity(intent);
+                        }}) //setNegativeButton
+                    .show();
+        }
+        catch (Exception e) { Log.e("Error DialogBox", e.getMessage() ); }
+    }
+
+    public class VideoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         VideoView videoView;
         ImageView imvAvatar, imvPause;
@@ -104,6 +147,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 moveToProfile(videoView.getContext(), authorId);
             }
             if(view.getId() == tvComment.getId()) {
+                if(user == null) {
+                    showNiceDialogBox(view.getContext(), null, null);
+                    return;
+                }
                 Intent intent = new Intent(view.getContext(), CommentActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("videoId", videoId);
@@ -191,6 +238,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
 
     } // class ViewHolder
+
+
 
 
 }// class adapter

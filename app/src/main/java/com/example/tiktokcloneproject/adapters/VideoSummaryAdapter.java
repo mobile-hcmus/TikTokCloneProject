@@ -59,6 +59,7 @@ public class VideoSummaryAdapter extends RecyclerView.Adapter<VideoSummaryAdapte
                 Bundle bundle =  new Bundle();
                 bundle.putString("videoId", mData.get(position).getVideoId());
                 intent.putExtras(bundle);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 view.getContext().startActivity(intent);
             }
         });
