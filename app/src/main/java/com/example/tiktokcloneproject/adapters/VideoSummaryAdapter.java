@@ -1,8 +1,10 @@
 package com.example.tiktokcloneproject.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tiktokcloneproject.R;
+import com.example.tiktokcloneproject.activity.VideoActivity;
 import com.example.tiktokcloneproject.model.VideoSummary;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -26,7 +29,7 @@ public class VideoSummaryAdapter extends RecyclerView.Adapter<VideoSummaryAdapte
 
     private ArrayList<VideoSummary> mData;
     private LayoutInflater mInflater;
-    private ItemClickListener mClickListener;
+
     private Context mainContext;
 
     // data is passed into the constructor
@@ -49,6 +52,16 @@ public class VideoSummaryAdapter extends RecyclerView.Adapter<VideoSummaryAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.viewCount.setText(mData.get(position).getWatchCount().toString());
         setThumbnailImage(holder, mData.get(position).getThumbnailUri());
+        holder.setOnItemClickListener(new ItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(view.getContext(), VideoActivity.class);
+                Bundle bundle =  new Bundle();
+                bundle.putString("videoId", mData.get(position).getVideoId());
+                intent.putExtras(bundle);
+                view.getContext().startActivity(intent);
+            }
+        });
 
     }
 
@@ -83,6 +96,7 @@ public class VideoSummaryAdapter extends RecyclerView.Adapter<VideoSummaryAdapte
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView viewCount;
         ImageView thumbnail;
+        private ItemClickListener itemClickListener;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -91,12 +105,14 @@ public class VideoSummaryAdapter extends RecyclerView.Adapter<VideoSummaryAdapte
             itemView.setOnClickListener(this);
         }
 
+        // allows clicks events to be caught
+        void setOnItemClickListener(ItemClickListener itemClickListener) {
+            this.itemClickListener = itemClickListener;
+        }
+
         @Override
         public void onClick(View view) {
-            if (mClickListener != null) {
-//                Intent intent = new Intent(mainContext, Video.class);
-//                mainContext.startActivity(intent);
-            }
+            itemClickListener.onItemClick(view,getBindingAdapterPosition());
         }
     }
 
@@ -105,10 +121,7 @@ public class VideoSummaryAdapter extends RecyclerView.Adapter<VideoSummaryAdapte
 //        return mData[id];
 //    }
 
-    // allows clicks events to be caught
-    void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
-    }
+
 
     // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
