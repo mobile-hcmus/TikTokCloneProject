@@ -28,19 +28,23 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tiktokcloneproject.activity.CommentActivity;
+import com.example.tiktokcloneproject.activity.DeleteVideoSettingActivity;
 import com.example.tiktokcloneproject.activity.MainActivity;
 import com.example.tiktokcloneproject.activity.ProfileActivity;
 import com.example.tiktokcloneproject.R;
+import com.example.tiktokcloneproject.activity.SettingsAndPrivacyActivity;
 import com.example.tiktokcloneproject.activity.VideoActivity;
 import com.example.tiktokcloneproject.model.Video;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
+import java.util.Objects;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
 
@@ -112,14 +116,15 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     public class VideoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         VideoView videoView;
-        ImageView imvAvatar, imvPause;
+        ImageView imvAvatar, imvPause, imvMore;
         TextView txvDescription, tvTitle;
         TextView tvComment, tvFavorites;
         ProgressBar pgbWait;
         String authorId;
         String videoId;
         int totalComments;
-
+        FirebaseAuth mauth = FirebaseAuth.getInstance();
+        FirebaseUser user = mauth.getCurrentUser();
 
         public VideoViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -131,11 +136,12 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             imvAvatar = itemView.findViewById(R.id.imvAvatar);
             imvPause = itemView.findViewById(R.id.imvPause);
             pgbWait = itemView.findViewById(R.id.pgbWait);
-
+            imvMore = itemView.findViewById(R.id.imvMore);
 
             imvAvatar.setOnClickListener(this);
             tvTitle.setOnClickListener(this);
             tvComment.setOnClickListener(this);
+            imvMore.setOnClickListener(this);
         }
 
         @Override
@@ -158,6 +164,19 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 bundle.putInt("totalComments", totalComments);
                 intent.putExtras(bundle);
                 view.getContext().startActivity(intent);
+            }
+            if (view.getId() == imvMore.getId()) {
+                if (authorId.equals(user.getUid())) {
+                    Intent intent = new Intent(view.getContext(), DeleteVideoSettingActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("videoId", videoId);
+                    bundle.putString("authorId", authorId);
+                    intent.putExtras(bundle);
+                    view.getContext().startActivity(intent);
+                }
+                else {
+                    moveToProfile(videoView.getContext(), authorId);
+                }
             }
         }
 

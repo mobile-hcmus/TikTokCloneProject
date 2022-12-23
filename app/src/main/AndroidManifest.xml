@@ -29,6 +29,9 @@
         android:theme="@style/Theme.TikTokCloneProject"
         tools:targetApi="31">
         <activity
+            android:name=".activity.DeleteVideoSettingActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.VideoActivity"
             android:exported="false" />
         <activity

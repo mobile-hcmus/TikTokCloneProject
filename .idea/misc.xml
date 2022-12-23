@@ -8,6 +8,7 @@
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/drawable/ic_phone.xml" value="0.2985" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_account_setting.xml" value="0.34479166666666666" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_delete_account.xml" value="0.16770833333333332" />
+        <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_delete_video_setting.xml" value="0.16770833333333332" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_email_log_in.xml" value="0.16770833333333332" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_follow_list.xml" value="0.16770833333333332" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_full_screeen_avatar.xml" value="0.16770833333333332" />
@@ -22,11 +23,14 @@
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_share_account.xml" value="0.34479166666666666" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_sign_in_to_delete.xml" value="0.34479166666666666" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_signin_page.xml" value="0.16770833333333332" />
+        <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_video.xml" value="0.16770833333333332" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.33" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/fragment_followers_list.xml" value="0.16770833333333332" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/fragment_following_list.xml" value="0.16770833333333332" />
+        <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/fragment_video.xml" value="0.16770833333333332" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/item_user.xml" value="0.16770833333333332" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/share_account_layout.xml" value="0.33" />
+        <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/video_container.xml" value="0.16770833333333332" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/menu/main_menu.xml" value="0.16770833333333332" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/drawable/gradient_background.xml" value="0.1" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_camera.xml" value="0.20677083333333332" />
