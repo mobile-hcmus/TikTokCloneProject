@@ -142,6 +142,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             tvTitle.setOnClickListener(this);
             tvComment.setOnClickListener(this);
             imvMore.setOnClickListener(this);
+
         }
 
         @Override

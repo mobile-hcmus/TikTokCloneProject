@@ -30,37 +30,7 @@
         android:layout_height="wrap_content"
         android:text="Account"
         android:layout_margin="20dp"/>
-    <FrameLayout
-        android:id="@+id/flHideVideo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/tiktok_white"
-        android:padding="15dp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_remove_red_eye_24"
-                android:layout_gravity="center"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Hide the video"
-                android:layout_gravity="center"
-                android:textColor="@color/black"
-                android:layout_marginStart="10dp"
-                android:textStyle="bold"/>
-        </LinearLayout>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
-            android:layout_gravity="end" />
-    </FrameLayout>
+
     <FrameLayout
         android:id="@+id/flDeleteVideo"
         android:layout_width="match_parent"

@@ -4,12 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -24,7 +26,6 @@ import com.google.firebase.storage.StorageReference;
 public class DeleteVideoSettingActivity extends AppCompatActivity {
 
     private ImageView imvBackToVideo;
-    private FrameLayout flHideVideo;
     private FrameLayout flDeleteVideo;
 
     private String videoId;
@@ -42,7 +43,6 @@ public class DeleteVideoSettingActivity extends AppCompatActivity {
         }
 
         imvBackToVideo = (ImageView) findViewById(R.id.imvBackToVideo);
-        flHideVideo = (FrameLayout) findViewById(R.id.flHideVideo);
         flDeleteVideo = (FrameLayout) findViewById(R.id.flDeleteVideo);
 
         Intent intent = getIntent();
@@ -50,9 +50,6 @@ public class DeleteVideoSettingActivity extends AppCompatActivity {
         videoId = bundle.getString("videoId");
         authorVideoId = bundle.getString("authorId");
 
-
-
-        Log.d("chuyenvideo", videoId+" "+authorVideoId);
 
         imvBackToVideo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,31 +64,49 @@ public class DeleteVideoSettingActivity extends AppCompatActivity {
         flDeleteVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = (new StringBuilder()).append("videos/").append(videoId).append(".mp4").toString();
-                Log.d("URL", url);
-                FirebaseStorage storage = FirebaseStorage.getInstance();
-                StorageReference storageRef = storage.getReference();
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(DeleteVideoSettingActivity.this);
+                builder1.setMessage("Are you sure you want to delete this video?");
+                builder1.setCancelable(true);
+                builder1.setInverseBackgroundForced(true);
 
-                StorageReference desertRef = storageRef.child(url);
+                builder1.setPositiveButton(
+                        "Delete",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                String url = (new StringBuilder()).append("videos/").append(videoId).append(".mp4").toString();
+                                Log.d("URL", url);
+                                FirebaseStorage storage = FirebaseStorage.getInstance();
+                                StorageReference storageRef = storage.getReference();
 
-                desertRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        deleteVideoIdOnVideoCollection(videoId);
-                        deleteVideoIdOnPublicVideos(videoId, authorVideoId);
-                        Toast.makeText(DeleteVideoSettingActivity.this, "Delete successfully", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(DeleteVideoSettingActivity.this, HomeScreenActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
+                                StorageReference desertRef = storageRef.child(url);
 
-                        finish();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        Toast.makeText(DeleteVideoSettingActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-                    }
-                });;
+                                desertRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        deleteVideoIdOnVideoCollection(videoId);
+                                        deleteVideoIdOnPublicVideos(videoId, authorVideoId);
+                                        Toast.makeText(DeleteVideoSettingActivity.this, "Delete successfully", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(DeleteVideoSettingActivity.this, HomeScreenActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+
+                                        finish();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception exception) {
+                                        Toast.makeText(DeleteVideoSettingActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                });;
+                                dialog.cancel();
+                            }
+                        }).show();
+
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
+                Button buttonBackground = alert11.getButton(DialogInterface.BUTTON_POSITIVE);
+                buttonBackground.setBackgroundColor(Color.RED);
+
             }
         });
     }
