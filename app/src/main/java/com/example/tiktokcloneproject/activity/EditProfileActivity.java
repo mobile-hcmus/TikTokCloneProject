@@ -105,10 +105,12 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         dialog.show();
 
         if (user != null) {
-            if(user.getPhoneNumber() == null) {
+            if(user.getPhoneNumber().isEmpty()) {
                 llPhone.setVisibility(View.GONE);
+                llEmail.setVisibility(View.VISIBLE);
             }
             else {
+                llPhone.setVisibility(View.VISIBLE);
                 llEmail.setVisibility(View.GONE);
             }
             DocumentReference docRef = db.collection("users").document(user.getUid().toString());

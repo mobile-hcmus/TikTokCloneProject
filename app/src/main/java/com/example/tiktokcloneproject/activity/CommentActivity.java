@@ -162,8 +162,8 @@ public class CommentActivity extends Activity implements View.OnClickListener{
             userId = user.getUid();
             StorageReference download = storageRef.child("/user_avatars").child(userId.toString());
 //                        StorageReference download = storageRef.child(userId.toString());
-                        long MAX_BYTE = 1024*1024;
-                        download.getBytes(MAX_BYTE)
+
+                        download.getBytes(StaticVariable.MAX_BYTES_AVATAR)
                                 .addOnSuccessListener(new OnSuccessListener<byte[]>() {
                                     @Override
                                     public void onSuccess(byte[] bytes) {

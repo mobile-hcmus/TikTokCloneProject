@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.example.tiktokcloneproject.R;
 import com.example.tiktokcloneproject.adapters.VideoSummaryAdapter;
+import com.example.tiktokcloneproject.helper.StaticVariable;
 import com.example.tiktokcloneproject.model.VideoSummary;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -637,8 +638,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
         StorageReference download = storageReference.child("/user_avatars").child(userId);
 
 
-        long MAX_BYTE = 1024*1024;
-        download.getBytes(MAX_BYTE)
+        download.getBytes(StaticVariable.MAX_BYTES_AVATAR)
                 .addOnSuccessListener(new OnSuccessListener<byte[]>() {
                     @Override
                     public void onSuccess(byte[] bytes) {

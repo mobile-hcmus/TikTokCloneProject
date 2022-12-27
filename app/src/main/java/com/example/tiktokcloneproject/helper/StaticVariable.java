@@ -8,4 +8,5 @@ public class StaticVariable {
     public static final String FOLLOW = "0";
     public static final String COMMENT = "1";
     public static final String LIKE = "2";
+    public static final long MAX_BYTES_AVATAR = 3*1024*1024; // 3MB
 }

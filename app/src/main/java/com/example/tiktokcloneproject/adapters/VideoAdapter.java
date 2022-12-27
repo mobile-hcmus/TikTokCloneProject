@@ -34,6 +34,7 @@ import com.example.tiktokcloneproject.activity.ProfileActivity;
 import com.example.tiktokcloneproject.R;
 import com.example.tiktokcloneproject.activity.SettingsAndPrivacyActivity;
 import com.example.tiktokcloneproject.activity.VideoActivity;
+import com.example.tiktokcloneproject.helper.StaticVariable;
 import com.example.tiktokcloneproject.model.Video;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -239,8 +240,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             StorageReference storageRef = storage.getReference();
             StorageReference download = storageRef.child("/user_avatars").child(authorId);
 
-            long MAX_BYTE = 1024*1024;
-            download.getBytes(MAX_BYTE)
+            download.getBytes(StaticVariable.MAX_BYTES_AVATAR)
                     .addOnSuccessListener(new OnSuccessListener<byte[]>() {
                         @Override
                         public void onSuccess(byte[] bytes) {
