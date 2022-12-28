@@ -133,7 +133,8 @@ public class CommentActivity extends Activity implements View.OnClickListener{
                         for (DocumentChange dc : snapshots.getDocumentChanges()) {
                             switch (dc.getType()) {
                                 case ADDED:
-                                    adapter.add(dc.getDocument().toObject(Comment.class));
+                                    comments.add(0, dc.getDocument().toObject(Comment.class));
+                                    adapter.notifyDataSetChanged();
                                     break;
                                 case MODIFIED:
                                     Log.d(TAG, "Modified city: " + dc.getDocument().getData());
@@ -162,8 +163,8 @@ public class CommentActivity extends Activity implements View.OnClickListener{
             userId = user.getUid();
             StorageReference download = storageRef.child("/user_avatars").child(userId.toString());
 //                        StorageReference download = storageRef.child(userId.toString());
-                        long MAX_BYTE = 1024*1024;
-                        download.getBytes(MAX_BYTE)
+
+                        download.getBytes(StaticVariable.MAX_BYTES_AVATAR)
                                 .addOnSuccessListener(new OnSuccessListener<byte[]>() {
                                     @Override
                                     public void onSuccess(byte[] bytes) {

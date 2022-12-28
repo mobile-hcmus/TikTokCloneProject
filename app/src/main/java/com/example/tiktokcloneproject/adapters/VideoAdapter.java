@@ -76,8 +76,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     String myUid;
 
     FirebaseFirestore db;
-    private DatabaseReference likeRef;
-    private DatabaseReference vidRef;
 
     boolean processLike = false;
 
@@ -85,8 +83,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         this.context = context;
         this.videos = videos;
         myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        likeRef = FirebaseDatabase.getInstance().getReference().child("likes");
-        vidRef = FirebaseDatabase.getInstance().getReference().child("videos");
         db = FirebaseFirestore.getInstance();
 
     }
@@ -107,6 +103,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
     @Override
     public void onBindViewHolder(@NonNull VideoViewHolder holder, int position) {
+
         holder.setVideoObjects(videos.get(position));
     }
 
@@ -329,7 +326,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mediaPlayer) {
-                    Toast.makeText(videoView.getContext(), "Finish", Toast.LENGTH_SHORT).show();
+                    imvPause.setVisibility(View.VISIBLE);
                 }
             });
             videoView.setOnTouchListener(new View.OnTouchListener() {
@@ -365,8 +362,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             StorageReference storageRef = storage.getReference();
             StorageReference download = storageRef.child("/user_avatars").child(authorId);
 
-            long MAX_BYTE = 1024 * 1024;
-            download.getBytes(MAX_BYTE)
+            download.getBytes(StaticVariable.MAX_BYTES_AVATAR)
                     .addOnSuccessListener(new OnSuccessListener<byte[]>() {
                         @Override
                         public void onSuccess(byte[] bytes) {
@@ -411,43 +407,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
 
         }
-
-        private void increaseLikes(int totalLikes){
-            likeRef.child(videoId).child(myUid).setValue("Liked");
-            db.collection("videos").document(videoId)
-                    .update("totalLikes", totalLikes)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.d(ContentValues.TAG, "DocumentSnapshot successfully updated!");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w(ContentValues.TAG, "Error updating document", e);
-                        }
-                    });
-        }
-
-        private void decreaseLikes(int totalLikes){
-            likeRef.child(videoId).child(myUid).removeValue();
-            db.collection("videos").document(videoId)
-                    .update("totalLikes", totalLikes)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.d(ContentValues.TAG, "DocumentSnapshot successfully updated!");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w(ContentValues.TAG, "Error updating document", e);
-                        }
-                    });
-        }
-
 
     } // class ViewHolder
 

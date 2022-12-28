@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.tiktokcloneproject.R;
 import com.example.tiktokcloneproject.model.Comment;
 import com.example.tiktokcloneproject.model.Notification;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -50,8 +56,26 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
         TextView txvComment = (TextView) row.findViewById(R.id.txvComment);
         TextView txvTotalLikeComment = (TextView) row.findViewById(R.id.txvTotalLikeComment);
 
+        DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(comments.get(position).getAuthorId());
+        final String TAG = "CommentAdapter";
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        txvUsernameInComment.setText("@" + document.get("username", String.class));
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
         loadAvatar(comments.get(position).getAuthorId(), imvAvatarInComment);
-        txvUsernameInComment.setText(comments.get(position).getAuthorId());
+
         txvComment.setText(comments.get(position).getContent());
         txvTotalLikeComment.setText(comments.get(position).getTotalLikes() + "");
 

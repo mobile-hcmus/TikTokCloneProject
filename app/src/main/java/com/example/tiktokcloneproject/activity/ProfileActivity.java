@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.example.tiktokcloneproject.R;
 import com.example.tiktokcloneproject.adapters.VideoSummaryAdapter;
+import com.example.tiktokcloneproject.helper.StaticVariable;
 import com.example.tiktokcloneproject.model.VideoSummary;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -59,7 +60,7 @@ import java.util.Map;
 public class ProfileActivity extends FragmentActivity implements View.OnClickListener{
     private TextView txvFollowing, txvFollowers, txvLikes, txvUserName;
     private EditText edtBio;
-    private Button btn, btnEditProfile;
+    private Button btn, btnEditProfile, btnUpdateBio, btnCancelUpdateBio;
     private LinearLayout llFollowing, llFollowers;
     ImageView imvAvatarProfile;
     Uri avatarUri;
@@ -108,7 +109,11 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
         llFollowers = (LinearLayout) findViewById(R.id.ll_followers);
         llFollowing = (LinearLayout) findViewById(R.id.ll_following);
         recVideoSummary = (RecyclerView)findViewById(R.id.recycle_view_video_summary);
+        btnUpdateBio = (Button) findViewById(R.id.btn_update_bio);
+        btnCancelUpdateBio = (Button) findViewById(R.id.btn_cancel_update_bio);
 
+        btnUpdateBio.setOnClickListener(this);
+        btnCancelUpdateBio.setOnClickListener(this);
         llFollowers.setOnClickListener(this);
         llFollowing.setOnClickListener(this);
 //        avatarUri = getIntent().getParcelableExtra("uri");
@@ -143,7 +148,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
                             txvFollowing.setText(((Long)document.get("following")).toString());
                             txvFollowers.setText(((Long)document.get("followers")).toString());
                             txvLikes.setText(((Long)document.get("likes")).toString());
-                            txvUserName.setText("@" + document.getString("userName"));
+                            txvUserName.setText("@" + document.getString("username"));
                             oldBioText = document.getString("bio");
                             edtBio.setText(oldBioText);
 
@@ -193,7 +198,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
                     txvFollowing.setText(((Long)document.get("following")).toString());
                     txvFollowers.setText(((Long)document.get("followers")).toString());
                     txvLikes.setText(((Long)document.get("likes")).toString());
-                    txvUserName.setText("@" + document.getString("userName"));
+                    txvUserName.setText("@" + document.getString("username"));
 //                        oldBioText = document.getString("bio");
 //                        edtBio.setText(oldBioText);
 
@@ -340,7 +345,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
 
         }
 
-        if(v.getId() == R.id.btn_update_bio) {
+        if(v.getId() == btnUpdateBio.getId()) {
             updateBio();
             findViewById(R.id.layout_bio).setVisibility(View.GONE);
             View current = getCurrentFocus();
@@ -348,7 +353,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
             imm.hideSoftInputFromWindow(current.getWindowToken(), 0);
             if (current != null) current.clearFocus();
         }
-        if(v.getId() == R.id.btn_cancel_update_bio) {
+        if(v.getId() == btnCancelUpdateBio.getId()) {
             edtBio.setText(oldBioText);
             findViewById(R.id.layout_bio).setVisibility(View.GONE);
             View current = getCurrentFocus();
@@ -637,8 +642,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
         StorageReference download = storageReference.child("/user_avatars").child(userId);
 
 
-        long MAX_BYTE = 1024*1024;
-        download.getBytes(MAX_BYTE)
+        download.getBytes(StaticVariable.MAX_BYTES_AVATAR)
                 .addOnSuccessListener(new OnSuccessListener<byte[]>() {
                     @Override
                     public void onSuccess(byte[] bytes) {
