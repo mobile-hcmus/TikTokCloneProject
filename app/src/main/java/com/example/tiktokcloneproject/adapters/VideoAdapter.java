@@ -1,6 +1,9 @@
 package com.example.tiktokcloneproject.adapters;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -34,16 +37,34 @@ import com.example.tiktokcloneproject.activity.ProfileActivity;
 import com.example.tiktokcloneproject.R;
 import com.example.tiktokcloneproject.activity.SettingsAndPrivacyActivity;
 import com.example.tiktokcloneproject.activity.VideoActivity;
+import com.example.tiktokcloneproject.helper.StaticVariable;
+import com.example.tiktokcloneproject.model.Notification;
 import com.example.tiktokcloneproject.model.Video;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
@@ -52,9 +73,22 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     private Context context;
     private static FirebaseUser user = null;
 
+    String myUid;
+
+    FirebaseFirestore db;
+    private DatabaseReference likeRef;
+    private DatabaseReference vidRef;
+
+    boolean processLike = false;
+
     public VideoAdapter(Context context, List<Video> videos) {
         this.context = context;
         this.videos = videos;
+        myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        likeRef = FirebaseDatabase.getInstance().getReference().child("likes");
+        vidRef = FirebaseDatabase.getInstance().getReference().child("videos");
+        db = FirebaseFirestore.getInstance();
+
     }
 
     public static void setUser(FirebaseUser user) {
@@ -73,7 +107,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
     @Override
     public void onBindViewHolder(@NonNull VideoViewHolder holder, int position) {
-
         holder.setVideoObjects(videos.get(position));
     }
 
@@ -122,6 +155,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         ProgressBar pgbWait;
         String authorId;
         String videoId;
+        int totalLikes;
         int totalComments;
         FirebaseAuth mauth = FirebaseAuth.getInstance();
         FirebaseUser user = mauth.getCurrentUser();
@@ -142,6 +176,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             tvTitle.setOnClickListener(this);
             tvComment.setOnClickListener(this);
             imvMore.setOnClickListener(this);
+            tvFavorites.setOnClickListener(this);
 
         }
 
@@ -179,6 +214,94 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                     moveToProfile(videoView.getContext(), authorId);
                 }
             }
+            if (view.getId() == tvFavorites.getId()) {
+                processLike = true;
+                DocumentReference docRef = db.collection("likes").document(videoId);
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                if (document.contains(myUid)) {
+                                    totalLikes -= 1;
+                                    Map<String, Object> ttLike = new HashMap<>();
+                                    ttLike.put("totalLikes", totalLikes);
+                                    db.collection("videos").document(videoId).update(ttLike);
+
+                                    DocumentReference docRef = db.collection("likes").document(videoId);
+                                    Map<String, Object> updates = new HashMap<>();
+                                    updates.put(myUid, FieldValue.delete());
+                                    docRef.update(updates);
+
+                                    processLike = false;
+
+                                    tvFavorites.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite, 0, 0);
+                                    tvFavorites.setText("" + totalLikes);
+
+                                    notifyLike();
+                                }
+                                else {
+                                    totalLikes += 1;
+                                    Map<String, Object> ttLike = new HashMap<>();
+                                    ttLike.put("totalLikes", totalLikes);
+                                    db.collection("videos").document(videoId).update(ttLike);
+
+                                    Map<String, Object> updates = new HashMap<>();
+                                    updates.put(myUid, "liked");
+                                    db.collection("likes").document(videoId).update(updates);
+
+                                    processLike = false;
+
+                                    tvFavorites.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_fill_favorite, 0, 0);
+                                    tvFavorites.setText("" + totalLikes);
+                                }
+                            } else {
+                                totalLikes += 1;
+                                Map<String, Object> ttLike = new HashMap<>();
+                                ttLike.put("totalLikes", totalLikes);
+                                db.collection("videos").document(videoId).update(ttLike);
+
+                                Map<String, Object> newID = new HashMap<>();
+                                newID.put(myUid, "liked");
+                                docRef.set(newID);
+
+                                tvFavorites.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite, 0, 0);
+                                tvFavorites.setText("" + totalLikes);
+
+                                notifyLike();
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    }
+                });
+
+            }
+        }
+
+        private void notifyLike(){
+            db.collection("users").document(myUid)
+                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    String username = document.get("username", String.class);
+                                    Notification.pushNotification(username, authorId, StaticVariable.LIKE);
+                                    Log.d(ContentValues.TAG, "DocumentSnapshot data: " + document.getData());
+                                } else {
+                                    Log.d(ContentValues.TAG, "No such document");
+                                }
+                            } else {
+                                Log.d(ContentValues.TAG, "get failed with ", task.getException());
+                            }
+                        }
+                    });
+
+
         }
 
 
@@ -187,11 +310,13 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             tvTitle.setText("@" + videoObjects.getUsername());
             txvDescription.setText(videoObjects.getDescription());
             tvComment.setText(String.valueOf(videoObjects.getTotalComments()));
-           videoView.setVideoPath(videoObjects.getVideoUri());
+            tvFavorites.setText(String.valueOf(videoObjects.getTotalLikes()));
+            videoView.setVideoPath(videoObjects.getVideoUri());
 
             authorId = videoObjects.getAuthorId();
             videoId = videoObjects.getVideoId();
             totalComments = videoObjects.getTotalComments();
+            totalLikes = videoObjects.getTotalLikes();
 
             videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
@@ -224,6 +349,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             });
 
             showAvt(imvAvatar, videoObjects.getAuthorId());
+            setLikes(videoObjects.getVideoId());
         }
 
         private void moveToProfile(Context context, String authorId) {
@@ -239,12 +365,12 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             StorageReference storageRef = storage.getReference();
             StorageReference download = storageRef.child("/user_avatars").child(authorId);
 
-            long MAX_BYTE = 1024*1024;
+            long MAX_BYTE = 1024 * 1024;
             download.getBytes(MAX_BYTE)
                     .addOnSuccessListener(new OnSuccessListener<byte[]>() {
                         @Override
                         public void onSuccess(byte[] bytes) {
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                             imv.setImageBitmap(bitmap);
                         }
                     })
@@ -252,6 +378,72 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             // Do nothing
+                        }
+                    });
+        }
+
+        private void setLikes (String vidId){
+            DocumentReference docRef = db.collection("likes").document(videoId);
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                            if (document.contains(myUid)) {
+                                tvFavorites.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_fill_favorite, 0, 0);
+                                tvFavorites.setText("" + totalLikes);
+                            }
+                            else {
+                                tvFavorites.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite, 0, 0);
+                                tvFavorites.setText("" + totalLikes);
+                            }
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
+
+
+
+        }
+
+        private void increaseLikes(int totalLikes){
+            likeRef.child(videoId).child(myUid).setValue("Liked");
+            db.collection("videos").document(videoId)
+                    .update("totalLikes", totalLikes)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(ContentValues.TAG, "DocumentSnapshot successfully updated!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(ContentValues.TAG, "Error updating document", e);
+                        }
+                    });
+        }
+
+        private void decreaseLikes(int totalLikes){
+            likeRef.child(videoId).child(myUid).removeValue();
+            db.collection("videos").document(videoId)
+                    .update("totalLikes", totalLikes)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(ContentValues.TAG, "DocumentSnapshot successfully updated!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(ContentValues.TAG, "Error updating document", e);
                         }
                     });
         }

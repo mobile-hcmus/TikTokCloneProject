@@ -50,7 +50,6 @@ public class Video {
         return authorId;
     }
 
-
     public String getDescription() {
         return description;
     }
@@ -58,6 +57,8 @@ public class Video {
     public int getTotalLikes() {
         return totalLikes;
     }
+
+    public void setTotalLikes(int totalLikes) { this.totalLikes = totalLikes; }
 
     public int getTotalComments() {
         return totalComments;

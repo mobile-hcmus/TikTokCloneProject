@@ -122,7 +122,6 @@ public class User implements Serializable {
         return followers;
     }
 
-
     //    public int getTotalLikes() {
 //        return totalLikes;
 //    }
