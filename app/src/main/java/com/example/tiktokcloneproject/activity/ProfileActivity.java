@@ -60,7 +60,7 @@ import java.util.Map;
 public class ProfileActivity extends FragmentActivity implements View.OnClickListener{
     private TextView txvFollowing, txvFollowers, txvLikes, txvUserName;
     private EditText edtBio;
-    private Button btn, btnEditProfile;
+    private Button btn, btnEditProfile, btnUpdateBio, btnCancelUpdateBio;
     private LinearLayout llFollowing, llFollowers;
     ImageView imvAvatarProfile;
     Uri avatarUri;
@@ -109,7 +109,11 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
         llFollowers = (LinearLayout) findViewById(R.id.ll_followers);
         llFollowing = (LinearLayout) findViewById(R.id.ll_following);
         recVideoSummary = (RecyclerView)findViewById(R.id.recycle_view_video_summary);
+        btnUpdateBio = (Button) findViewById(R.id.btn_update_bio);
+        btnCancelUpdateBio = (Button) findViewById(R.id.btn_cancel_update_bio);
 
+        btnUpdateBio.setOnClickListener(this);
+        btnCancelUpdateBio.setOnClickListener(this);
         llFollowers.setOnClickListener(this);
         llFollowing.setOnClickListener(this);
 //        avatarUri = getIntent().getParcelableExtra("uri");
@@ -341,7 +345,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
 
         }
 
-        if(v.getId() == R.id.btn_update_bio) {
+        if(v.getId() == btnUpdateBio.getId()) {
             updateBio();
             findViewById(R.id.layout_bio).setVisibility(View.GONE);
             View current = getCurrentFocus();
@@ -349,7 +353,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
             imm.hideSoftInputFromWindow(current.getWindowToken(), 0);
             if (current != null) current.clearFocus();
         }
-        if(v.getId() == R.id.btn_cancel_update_bio) {
+        if(v.getId() == btnCancelUpdateBio.getId()) {
             edtBio.setText(oldBioText);
             findViewById(R.id.layout_bio).setVisibility(View.GONE);
             View current = getCurrentFocus();

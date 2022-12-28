@@ -69,7 +69,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private Context context = null;
     private TextView txvFollowing, txvFollowers, txvLikes, txvUserName, txvMenu;
     private EditText edtBio;
-    private Button btn, btnEditProfile;
+    private Button btn, btnEditProfile, btnUpdateBio, btnCancelUpdateBio;
     private LinearLayout llFollowing, llFollowers;
     ImageView imvAvatarProfile;
     Uri avatarUri;
@@ -136,7 +136,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         llFollowers = (LinearLayout) layout.findViewById(R.id.ll_followers);
         llFollowing = (LinearLayout) layout.findViewById(R.id.ll_following);
         recVideoSummary = (RecyclerView)layout.findViewById(R.id.recycle_view_video_summary);
+        btnUpdateBio = (Button) layout.findViewById(R.id.btn_update_bio);
+        btnCancelUpdateBio = (Button) layout.findViewById(R.id.btn_cancel_update_bio);
 
+        btnUpdateBio.setOnClickListener(this);
+        btnCancelUpdateBio.setOnClickListener(this);
         llFollowers.setOnClickListener(this);
         llFollowing.setOnClickListener(this);
         txvMenu.setOnClickListener(this);
@@ -368,7 +372,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         }
 
-        if(v.getId() == R.id.btn_update_bio) {
+        if(v.getId() == btnUpdateBio.getId()) {
             updateBio();
             getView().findViewById(R.id.layout_bio).setVisibility(View.GONE);
             View current = getActivity().getCurrentFocus();
@@ -376,7 +380,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             imm.hideSoftInputFromWindow(current.getWindowToken(), 0);
             if (current != null) current.clearFocus();
         }
-        if(v.getId() == R.id.btn_cancel_update_bio) {
+        if(v.getId() == btnCancelUpdateBio.getId()) {
             edtBio.setText(oldBioText);
             getView().findViewById(R.id.layout_bio).setVisibility(View.GONE);
             View current = getActivity().getCurrentFocus();
