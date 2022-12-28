@@ -194,7 +194,7 @@ public class DescriptionVideoActivity extends FragmentActivity implements View.O
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            username = document.get("userName", String.class);
+                            username = document.get("username", String.class);
                             if(videoUri != null) {
                                 handler.post(DescriptionVideoActivity.this::uploadVideo);
                             }

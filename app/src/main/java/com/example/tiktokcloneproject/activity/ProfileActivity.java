@@ -144,7 +144,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
                             txvFollowing.setText(((Long)document.get("following")).toString());
                             txvFollowers.setText(((Long)document.get("followers")).toString());
                             txvLikes.setText(((Long)document.get("likes")).toString());
-                            txvUserName.setText("@" + document.getString("userName"));
+                            txvUserName.setText("@" + document.getString("username"));
                             oldBioText = document.getString("bio");
                             edtBio.setText(oldBioText);
 
@@ -194,7 +194,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
                     txvFollowing.setText(((Long)document.get("following")).toString());
                     txvFollowers.setText(((Long)document.get("followers")).toString());
                     txvLikes.setText(((Long)document.get("likes")).toString());
-                    txvUserName.setText("@" + document.getString("userName"));
+                    txvUserName.setText("@" + document.getString("username"));
 //                        oldBioText = document.getString("bio");
 //                        edtBio.setText(oldBioText);
 

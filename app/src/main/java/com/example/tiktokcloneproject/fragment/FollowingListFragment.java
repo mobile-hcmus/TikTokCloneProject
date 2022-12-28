@@ -119,7 +119,7 @@ public class FollowingListFragment extends Fragment {
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()){
                                 for (QueryDocumentSnapshot document: task.getResult()) {
-                                    followingUserNameList.add(document.get("userName").toString());
+                                    followingUserNameList.add(document.get("username").toString());
                                     Log.d("followers", followingUserNameList.toString());
                                 }
                                 //lvFollowing.setAdapter(new ArrayAdapter<>(contentView.getContext(), android.R.layout.simple_list_item_1,followingUserNameList));
