@@ -77,8 +77,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
     FirebaseFirestore db;
 
-    boolean processLike = false;
-
     public VideoAdapter(Context context, List<Video> videos) {
         this.context = context;
         this.videos = videos;
@@ -212,7 +210,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 }
             }
             if (view.getId() == tvFavorites.getId()) {
-                processLike = true;
                 DocumentReference docRef = db.collection("likes").document(videoId);
                 docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -232,8 +229,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                                     updates.put(myUid, FieldValue.delete());
                                     docRef.update(updates);
 
-                                    processLike = false;
-
                                     tvFavorites.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite, 0, 0);
                                     tvFavorites.setText("" + totalLikes);
 
@@ -248,8 +243,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                                     Map<String, Object> updates = new HashMap<>();
                                     updates.put(myUid, "liked");
                                     db.collection("likes").document(videoId).update(updates);
-
-                                    processLike = false;
 
                                     tvFavorites.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_fill_favorite, 0, 0);
                                     tvFavorites.setText("" + totalLikes);
