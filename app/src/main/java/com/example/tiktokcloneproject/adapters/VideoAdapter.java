@@ -73,16 +73,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     private Context context;
     private static FirebaseUser user = null;
 
-    String myUid;
-
-    FirebaseFirestore db;
 
     public VideoAdapter(Context context, List<Video> videos) {
         this.context = context;
         this.videos = videos;
-        myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        db = FirebaseFirestore.getInstance();
-
     }
 
     public static void setUser(FirebaseUser user) {
@@ -101,7 +95,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
     @Override
     public void onBindViewHolder(@NonNull VideoViewHolder holder, int position) {
-
         holder.setVideoObjects(videos.get(position));
     }
 
@@ -110,36 +103,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         return videos.size();
     }
 
-    public void showNiceDialogBox(Context context, @Nullable String title, @Nullable String message) {
-        if(title == null) {
-            title = context.getString(R.string.request_account_title);
-        }
-        if(message == null) {
-            message = context.getString(R.string.request_account_message);
-        }
-        try {
-            //CAUTION: sometimes TITLE and DESCRIPTION include HTML markers
-            AlertDialog.Builder myBuilder = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
-            myBuilder.setIcon(R.drawable.splash_background)
-                    .setTitle(title)
-                    .setMessage(message)
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            return;
-                        }
-                    })
-                    .setPositiveButton("Sign up/Sign in", new DialogInterface.OnClickListener()
-                    {
-                        public void onClick(DialogInterface dialog, int whichOne) {
-                            Intent intent = new Intent(context, MainActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            context.startActivity(intent);
-                        }}) //setNegativeButton
-                    .show();
-        }
-        catch (Exception e) { Log.e("Error DialogBox", e.getMessage() ); }
-    }
+
 
     public class VideoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -152,8 +116,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         String videoId;
         int totalLikes;
         int totalComments;
-        FirebaseAuth mauth = FirebaseAuth.getInstance();
-        FirebaseUser user = mauth.getCurrentUser();
+        DocumentReference docRef;
+        FirebaseFirestore db;
+        final String LIKE_COLLECTION = "likes";
+        String userId;
 
         public VideoViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -167,11 +133,39 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             pgbWait = itemView.findViewById(R.id.pgbWait);
             imvMore = itemView.findViewById(R.id.imvMore);
 
+            db = FirebaseFirestore.getInstance();
+
+
             imvAvatar.setOnClickListener(this);
             tvTitle.setOnClickListener(this);
             tvComment.setOnClickListener(this);
             imvMore.setOnClickListener(this);
             tvFavorites.setOnClickListener(this);
+
+        }
+
+        @SuppressLint("ClickableViewAccessibility")
+        public void setVideoObjects(final Video videoObject) {
+            tvTitle.setText("@" + videoObject.getUsername());
+            txvDescription.setText(videoObject.getDescription());
+            tvComment.setText(String.valueOf(videoObject.getTotalComments()));
+            tvFavorites.setText(String.valueOf(videoObject.getTotalLikes()));
+            videoView.setVideoPath(videoObject.getVideoUri());
+
+            authorId = videoObject.getAuthorId();
+            videoId = videoObject.getVideoId();
+            totalComments = videoObject.getTotalComments();
+            totalLikes = videoObject.getTotalLikes();
+            userId = user == null ? "" : user.getUid();
+
+            docRef = db.collection(LIKE_COLLECTION).document(videoId);
+            setVideoViewListener(videoView, imvPause);
+
+            if(!userId.isEmpty()) {
+                setLikes(videoId, userId);
+            }
+
+            showAvt(imvAvatar, videoObject.getAuthorId());
 
         }
 
@@ -210,69 +204,13 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 }
             }
             if (view.getId() == tvFavorites.getId()) {
-                DocumentReference docRef = db.collection("likes").document(videoId);
-                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                if (document.contains(myUid)) {
-                                    totalLikes -= 1;
-                                    Map<String, Object> ttLike = new HashMap<>();
-                                    ttLike.put("totalLikes", totalLikes);
-                                    db.collection("videos").document(videoId).update(ttLike);
-
-                                    DocumentReference docRef = db.collection("likes").document(videoId);
-                                    Map<String, Object> updates = new HashMap<>();
-                                    updates.put(myUid, FieldValue.delete());
-                                    docRef.update(updates);
-
-                                    tvFavorites.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite, 0, 0);
-                                    tvFavorites.setText("" + totalLikes);
-
-                                    notifyLike();
-                                }
-                                else {
-                                    totalLikes += 1;
-                                    Map<String, Object> ttLike = new HashMap<>();
-                                    ttLike.put("totalLikes", totalLikes);
-                                    db.collection("videos").document(videoId).update(ttLike);
-
-                                    Map<String, Object> updates = new HashMap<>();
-                                    updates.put(myUid, "liked");
-                                    db.collection("likes").document(videoId).update(updates);
-
-                                    tvFavorites.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_fill_favorite, 0, 0);
-                                    tvFavorites.setText("" + totalLikes);
-                                }
-                            } else {
-                                totalLikes += 1;
-                                Map<String, Object> ttLike = new HashMap<>();
-                                ttLike.put("totalLikes", totalLikes);
-                                db.collection("videos").document(videoId).update(ttLike);
-
-                                Map<String, Object> newID = new HashMap<>();
-                                newID.put(myUid, "liked");
-                                docRef.set(newID);
-
-                                tvFavorites.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite, 0, 0);
-                                tvFavorites.setText("" + totalLikes);
-
-                                notifyLike();
-                            }
-                        } else {
-                            Log.d(TAG, "get failed with ", task.getException());
-                        }
-                    }
-                });
+                handleTymClick(view);
 
             }
         }
 
         private void notifyLike(){
-            db.collection("users").document(myUid)
+            db.collection("users").document(user.getUid())
                     .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -294,53 +232,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
         }
 
-
-        @SuppressLint("ClickableViewAccessibility")
-        public void setVideoObjects(final Video videoObjects) {
-            tvTitle.setText("@" + videoObjects.getUsername());
-            txvDescription.setText(videoObjects.getDescription());
-            tvComment.setText(String.valueOf(videoObjects.getTotalComments()));
-            tvFavorites.setText(String.valueOf(videoObjects.getTotalLikes()));
-            videoView.setVideoPath(videoObjects.getVideoUri());
-
-            authorId = videoObjects.getAuthorId();
-            videoId = videoObjects.getVideoId();
-            totalComments = videoObjects.getTotalComments();
-            totalLikes = videoObjects.getTotalLikes();
-
-            videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mediaPlayer) {
-                    pgbWait.setVisibility(View.GONE);
-                    mediaPlayer.start();
-                }
-            });
-
-            videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mediaPlayer) {
-                    imvPause.setVisibility(View.VISIBLE);
-                }
-            });
-            videoView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    if(videoView.isPlaying()) {
-                        videoView.pause();
-                        imvPause.setVisibility(View.VISIBLE);
-                        return false;
-                    }
-                    else {
-                        imvPause.setVisibility(View.GONE);
-                        videoView.start();
-                        return false;
-                    }
-                }
-            });
-
-            showAvt(imvAvatar, videoObjects.getAuthorId());
-            setLikes(videoObjects.getVideoId());
-        }
 
         private void moveToProfile(Context context, String authorId) {
             Intent intent=new Intent(context, ProfileActivity.class);
@@ -371,8 +262,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                     });
         }
 
-        private void setLikes (String vidId){
-            DocumentReference docRef = db.collection("likes").document(videoId);
+        private void setLikes (String videoId, String userId){
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -380,13 +270,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                            if (document.contains(myUid)) {
-                                tvFavorites.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_fill_favorite, 0, 0);
-                                tvFavorites.setText("" + totalLikes);
+                            if (document.contains(userId)) {
+                                setFillLiked(true);
                             }
                             else {
-                                tvFavorites.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite, 0, 0);
-                                tvFavorites.setText("" + totalLikes);
+                                setFillLiked(false);
                             }
                         } else {
                             Log.d(TAG, "No such document");
@@ -397,8 +285,137 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 }
             });
 
+        }
 
+        @SuppressLint("ClickableViewAccessibility")
+        private void setVideoViewListener(VideoView videoView, ImageView imvPause) {
+            videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mediaPlayer) {
+                    pgbWait.setVisibility(View.GONE);
+                    imvPause.setVisibility(View.GONE);
+                    mediaPlayer.start();
+                }
+            });
 
+            videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+                    mediaPlayer.start();
+                }
+            });
+
+            videoView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    if(videoView.isPlaying()) {
+                        videoView.pause();
+                        imvPause.setVisibility(View.VISIBLE);
+                        return false;
+                    }
+                    else {
+                        imvPause.setVisibility(View.GONE);
+                        videoView.start();
+                        return false;
+                    }
+                }
+            });
+        }
+
+        private void handleTymClick(View view) {
+            if(user == null) {
+                showNiceDialogBox(view.getContext(), null, null);
+                return;
+            }
+
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                            if (document.contains(userId)) {
+                                totalLikes -= 1;
+
+                                Map<String, Object> updates = new HashMap<>();
+                                updates.put(userId, FieldValue.delete());
+                                docRef.update(updates);
+
+                                setFillLiked(false);
+
+                                notifyLike();
+                            }
+                            else {
+                                totalLikes += 1;
+
+                                Map<String, Object> updates = new HashMap<>();
+                                updates.put(userId, "");
+                                db.collection("likes").document(videoId).update(updates);
+
+                                setFillLiked(true);
+                            }
+
+                        } else {
+                            totalLikes += 1;
+
+                            Map<String, Object> newID = new HashMap<>();
+                            newID.put(userId, "");
+                            docRef.set(newID);
+
+                            setFillLiked(false);
+
+                            notifyLike();
+                        }
+                        db.collection("videos").document(videoId)
+                                .update("totalLikes", totalLikes);
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
+        }
+
+        private void setFillLiked(boolean isLiked) {
+            if(isLiked) {
+                tvFavorites.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_fill_favorite, 0, 0);
+                tvFavorites.setText(String.valueOf(totalLikes));
+            }
+            else {
+                tvFavorites.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_favorite, 0, 0);
+                tvFavorites.setText(String.valueOf(totalLikes));
+            }
+        }
+
+        public void showNiceDialogBox(Context context, @Nullable String title, @Nullable String message) {
+            if(title == null) {
+                title = context.getString(R.string.request_account_title);
+            }
+            if(message == null) {
+                message = context.getString(R.string.request_account_message);
+            }
+            try {
+                //CAUTION: sometimes TITLE and DESCRIPTION include HTML markers
+                AlertDialog.Builder myBuilder = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
+                myBuilder.setIcon(R.drawable.splash_background)
+                        .setTitle(title)
+                        .setMessage(message)
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                return;
+                            }
+                        })
+                        .setPositiveButton("Sign up/Sign in", new DialogInterface.OnClickListener()
+                        {
+                            public void onClick(DialogInterface dialog, int whichOne) {
+                                Intent intent = new Intent(context, MainActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                context.startActivity(intent);
+                            }}) //setNegativeButton
+                        .show();
+            }
+            catch (Exception e) { Log.e("Error DialogBox", e.getMessage() ); }
         }
 
     } // class ViewHolder

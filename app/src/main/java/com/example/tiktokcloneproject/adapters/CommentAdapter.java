@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tiktokcloneproject.R;
+import com.example.tiktokcloneproject.helper.StaticVariable;
 import com.example.tiktokcloneproject.model.Comment;
 import com.example.tiktokcloneproject.model.Notification;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -85,8 +86,8 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
     private void loadAvatar(String authorId, ImageView imv) {
         StorageReference download = FirebaseStorage.getInstance().getReference().child("/user_avatars").child(authorId);
 //                        StorageReference download = storageRef.child(userId.toString());
-        long MAX_BYTE = 1024*1024;
-        download.getBytes(MAX_BYTE)
+
+        download.getBytes(StaticVariable.MAX_BYTES_AVATAR)
                 .addOnSuccessListener(new OnSuccessListener<byte[]>() {
                     @Override
                     public void onSuccess(byte[] bytes) {
