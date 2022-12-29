@@ -350,7 +350,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                                 totalLikes += 1;
 
                                 Map<String, Object> updates = new HashMap<>();
-                                updates.put(userId, "");
+                                updates.put(userId, null);
                                 db.collection("likes").document(videoId).update(updates);
 
                                 setFillLiked(true);
@@ -360,7 +360,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                             totalLikes += 1;
 
                             Map<String, Object> newID = new HashMap<>();
-                            newID.put(userId, "");
+                            newID.put(userId, null);
                             docRef.set(newID);
 
                             setFillLiked(false);
