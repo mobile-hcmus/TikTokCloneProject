@@ -36,7 +36,7 @@ import java.util.ArrayList;
 
 public class SearchActivity extends Activity implements View.OnClickListener {
 
-
+    final String USERNAME_LABEL = "username";
      RecyclerView rcv_users;
 
 
@@ -156,7 +156,7 @@ public class SearchActivity extends Activity implements View.OnClickListener {
     private void getData(String key) {
         userArrayList.clear();
         db.collection("users")
-                .orderBy("userName")
+                .orderBy(USERNAME_LABEL)
                 .startAt(key)
                 .endAt(key+"\uf8ff")
                 .get()
@@ -165,7 +165,7 @@ public class SearchActivity extends Activity implements View.OnClickListener {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                userArrayList.add(new User(document.getString("userId"),document.getString("userName")));
+                                userArrayList.add(new User(document.getString("userId"),document.getString(USERNAME_LABEL)));
                                 userAdapter.notifyItemInserted(userArrayList.size() - 1);
                             };
 

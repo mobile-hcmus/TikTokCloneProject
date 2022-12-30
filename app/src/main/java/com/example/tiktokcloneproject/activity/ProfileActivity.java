@@ -58,6 +58,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ProfileActivity extends FragmentActivity implements View.OnClickListener{
+    final String USERNAME_LABEL = "username";
     private TextView txvFollowing, txvFollowers, txvLikes, txvUserName;
     private EditText edtBio;
     private Button btn, btnEditProfile, btnUpdateBio, btnCancelUpdateBio;
@@ -149,7 +150,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
                             txvFollowing.setText(((Long)document.get("following")).toString());
                             txvFollowers.setText(((Long)document.get("followers")).toString());
                             txvLikes.setText(((Long)document.get("likes")).toString());
-                            txvUserName.setText("@" + document.getString("userName"));
+                            txvUserName.setText("@" + document.getString(USERNAME_LABEL));
                             Log.d("name123","vao1");
 
                             oldBioText = document.getString("bio");
@@ -201,7 +202,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
                     txvFollowing.setText(((Long)document.get("following")).toString());
                     txvFollowers.setText(((Long)document.get("followers")).toString());
                     txvLikes.setText(((Long)document.get("likes")).toString());
-                    txvUserName.setText("@" + document.getString("userName"));
+                    txvUserName.setText("@" + document.getString(USERNAME_LABEL));
 
                     Log.d("name123","vao2");
 //                        oldBioText = document.getString("bio");
