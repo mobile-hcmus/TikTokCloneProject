@@ -17,11 +17,19 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.tiktokcloneproject.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DeleteVideoSettingActivity extends AppCompatActivity {
 
@@ -83,8 +91,9 @@ public class DeleteVideoSettingActivity extends AppCompatActivity {
                                 desertRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        deleteVideoIdOnVideoCollection(videoId);
-                                        deleteVideoIdOnPublicVideos(videoId, authorVideoId);
+
+                                        deleteVideoIdOnHashTag(videoId);
+
                                         Toast.makeText(DeleteVideoSettingActivity.this, "Delete successfully", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(DeleteVideoSettingActivity.this, HomeScreenActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -115,7 +124,7 @@ public class DeleteVideoSettingActivity extends AppCompatActivity {
         db.collection("videos").document(videoId).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-
+                deleteVideoIdOnPublicVideos(videoId, authorVideoId);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -128,7 +137,7 @@ public class DeleteVideoSettingActivity extends AppCompatActivity {
         db.collection("profiles").document(userId).collection("public_videos").document(videoId).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-
+                deleteVideoIdOnVideoSummaries(videoId);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -138,4 +147,91 @@ public class DeleteVideoSettingActivity extends AppCompatActivity {
         });
     }
 
+    void deleteVideoIdOnLikes(String videoId) {
+        db.collection("likes").document(videoId).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                deleteVideoIdOnComment(videoId);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+    }
+
+    void deleteVideoIdOnVideoSummaries(String videoId) {
+        db.collection("video_summaries").document(videoId).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                deleteVideoIdOnLikes(videoId);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+    }
+
+    void deleteVideoIdOnComment(String videoId) {
+        db.collection("comments").document(videoId).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(DeleteVideoSettingActivity.this, "Delete successfully", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(DeleteVideoSettingActivity.this, HomeScreenActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+    }
+
+    List<String> getHashTagListFromDescription(String description) {
+        String str=description;
+        Pattern MY_PATTERN = Pattern.compile("#(\\S+)");
+        Matcher mat = MY_PATTERN.matcher(str);
+        List<String> hashTagList =new ArrayList<String>();
+        while (mat.find()) {
+            hashTagList.add("#" + mat.group(1));
+        }
+
+        return hashTagList;
+    }
+
+    void deleteVideoIdOnHashTag(String videoId) {
+        db.collection("videos").document(videoId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    if (documentSnapshot.exists()) {
+                        String description = documentSnapshot.get("description").toString();
+                        List<String> hashTagsList = getHashTagListFromDescription(description);
+
+                        for (int i = 0; i < hashTagsList.size(); i++) {
+                            db.collection("hashtags").document(hashTagsList.get(i)).collection("video_summaries").document(videoId).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+
+                                }
+                            });
+                        }
+
+                        deleteVideoIdOnVideoCollection(videoId);
+                    }
+                }
+            }
+        });
+    }
 }

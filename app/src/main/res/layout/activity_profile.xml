@@ -166,7 +166,7 @@
         android:text="Follow"
         style="@style/tiktok_button_red"
         android:layout_gravity="center"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
     <Button
         android:id="@+id/button_edit_profile"
         android:layout_width="180dp"
