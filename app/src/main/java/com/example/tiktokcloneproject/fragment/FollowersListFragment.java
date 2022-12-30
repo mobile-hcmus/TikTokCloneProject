@@ -106,7 +106,7 @@ public class FollowersListFragment extends Fragment {
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()){
                                 for (QueryDocumentSnapshot document: task.getResult()) {
-                                    followerUserNameList.add(document.get("username").toString());
+                                    followerUserNameList.add(document.get("username", String.class));
                                     Log.d("followers", followerUserNameList.toString());
                                 }
                                 showList(contentView, lvFollowers);

@@ -110,6 +110,7 @@
         <entry key="..\:/TikTok/app/src/main/res/drawable/red_button.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/splash_background.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/tv_shape.xml" value="0.1" />
+        <entry key="..\:/TikTok/app/src/main/res/layout/activity_account_setting.xml" value="0.11770833333333333" />
         <entry key="..\:/TikTok/app/src/main/res/layout/activity_camera.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/layout/activity_change_password.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/layout/activity_comment.xml" value="0.1" />
@@ -117,6 +118,7 @@
         <entry key="..\:/TikTok/app/src/main/res/layout/activity_edit.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/layout/activity_edit_profile.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/layout/activity_follow.xml" value="0.1" />
+        <entry key="..\:/TikTok/app/src/main/res/layout/activity_follow_list.xml" value="0.11770833333333333" />
         <entry key="..\:/TikTok/app/src/main/res/layout/activity_home_screen.xml" value="0.16666666666666666" />
         <entry key="..\:/TikTok/app/src/main/res/layout/activity_inbox.xml" value="0.17552083333333332" />
         <entry key="..\:/TikTok/app/src/main/res/layout/activity_main.xml" value="0.1" />
@@ -129,6 +131,7 @@
         <entry key="..\:/TikTok/app/src/main/res/layout/activity_signup_choice.xml" value="0.16666666666666666" />
         <entry key="..\:/TikTok/app/src/main/res/layout/activity_video.xml" value="0.11145833333333334" />
         <entry key="..\:/TikTok/app/src/main/res/layout/bottom_sheet_comment.xml" value="0.17447916666666666" />
+        <entry key="..\:/TikTok/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.17552083333333332" />
         <entry key="..\:/TikTok/app/src/main/res/layout/fragment_inbox.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/layout/fragment_navigation.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/layout/fragment_profile.xml" value="0.1" />
