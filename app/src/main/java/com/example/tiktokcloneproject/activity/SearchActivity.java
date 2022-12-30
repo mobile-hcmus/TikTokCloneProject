@@ -156,7 +156,7 @@ public class SearchActivity extends Activity implements View.OnClickListener {
     private void getData(String key) {
         userArrayList.clear();
         db.collection("users")
-                .orderBy("username")
+                .orderBy("userName")
                 .startAt(key)
                 .endAt(key+"\uf8ff")
                 .get()

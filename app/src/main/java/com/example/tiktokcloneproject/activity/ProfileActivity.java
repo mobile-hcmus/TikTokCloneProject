@@ -139,6 +139,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
                 btn.setVisibility(View.VISIBLE);
 
 
+
                 db  = FirebaseFirestore.getInstance();
                 docRef = db.collection("profiles").document(userId);
                 docRef.get().addOnCompleteListener(task -> {
@@ -148,7 +149,9 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
                             txvFollowing.setText(((Long)document.get("following")).toString());
                             txvFollowers.setText(((Long)document.get("followers")).toString());
                             txvLikes.setText(((Long)document.get("likes")).toString());
-                            txvUserName.setText("@" + document.getString("username"));
+                            txvUserName.setText("@" + document.getString("userName"));
+                            Log.d("name123","vao1");
+
                             oldBioText = document.getString("bio");
                             edtBio.setText(oldBioText);
 
@@ -198,7 +201,9 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
                     txvFollowing.setText(((Long)document.get("following")).toString());
                     txvFollowers.setText(((Long)document.get("followers")).toString());
                     txvLikes.setText(((Long)document.get("likes")).toString());
-                    txvUserName.setText("@" + document.getString("username"));
+                    txvUserName.setText("@" + document.getString("userName"));
+
+                    Log.d("name123","vao2");
 //                        oldBioText = document.getString("bio");
 //                        edtBio.setText(oldBioText);
 
