@@ -40,6 +40,12 @@ import com.example.tiktokcloneproject.activity.VideoActivity;
 import com.example.tiktokcloneproject.helper.StaticVariable;
 import com.example.tiktokcloneproject.model.Notification;
 import com.example.tiktokcloneproject.model.Video;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.ui.StyledPlayerView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -107,7 +113,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
     public class VideoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        VideoView videoView;
+        StyledPlayerView videoView;
+        ExoPlayer exoPlayer;
         ImageView imvAvatar, imvPause, imvMore;
         TextView txvDescription, tvTitle;
         TextView tvComment, tvFavorites;
@@ -150,7 +157,16 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             txvDescription.setText(videoObject.getDescription());
             tvComment.setText(String.valueOf(videoObject.getTotalComments()));
             tvFavorites.setText(String.valueOf(videoObject.getTotalLikes()));
-            videoView.setVideoPath(videoObject.getVideoUri());
+//            videoView.setVideoPath(videoObject.getVideoUri());
+
+            exoPlayer = new ExoPlayer.Builder(videoView.getContext()).build();
+            videoView.setPlayer(exoPlayer);
+            MediaItem mediaItem = MediaItem.fromUri(videoObject.getVideoUri());
+            exoPlayer.addMediaItem(mediaItem);
+            exoPlayer.prepare();
+            exoPlayer.play();
+
+
 
             authorId = videoObject.getAuthorId();
             videoId = videoObject.getVideoId();
@@ -159,7 +175,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             userId = user == null ? "" : user.getUid();
 
             docRef = db.collection(LIKE_COLLECTION).document(videoId);
-            setVideoViewListener(videoView, imvPause);
+//            setVideoViewListener(videoView, imvPause);
 
             if(!userId.isEmpty()) {
                 setLikes(videoId, userId);
