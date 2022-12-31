@@ -60,6 +60,5 @@ public class AccountSettingActivity extends AppCompatActivity implements View.On
             Intent intent = new Intent(AccountSettingActivity.this, ChangePasswordActivity.class);
             startActivity(intent);
         }
-
     }
 }
