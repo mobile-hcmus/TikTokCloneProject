@@ -26,8 +26,11 @@ import android.util.SparseIntArray;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -80,7 +83,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
     String frontId, backId, defaultId;
     Size previewSize;
     Size videoSize;
-    Button btnUploadVideo;
+    ImageButton btnUploadVideo;
     Button btnPause;
     FirebaseFirestore db;
     FirebaseAuth mAuth;
@@ -89,7 +92,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
     MediaRecorder mediaRecorder;
     File videoFileHolder;
     Button btnStartRecording;
-    Button btnFlip;
+    ImageButton btnFlip;
     Button btnStopRecording;
     boolean isRecording = false;
     boolean isPaused = false;
@@ -97,6 +100,8 @@ public class CameraActivity extends Activity implements View.OnClickListener {
     String videoFileName;
     String userId;
     File videoFolder;
+
+    Animation animRotate;
 
     int totalRotation;
     static SparseIntArray ORIENTATIONS = new SparseIntArray();
@@ -174,7 +179,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
         btnUploadVideo = findViewById(R.id.btnUploadVideo);
         btnUploadVideo.setOnClickListener(this);
         btnStartRecording = findViewById(R.id.button_record);
-        btnFlip = findViewById(R.id.button_flip_camera);
+        btnFlip = findViewById(R.id.imb_flip_camera);
         btnPause = findViewById(R.id.button_pause);
         btnStopRecording = findViewById(R.id.button_stop);
 
@@ -182,6 +187,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
         cameraFrameLayout = findViewById(R.id.camera_frame);
         textureFront = findViewById(R.id.texture_view_front);
 
+        animRotate = AnimationUtils.loadAnimation(this, R.anim.rotate);
         // Filter list
     }
 
@@ -232,11 +238,13 @@ public class CameraActivity extends Activity implements View.OnClickListener {
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.button_flip_camera) {
+        if (view.getId() == R.id.imb_flip_camera) {
             if (mainCamera != null) {
                 mainCamera.close();
                 mainCamera = null;
             }
+            view.startAnimation(animRotate);
+
             defaultId = (Objects.equals(defaultId, frontId)) ? backId : frontId;
             textureFront.setSurfaceTextureListener(textureListener);
             connectCamera();

@@ -4,6 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/drawable/btn_login_shape.xml" value="0.1765" />
+        <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/drawable/btn_record.xml" value="0.2985" />
+        <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/drawable/btn_rounded_shape.xml" value="0.2985" />
+        <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/drawable/btn_stop_record.xml" value="0.1755" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/drawable/dialog_bg.xml" value="0.2985" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/drawable/ic_phone.xml" value="0.2985" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/activity_account_setting.xml" value="0.34479166666666666" />

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/tiktok_black">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -35,16 +36,27 @@
                 android:gravity="right">
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-                    <Button
-                        android:id="@+id/button_flip_camera"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp">
+                    <ImageButton
+                        android:id="@+id/imb_flip_camera"
+                        android:background="@color/transparent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Flip"
+                        android:src="@drawable/ic_baseline_flip_camera_android_24"
                         android:layout_gravity="right"
-                        android:onClick="onClick">
-                    </Button>
+                        android:onClick="onClick"
+                        >
+                    </ImageButton>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Flip"
+                        android:textColor="@color/tiktok_white"
+                        android:textSize="10sp"
+                        android:textAlignment="center"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
@@ -55,21 +67,23 @@
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:layout_marginLeft="25dp">
                     <Button
+                        android:layout_gravity="end"
                         android:id="@+id/button_record"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Start recording"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:layout_weight="2"
+                        android:background="@drawable/btn_record"
                         android:onClick="onClick"></Button>
                     <Button
                         android:id="@+id/button_stop"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Stop recording"
-                        android:layout_gravity="center"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:background="@drawable/btn_stop_record"
                         android:visibility="gone"
+                        android:layout_gravity="end"
                         android:onClick="onClick"></Button>
                 </FrameLayout>
                 <FrameLayout
@@ -84,10 +98,11 @@
                         android:id="@+id/button_pause"
                         android:visibility="gone"
                         android:onClick="onClick"/>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <ImageButton
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:text="Upload video"
+                       android:src="@drawable/ic_baseline_video_library_24"
                         android:layout_gravity="center"
                         android:id="@+id/btnUploadVideo" />
                 </FrameLayout>
