@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/imvPause"
         android:layout_centerInParent="true"
-        android:src="@drawable/ic_pause"
+        android:src="@drawable/ic_continue"
         android:visibility="gone"/>
     <LinearLayout
         android:id="@+id/linearLayout"

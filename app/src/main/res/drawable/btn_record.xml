@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/tiktok_red_50" />
+            <corners android:radius="300dp" />
+
+        </shape>
+    </item>
     <item>
-        <shape android:shape="oval">
-            <stroke android:color="@color/transparent" android:width="5dp"/>
-            <solid android:color="@color/tiktok_red_50"/>
+        <shape>
+            <solid android:color="@color/tiktok_red" />
+            <corners android:radius="300dp" />
         </shape>
     </item>
-    <item android:top="10dp" android:bottom="10dp" android:left="10dp" android:right="10dp">
-        <shape android:shape="oval">
-            <solid android:color="@color/tiktok_red"/>
-            <stroke android:color="@color/tiktok_black" android:width="3dp"/>
-        </shape>
-    </item>
-</layer-list>
+</selector>

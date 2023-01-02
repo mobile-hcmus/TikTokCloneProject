@@ -27,6 +27,20 @@
         <item name="android:clickable">true</item>
         <item name="android:stateListAnimator">@drawable/button_state_list_anim</item>
     </style>
+    <style name="tiktok_button_record" parent="Widget.AppCompat.Button">
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:background">@drawable/red_button</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:stateListAnimator">@drawable/button_state_list_anim_shrink</item>
+    </style>
+    <style name="tiktok_button_stop_record" parent="Widget.AppCompat.Button">
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:background">@drawable/stop_button</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:stateListAnimator">@drawable/button_state_list_anim_shrink</item>
+    </style>
     <style name="tiktok_button_transparent" parent="Widget.AppCompat.Button">
         <item name="android:gravity">center_vertical|center_horizontal</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>

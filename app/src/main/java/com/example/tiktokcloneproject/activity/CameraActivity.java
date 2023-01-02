@@ -83,8 +83,10 @@ public class CameraActivity extends Activity implements View.OnClickListener {
     String frontId, backId, defaultId;
     Size previewSize;
     Size videoSize;
-    ImageButton btnUploadVideo;
+    Button btnUploadVideo;
+    Button btnClose;
     Button btnPause;
+    Button btnContinue;
     FirebaseFirestore db;
     FirebaseAuth mAuth;
     FirebaseUser user;
@@ -179,8 +181,10 @@ public class CameraActivity extends Activity implements View.OnClickListener {
         btnUploadVideo = findViewById(R.id.btnUploadVideo);
         btnUploadVideo.setOnClickListener(this);
         btnStartRecording = findViewById(R.id.button_record);
+        btnClose = findViewById(R.id.button_close);
         btnFlip = findViewById(R.id.imb_flip_camera);
         btnPause = findViewById(R.id.button_pause);
+        btnContinue = findViewById(R.id.button_continue);
         btnStopRecording = findViewById(R.id.button_stop);
 
         // Get Camera TextureView
@@ -271,6 +275,8 @@ public class CameraActivity extends Activity implements View.OnClickListener {
             btnFlip.setVisibility(View.GONE);
             btnUploadVideo.setVisibility(View.GONE);
             btnStartRecording.setVisibility(View.GONE);
+            btnClose.setVisibility(View.GONE);
+
             isRecording = true;
             try {
                 videoFileHolder = createVideoFileName();
@@ -283,11 +289,16 @@ public class CameraActivity extends Activity implements View.OnClickListener {
         if (view.getId() == R.id.button_pause) {
             if (!isPaused) {
                 mediaRecorder.pause();
-                btnPause.setText("Resume");
+                btnPause.setVisibility(View.GONE);
+                btnContinue.setVisibility(View.VISIBLE);
                 isPaused = true;
-            } else {
+            }
+        }
+        if (view.getId() == R.id.button_continue) {
+            if (isPaused) {
                 mediaRecorder.resume();
-                btnPause.setText("Pause");
+                btnPause.setVisibility(View.VISIBLE);
+                btnContinue.setVisibility(View.GONE);
                 isPaused = false;
             }
         }
@@ -304,7 +315,14 @@ public class CameraActivity extends Activity implements View.OnClickListener {
             btnPause.setVisibility(View.GONE);
                 btnUploadVideo.setVisibility(View.VISIBLE);
                 btnStopRecording.setVisibility(View.GONE);
+                btnPause.setVisibility(View.GONE);
+                btnContinue.setVisibility(View.GONE);
+                btnClose.setVisibility(View.VISIBLE);
             }
+        }
+
+        if (view.getId() == R.id.button_close) {
+            finish();
         }
     }
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

@@ -28,6 +28,11 @@
             android:layout_height="match_parent"
             android:background="@color/transparent"
             android:orientation="vertical">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="5">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -40,16 +45,15 @@
                     android:orientation="vertical"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="20dp">
+
                     <ImageButton
                         android:id="@+id/imb_flip_camera"
-                        android:background="@color/transparent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_baseline_flip_camera_android_24"
                         android:layout_gravity="right"
+                        android:background="@color/transparent"
                         android:onClick="onClick"
-                        >
-                    </ImageButton>
+                        android:src="@drawable/ic_baseline_flip_camera_android_24"></ImageButton>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -60,51 +64,118 @@
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <Button
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:id="@+id/button_close"
+                    android:layout_width="wrap_content"
+                    android:drawableTop="@drawable/ic_close"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="-15dp"
+                    android:layout_marginTop="6dp"
+                    android:onClick="onClick"
+                    />
+            </LinearLayout>
+            </FrameLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50px"
                 android:layout_weight="1"
                 android:gravity="center_vertical">
                 <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="25dp">
-                    <Button
-                        android:layout_gravity="end"
-                        android:id="@+id/button_record"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_weight="2"
-                        android:background="@drawable/btn_record"
-                        android:onClick="onClick"></Button>
-                    <Button
-                        android:id="@+id/button_stop"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:background="@drawable/btn_stop_record"
-                        android:visibility="gone"
-                        android:layout_gravity="end"
-                        android:onClick="onClick"></Button>
-                </FrameLayout>
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
                 <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                    <Button
-                        android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Pause"
-                        android:layout_gravity="center"
-                        android:id="@+id/button_pause"
-                        android:visibility="gone"
-                        android:onClick="onClick"/>
-                    <ImageButton
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:text="Upload video"
-                       android:src="@drawable/ic_baseline_video_library_24"
-                        android:layout_gravity="center"
-                        android:id="@+id/btnUploadVideo" />
+                        android:orientation="horizontal"
+                        android:gravity="center">
+                        <Button
+                            android:layout_gravity="center_vertical"
+                            android:id="@+id/button_record"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            style="@style/tiktok_button_record"
+                            android:onClick="onClick"></Button>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_horizontal">
+                        <Button
+                            android:id="@+id/button_stop"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            style="@style/tiktok_button_stop_record"
+                            android:visibility="gone"
+                            android:layout_gravity="center"
+                            android:onClick="onClick"></Button>
+                    </LinearLayout>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:gravity="right"
+                        android:layout_marginRight="10dp">
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:id="@+id/button_pause"
+                            android:visibility="gone"
+                            android:layout_marginRight="40dp"
+                            android:drawableTop="@drawable/ic_pause"
+                            style="?android:attr/buttonBarButtonStyle"
+                            android:textSize="0dp"
+                            android:onClick="onClick"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:gravity="right"
+                        android:layout_marginRight="10dp">
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:id="@+id/button_continue"
+                            android:visibility="gone"
+                            android:layout_marginRight="40dp"
+                            android:drawableTop="@drawable/ic_continue"
+                            style="?android:attr/buttonBarButtonStyle"
+                            android:textSize="0dp"
+                            android:onClick="onClick"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:gravity="right"
+                        android:layout_marginRight="15dp"
+                        >
+
+                        <Button
+                            android:id="@+id/btnUploadVideo"
+                            style="?android:attr/buttonBarButtonStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:drawableTop="@drawable/ic_upload"
+                            android:textAllCaps="false"
+                            android:textSize="0dp" />
+                    </LinearLayout>
+                </FrameLayout>
+                </FrameLayout>
                 </FrameLayout>
             </LinearLayout>
         </LinearLayout>

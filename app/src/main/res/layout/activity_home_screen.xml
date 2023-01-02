@@ -93,18 +93,18 @@
                 android:textSize="10dp" />
 
             <Button
-                style="?android:attr/buttonBarButtonStyle"
                 android:id="@+id/btnFriend"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
                 android:background="@color/transparent"
                 android:drawableTop="@drawable/ic_friend"
                 android:fontFamily="@font/montserrat_medium"
                 android:inputType="textCapSentences"
-                android:text="@string/friends"
                 android:onClick="onClick"
+                android:text="@string/friends"
                 android:textColor="@color/tiktok_white"
                 android:textSize="10dp" />
             <LinearLayout

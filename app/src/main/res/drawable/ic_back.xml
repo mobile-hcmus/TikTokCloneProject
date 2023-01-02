@@ -2,8 +2,10 @@
     android:width="40dp"
     android:height="40dp"
     android:viewportWidth="40"
-    android:viewportHeight="40">
+    android:viewportHeight="40"
+    >
   <path
+
       android:fillColor="@color/tiktok_red"
-      android:pathData="M15,31.667 L3.333,20 15,8.333l1.958,1.959 -8.333,8.333h28.042v2.75H8.625l8.333,8.333Z"/>
+      android:pathData="m 20.2 31.667 l -11.667 -11.667 l 11.667 -11.667 l 1.958 1.959 l -8.333 8.333 h 18.042 v 2.75 h -18.042 l 8.333 8.333 z"/>
 </vector>

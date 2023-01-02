@@ -3,12 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imvAvatarInComment"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_margin="10dp"
-        android:src="@mipmap/ic_launcher"></ImageView>>
+        android:src="@mipmap/ic_launcher"></de.hdodenhof.circleimageview.CircleImageView>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,12 +19,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="user name"
-            android:textStyle="bold"></TextView>
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnPrimary"></TextView>
         <TextView
             android:id="@+id/txvComment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="comment in here"></TextView>
+            android:text="comment in here"
+            android:textColor="?attr/colorOnPrimary"></TextView>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,6 +45,7 @@
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10sp"
+                android:textColor="?attr/colorOnPrimary"
                 android:text="100"></TextView>
         </LinearLayout>
     </LinearLayout>

@@ -1,0 +1,11 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40"
+    >
+  <path
+
+      android:fillColor="@color/tiktok_white"
+      android:pathData="m 10.46 30.62 l -1.68 -1.68 L 18.02 19.7 L 8.78 10.46 l 1.68 -1.68 L 19.7 18.02 l 9.24 -9.24 l 1.68 1.68 L 21.38 19.7 l 9.24 9.24 l -1.68 1.68 L 19.7 21.38 Z"/>
+</vector>
