@@ -14,7 +14,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        app:resize_mode="fill" />
+        app:resize_mode="fill"
+        app:use_controller="false" />
     <ProgressBar
         android:id="@+id/pgbWait"
         android:layout_width="wrap_content"

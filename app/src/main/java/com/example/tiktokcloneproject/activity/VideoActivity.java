@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.example.tiktokcloneproject.R;
 import com.example.tiktokcloneproject.adapters.VideoAdapter;
@@ -49,7 +50,6 @@ public class VideoActivity extends Activity {
         videoAdapter = new VideoAdapter(this, videos);
         VideoAdapter.setUser(user);
         viewPager2.setAdapter(videoAdapter);
-
 
         db = FirebaseFirestore.getInstance();
         db.collection("videos").document(videoId)

@@ -105,6 +105,18 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     }
 
     @Override
+    public void onViewAttachedToWindow(VideoViewHolder holder) {
+        holder.playVideo();
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(VideoViewHolder holder) {
+        holder.pauseVideo();
+    }
+
+
+
+    @Override
     public int getItemCount() {
         return videos.size();
     }
@@ -127,6 +139,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         FirebaseFirestore db;
         final String LIKE_COLLECTION = "likes";
         String userId;
+        boolean isPaused = false;
 
         public VideoViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -142,6 +155,20 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
             db = FirebaseFirestore.getInstance();
 
+            videoView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        // start your timer
+                        pauseVideo();
+
+                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                        playVideo();
+
+                    }
+                    return true;
+                }
+            });
 
             imvAvatar.setOnClickListener(this);
             tvTitle.setOnClickListener(this);
@@ -149,6 +176,33 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             imvMore.setOnClickListener(this);
             tvFavorites.setOnClickListener(this);
 
+        }
+
+        public void playVideo() {
+            if (exoPlayer.getPlaybackState() == Player.STATE_READY) {
+                exoPlayer.setPlayWhenReady(true);
+            } else {
+                exoPlayer.play();
+            }
+            isPaused = false;
+        }
+
+        public void pauseVideo() {
+            if (!isPaused) {
+                if (exoPlayer.getPlaybackState() == Player.STATE_READY) {
+                    exoPlayer.setPlayWhenReady(false);
+                }
+                isPaused = true;
+            }
+        }
+
+        public void stopVideo() {
+            isPaused = true;
+            if (exoPlayer.getPlaybackState() == Player.STATE_READY) {
+                exoPlayer.setPlayWhenReady(false);
+                exoPlayer.stop();
+                exoPlayer.seekTo(0);
+            }
         }
 
         @SuppressLint("ClickableViewAccessibility")
@@ -159,14 +213,15 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             tvFavorites.setText(String.valueOf(videoObject.getTotalLikes()));
 //            videoView.setVideoPath(videoObject.getVideoUri());
 
+            MediaItem mediaItem = MediaItem.fromUri(videoObject.getVideoUri());
+            if (exoPlayer != null) exoPlayer.release();
             exoPlayer = new ExoPlayer.Builder(videoView.getContext()).build();
             videoView.setPlayer(exoPlayer);
-            MediaItem mediaItem = MediaItem.fromUri(videoObject.getVideoUri());
             exoPlayer.addMediaItem(mediaItem);
+            exoPlayer.setRepeatMode(exoPlayer.REPEAT_MODE_ONE);
             exoPlayer.prepare();
-            exoPlayer.play();
-
-
+            pauseVideo();
+            isPaused = true;
 
             authorId = videoObject.getAuthorId();
             videoId = videoObject.getVideoId();
@@ -189,10 +244,13 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         public void onClick(View view) {
             if(view.getId() == imvAvatar.getId()) {
                 moveToProfile(videoView.getContext(), authorId);
+                return;
             }
             if(view.getId() == tvTitle.getId()) {
                 moveToProfile(videoView.getContext(), authorId);
+                return;
             }
+
             if(view.getId() == tvComment.getId()) {
                 if(user == null) {
                     showNiceDialogBox(view.getContext(), null, null);
@@ -205,6 +263,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 bundle.putInt("totalComments", totalComments);
                 intent.putExtras(bundle);
                 view.getContext().startActivity(intent);
+                return;
             }
             if (view.getId() == imvMore.getId()) {
                 if (authorId.equals(user.getUid())) {
@@ -218,6 +277,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 else {
                     moveToProfile(videoView.getContext(), authorId);
                 }
+                return;
             }
             if (view.getId() == tvFavorites.getId()) {
                 handleTymClick(view);
