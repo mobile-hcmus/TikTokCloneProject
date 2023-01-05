@@ -188,7 +188,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
         recVideoSummary.addItemDecoration(new GridSpacingItemDecoration(3, 10, true));
         setVideoSummaries();
     }//on create
-
+boolean isFollowed = false;
     private void handleFollow() {
         //bio cần set lại là text vỉew
         btn = (Button)findViewById(R.id.button_follow);
@@ -199,9 +199,10 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
-                    txvFollowing.setText(((Long)document.get("following")).toString());
-                    txvFollowers.setText(((Long)document.get("followers")).toString());
-                    txvLikes.setText(((Long)document.get("likes")).toString());
+
+//                    txvFollowing.setText(((Long)document.get("following")).toString());
+//                    txvFollowers.setText(((Long)document.get("followers")).toString());
+//                    txvLikes.setText(((Long)document.get("likes")).toString());
                     txvUserName.setText("@" + document.getString(USERNAME_LABEL));
 
                     Log.d("name123","vao2");
@@ -221,13 +222,16 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
+                            isFollowed = true;
                             Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                             handleFollowed();
 
 
                         } else {
                             Log.d(TAG, "No such document");
+                            isFollowed = false;
                             handleUnfollowed();
+
 
                         }
                     } else {
@@ -526,6 +530,9 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
             @Override
             public void onClick(View view) {
 
+                if(isFollowed) return;
+                isFollowed = true;
+
                 Log.d(TAG, "follow clicked");
                 Map<String, Object> Data = new HashMap<>();
                 Data.put("userID",userId);
@@ -537,11 +544,20 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Log.d(TAG, "DocumentSnapshot successfully written!");
-
-
-
                                 db.collection("profiles").document(currentUserID)
                                         .update("following", FieldValue.increment(1));
+                                docRef = db.collection("profiles").document(userId);
+                                docRef.get().addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document.exists()) {
+
+                                            txvFollowing.setText(((Long)document.get("following")).toString());
+                                            txvFollowers.setText(((Long)document.get("followers")).toString());
+
+                                        } else { }
+                                    } else { }
+                                });
 
                                 handleFollowed();
                             }
@@ -585,10 +601,14 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
 
     private void handleFollowed() {
         btn.setText("Unfollow");
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!isFollowed) return;
+                isFollowed = false;
                 Log.d(TAG, "unfollow clicked");
+
 
 
                 //xóa following
@@ -601,6 +621,19 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
                                 Log.d(TAG, "DocumentSnapshot successfully deleted!");
                                 db.collection("profiles").document(currentUserID)
                                         .update("following", FieldValue.increment(-1));
+
+                                docRef = db.collection("profiles").document(userId);
+                                docRef.get().addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document.exists()) {
+
+                                txvFollowing.setText(((Long)document.get("following")).toString());
+                                txvFollowers.setText(((Long)document.get("followers")).toString());
+
+                                        } else { }
+                                    } else { }
+                                });
 
 
 
