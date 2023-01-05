@@ -61,6 +61,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -87,7 +88,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     RecyclerView recVideoSummary;
     ArrayList<VideoSummary> videoSummaries;
     LinearLayout layout;
-
+    int totalLikes = 0;
     public static ProfileFragment newInstance(String strArg,  String profileLinkId) {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
@@ -152,6 +153,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+
+        db = FirebaseFirestore.getInstance();
+        setLikes(user.getUid());
         //set nút follow/edit profile
         if (user==null)
         {//chưa đăng nhập (vào profile thông qua search)
@@ -653,4 +657,54 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     }
                 });
     }
+
+    public void setLikes(String userId) {
+        try {
+            db.collection("profiles").document(userId).collection("public_videos").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        ArrayList<String> userVideos = new ArrayList<String>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            userVideos.add(document.getData().get("videoId").toString());
+                        }
+                        Log.d("Uservideo", userVideos.toString());
+
+                        db.collection("likes").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Log.d("Use", document.getId());
+
+                                        if (userVideos.contains(document.getId())) {
+                                            totalLikes += document.getData().size();
+                                        }
+                                    }
+                                    txvLikes.setText("" + totalLikes);
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+
+                            }
+                        });
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                }
+            });
+        } catch(Exception exception) {
+            Log.d("exception", exception.toString());
+        }
+    }
+
 }
