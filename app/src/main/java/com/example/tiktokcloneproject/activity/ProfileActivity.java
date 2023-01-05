@@ -79,7 +79,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
     String TAG="test";
     RecyclerView recVideoSummary;
     ArrayList<VideoSummary> videoSummaries;
-
+    private int totalLikes = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,6 +126,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
         imvAvatarProfile.setImageURI(avatarUri);
 
         db  = FirebaseFirestore.getInstance();
+        setLikes(userId);
         docRef = db.collection("profiles").document(userId);
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -730,4 +731,52 @@ boolean isFollowed = false;
                 });
     }
 
+    public void setLikes(String userId) {
+        try {
+            db.collection("profiles").document(userId).collection("public_videos").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        ArrayList<String> userVideos = new ArrayList<String>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            userVideos.add(document.getData().get("videoId").toString());
+                        }
+                        Log.d("Uservideo", userVideos.toString());
+
+                        db.collection("likes").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Log.d("Use", document.getId());
+
+                                        if (userVideos.contains(document.getId())) {
+                                            totalLikes += document.getData().size();
+                                        }
+                                    }
+                                    txvLikes.setText("" + totalLikes);
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+
+                            }
+                        });
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                }
+            });
+        } catch(Exception exception) {
+            Log.d("exception", exception.toString());
+        }
+    }
 }
