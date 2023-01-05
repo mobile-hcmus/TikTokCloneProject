@@ -236,29 +236,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 }
             });
             videoView.setOnClickListener(this);
-//            videoView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Log.d("test123", "ok");
-//
-//                    numberOfClick++;
-//
-//                    Handler handler = new Handler();
-//                    handler.postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            if (numberOfClick == 1) {
-//                                Log.d("single", "ok");
-//                            } else if (numberOfClick == 2) {
-//                                Log.d("double", "ok");
-//                            }
-//                            numberOfClick = 0;
-//                        }
-//                    }, 500);
-//                }
-//            });
-//
-  ///
             imvAvatar.setOnClickListener(this);
             tvTitle.setOnClickListener(this);
             tvComment.setOnClickListener(this);
