@@ -54,7 +54,7 @@ public class FullScreenAvatarActivity extends AppCompatActivity{
     }
 
     private void getImage() {
-        folderPath = "/user_avatar";
+        folderPath = "/user_avatars";
         fileName = user.getUid();
         StorageReference download = storageReference.child(folderPath).child(fileName);
 
@@ -70,7 +70,7 @@ public class FullScreenAvatarActivity extends AppCompatActivity{
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        // Do nothing
+                        imvFullScreen.setImageResource(R.drawable.default_avatar);
                     }
                 });
     }
