@@ -41,6 +41,7 @@ import com.example.tiktokcloneproject.activity.ProfileActivity;
 import com.example.tiktokcloneproject.R;
 import com.example.tiktokcloneproject.activity.SettingsAndPrivacyActivity;
 import com.example.tiktokcloneproject.activity.VideoActivity;
+import com.example.tiktokcloneproject.helper.OnSwipeTouchListener;
 import com.example.tiktokcloneproject.helper.StaticVariable;
 import com.example.tiktokcloneproject.model.Notification;
 import com.example.tiktokcloneproject.model.Video;
@@ -234,6 +235,22 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                         }
                     }, 500);
                 }
+            });
+            videoView.getVideoSurfaceView().setOnTouchListener(new OnSwipeTouchListener(itemView.getContext()){
+//                public void onSwipeTop() {
+//                    Toast.makeText(itemView.getContext(), "top", Toast.LENGTH_SHORT).show();
+//                }
+//                public void onSwipeRight() {
+//                    Toast.makeText(itemView.getContext(), "right", Toast.LENGTH_SHORT).show();
+//                }
+                public void onSwipeLeft() {
+                    Toast.makeText(itemView.getContext(), authorId, Toast.LENGTH_SHORT).show();
+
+                    moveToProfile(videoView.getContext(), authorId);
+                }
+//                public void onSwipeBottom() {
+//                    Toast.makeText(itemView.getContext(), "bottom", Toast.LENGTH_SHORT).show();
+//                }
             });
             videoView.setOnClickListener(this);
             imvAvatar.setOnClickListener(this);
