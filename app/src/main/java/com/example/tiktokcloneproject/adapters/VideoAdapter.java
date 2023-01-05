@@ -68,6 +68,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,11 +79,15 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     private List<Video> videos;
     private Context context;
     private static FirebaseUser user = null;
+    private List<VideoViewHolder> videoViewHolders;
+    private int currentPosition;
 
 
     public VideoAdapter(Context context, List<Video> videos) {
         this.context = context;
         this.videos = videos;
+        videoViewHolders = new ArrayList<>();
+        currentPosition = 0;
     }
 
     public static void setUser(FirebaseUser user) {
@@ -96,12 +101,32 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     @NonNull
     @Override
     public VideoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new VideoViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.video_container, parent, false ));
+       return new VideoViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.video_container, parent, false ));
     }
 
     @Override
     public void onBindViewHolder(@NonNull VideoViewHolder holder, int position) {
+//        Toast.makeText(context, "" + position, Toast.LENGTH_SHORT).show();
+//        currentPosition = position;
         holder.setVideoObjects(videos.get(position));
+        videoViewHolders.add(position, holder);
+    }
+
+    public void updateCurrentPosition(int pos) {
+        currentPosition = pos;
+
+    }
+
+    public int getCurrentPosition() {
+        return currentPosition;
+    }
+
+    public void pauseVideo(int position) {
+        videoViewHolders.get(position).pauseVideo();
+    }
+
+    public void playVideo(int position) {
+        videoViewHolders.get(position).playVideo();
     }
 
     @Override
@@ -155,20 +180,20 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
             db = FirebaseFirestore.getInstance();
 
-            videoView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        // start your timer
-                        pauseVideo();
-
-                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                        playVideo();
-
-                    }
-                    return true;
-                }
-            });
+//            videoView.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+//                        // start your timer
+//                        pauseVideo();
+//
+//                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
+//                        playVideo();
+//
+//                    }
+//                    return true;
+//                }
+//            });
 
             imvAvatar.setOnClickListener(this);
             tvTitle.setOnClickListener(this);
@@ -179,21 +204,17 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         }
 
         public void playVideo() {
-            if (exoPlayer.getPlaybackState() == Player.STATE_READY) {
-                exoPlayer.setPlayWhenReady(true);
-            } else {
-                exoPlayer.play();
-            }
-            isPaused = false;
+            exoPlayer.play();
         }
 
         public void pauseVideo() {
-            if (!isPaused) {
-                if (exoPlayer.getPlaybackState() == Player.STATE_READY) {
-                    exoPlayer.setPlayWhenReady(false);
-                }
-                isPaused = true;
-            }
+//            if (!isPaused) {
+//                if (exoPlayer.getPlaybackState() == Player.STATE_READY) {
+//                    exoPlayer.setPlayWhenReady(false);
+//                }
+//                isPaused = true;
+//            }
+            exoPlayer.pause();
         }
 
         public void stopVideo() {

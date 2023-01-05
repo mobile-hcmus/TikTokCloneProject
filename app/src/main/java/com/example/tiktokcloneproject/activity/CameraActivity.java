@@ -308,9 +308,9 @@ public class CameraActivity extends Activity implements View.OnClickListener {
                 mediaRecorder.reset();
                 MediaScannerConnection.scanFile(getApplicationContext(), new String[]{videoFileHolder.getAbsolutePath()}, null, null);
                 startCameraPreview();
-                startUploadingActivity(Uri.fromFile(videoFileHolder));
-                isRecording = false;
+
                 btnStartRecording.setVisibility(View.VISIBLE);
+                isRecording = false;
                 btnFlip.setVisibility(View.VISIBLE);
             btnPause.setVisibility(View.GONE);
                 btnUploadVideo.setVisibility(View.VISIBLE);
@@ -318,6 +318,8 @@ public class CameraActivity extends Activity implements View.OnClickListener {
                 btnPause.setVisibility(View.GONE);
                 btnContinue.setVisibility(View.GONE);
                 btnClose.setVisibility(View.VISIBLE);
+//                connectCamera();
+                startUploadingActivity(Uri.fromFile(videoFileHolder));
             }
         }
 
@@ -552,7 +554,9 @@ public class CameraActivity extends Activity implements View.OnClickListener {
         }
 
 
-    }   @Override
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
 

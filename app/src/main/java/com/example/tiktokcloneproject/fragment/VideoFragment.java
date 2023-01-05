@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -90,6 +91,40 @@ public class VideoFragment extends Fragment implements View.OnClickListener {
         videoAdapter = new VideoAdapter(context, videos);
         VideoAdapter.setUser(user);
         viewPager2.setAdapter(videoAdapter);
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                videoAdapter.pauseVideo(videoAdapter.getCurrentPosition());
+                videoAdapter.playVideo(position);
+                Log.e("Selected_Page", String.valueOf(videoAdapter.getCurrentPosition()));
+                videoAdapter.updateCurrentPosition(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                super.onPageScrollStateChanged(state);
+            }
+        });
+        viewPager2.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View view) {
+
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View view) {
+//                Log.i("position", viewPager2.getVerticalScrollbarPosition() + "");
+               videoAdapter.pauseVideo(videoAdapter.getCurrentPosition());
+
+            }
+        });
         loadVideos();
         return layout;
     }
