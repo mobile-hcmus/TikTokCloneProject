@@ -59,7 +59,6 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_bold"
                     android:paddingEnd="4dp"
-                    android:textColor="@color/tiktok_black"
                     android:text="@string/username_label"/>
                 <TextView
                     android:id="@+id/tvUsername"
@@ -84,7 +83,6 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_bold"
                     android:paddingEnd="4dp"
-                    android:textColor="@color/tiktok_black"
                     android:text="@string/email_label"/>
                 <TextView
                     android:id="@+id/tvEmail"
@@ -104,7 +102,6 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_bold"
                     android:paddingEnd="4dp"
-                    android:textColor="@color/tiktok_black"
                     android:text="@string/phone_label"/>
                 <TextView
                     android:id="@+id/tvPhone"
@@ -123,7 +120,6 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_bold"
                     android:paddingEnd="4dp"
-                    android:textColor="@color/tiktok_black"
                     android:text="@string/birthdate_label"
                     />
                 <TextView

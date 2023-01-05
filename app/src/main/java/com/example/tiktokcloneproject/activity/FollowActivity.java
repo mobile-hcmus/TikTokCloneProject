@@ -1,6 +1,7 @@
 package com.example.tiktokcloneproject.activity;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -14,6 +15,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.example.tiktokcloneproject.R;
+import com.example.tiktokcloneproject.helper.StaticVariable;
+import com.example.tiktokcloneproject.model.Notification;
 import com.example.tiktokcloneproject.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -109,7 +112,6 @@ public class FollowActivity extends Activity {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                         isFollowed=true;
                         handleFollowed();
-
 
                     } else {
                         Log.d(TAG, "No such document");
@@ -258,7 +260,31 @@ public class FollowActivity extends Activity {
             }
         });
     }
-}
+
+    public void notifyFollow() {
+            db.collection("users").document(user.getUid())
+                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    String username = document.get("username", String.class);
+                                    Notification.pushNotification(username, userId , StaticVariable.LIKE);
+                                    Log.d(ContentValues.TAG, "DocumentSnapshot data: " + document.getData());
+                                } else {
+                                    Log.d(ContentValues.TAG, "No such document");
+                                }
+                            } else {
+                                Log.d(ContentValues.TAG, "get failed with ", task.getException());
+                            }
+                        }
+                    });
+
+
+        }
+    }
+
 
 
 

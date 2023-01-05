@@ -338,6 +338,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                     });
         }
 
+        boolean isLiked = false;
+
         private void setLikes (String videoId, String userId){
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -348,9 +350,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                             Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                             if (document.contains(userId)) {
                                 setFillLiked(true);
+                                isLiked = true;
                             }
                             else {
                                 setFillLiked(false);
+                                isLiked = false;
                             }
                         } else {
                             Log.d(TAG, "No such document");
@@ -404,6 +408,15 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 return;
             }
 
+            setFillLiked(isLiked);
+            if (isLiked) {
+                totalLikes-=1;
+            }else  {
+                totalLikes+=1;
+            }
+            isLiked = !isLiked;
+
+
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -411,35 +424,34 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                            if (document.contains(userId)) {
-                                totalLikes -= 1;
+                            if (isLiked) {
+//                                if (totalLikes!=0){
+//                                    totalLikes -= 1;
+//                                }
 
                                 Map<String, Object> updates = new HashMap<>();
                                 updates.put(userId, FieldValue.delete());
                                 docRef.update(updates);
 
-                                setFillLiked(false);
 
                                 notifyLike();
                             }
                             else {
-                                totalLikes += 1;
+                                //totalLikes += 1;
 
                                 Map<String, Object> updates = new HashMap<>();
                                 updates.put(userId, null);
                                 db.collection("likes").document(videoId).update(updates);
 
-                                setFillLiked(true);
+
                             }
 
                         } else {
-                            totalLikes += 1;
+                            //totalLikes += 1;
 
                             Map<String, Object> newID = new HashMap<>();
                             newID.put(userId, null);
                             docRef.set(newID);
-
-                            setFillLiked(false);
 
                             notifyLike();
                         }
