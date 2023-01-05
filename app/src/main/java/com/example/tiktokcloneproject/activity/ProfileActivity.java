@@ -367,9 +367,11 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
         if(v.getId() == btnEditProfile.getId()) {
 //            Toast.makeText(this, "YYY", Toast.LENGTH_SHORT).show();
             moveToAnotherActivity(EditProfileActivity.class);
+            finish();
 
         }
         if(v.getId() == R.id.btnBackProfile) {
+
             finish();
 
         }
@@ -505,7 +507,6 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
         Intent intent = new Intent(ProfileActivity.this, cls);
 
         startActivity(intent);
-
 
     }
 

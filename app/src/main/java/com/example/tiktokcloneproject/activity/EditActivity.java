@@ -100,19 +100,24 @@ public class EditActivity extends Activity implements View.OnClickListener {
     public void onClick(View view) {
 
         if(view.getId() == imbBack.getId()) {
-            onBackPressed();
+            Intent intent = new Intent(EditActivity.this, EditProfileActivity.class);
+            startActivity(intent);
             finish();
         }
 
         if(view.getId() == btnSave.getId()) {
             DocumentReference userDoc = db.collection("users").document(user.getUid());
 
+
             userDoc.update(mode, edtInput.getText().toString())
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Log.d(TAG, "DocumentSnapshot successfully updated!");
+                            setEnableSave(false);
                         }
+
+
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -120,8 +125,8 @@ public class EditActivity extends Activity implements View.OnClickListener {
                             Log.w(TAG, "Error updating document", e);
                         }
                     });
-
         }
+
 
     }
 
@@ -136,6 +141,7 @@ public class EditActivity extends Activity implements View.OnClickListener {
             }
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                setEnableSave(true);
             }
             @Override
             public void afterTextChanged(Editable editable) {
@@ -175,6 +181,7 @@ public class EditActivity extends Activity implements View.OnClickListener {
                             }
 
                             if (msg.equals("FALSE")) {
+                                setEnableSave(false);
                                 handler.post(EditActivity.this::updateUsername);
                             } else {
                                 setEnableSave(false);
@@ -243,7 +250,7 @@ public class EditActivity extends Activity implements View.OnClickListener {
             btnSave.setTextColor(getResources().getColor(R.color.tiktok_red));
         } else {
             btnSave.setEnabled(false);
-            btnSave.setTextColor(getResources().getColor(R.color.tiktok_red_50));
+            btnSave.setTextColor(getResources().getColor(R.color.tiktok_grey_50));
         }
     }
 

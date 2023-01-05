@@ -49,5 +49,12 @@ public class SettingsAndPrivacyActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        flShareProfileOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 }

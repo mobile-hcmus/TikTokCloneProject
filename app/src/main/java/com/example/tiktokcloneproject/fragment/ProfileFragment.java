@@ -217,6 +217,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         return layout;
     }
 
+
+
     private void handleFollow() {
         //bio cần set lại là text vỉew
         btn = (Button)layout.findViewById(R.id.button_follow);
