@@ -280,6 +280,43 @@ public class PhoneSignupActivity extends FragmentActivity implements View.OnClic
                     }
                 });
 
+        Map<String, Object> Data1 = new HashMap<>();
+        Data1.put("userID","dump");
+
+
+        db.collection("profiles").document(profile.getUserId())
+                .collection("following").document("dump")
+                .set(Data1)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
+
+
+        db.collection("profiles").document(profile.getUserId())
+                .collection("followers").document("dump")
+                .set(Data1)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
+
     }
 
 
