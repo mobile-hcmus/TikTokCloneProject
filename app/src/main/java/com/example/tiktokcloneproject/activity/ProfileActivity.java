@@ -64,7 +64,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
     private TextView txvFollowing, txvFollowers, txvLikes, txvUserName;
     private EditText edtBio;
     private Button btn, btnEditProfile, btnUpdateBio, btnCancelUpdateBio;
-    private LinearLayout llFollowing, llFollowers;
+    private LinearLayout llFollowing, llFollowers,llInfor;
     ImageView imvAvatarProfile;
     Uri avatarUri;
     FirebaseFirestore db;
@@ -111,6 +111,8 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
         imvAvatarProfile = (ImageView) findViewById(R.id.imvAvatarProfile);
         llFollowers = (LinearLayout) findViewById(R.id.ll_followers);
         llFollowing = (LinearLayout) findViewById(R.id.ll_following);
+        llInfor= (LinearLayout) findViewById(R.id.info);
+
         recVideoSummary = (RecyclerView)findViewById(R.id.recycle_view_video_summary);
         btnUpdateBio = (Button) findViewById(R.id.btn_update_bio);
         btnCancelUpdateBio = (Button) findViewById(R.id.btn_cancel_update_bio);
@@ -122,6 +124,25 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
 //        avatarUri = getIntent().getParcelableExtra("uri");
 
         imvAvatarProfile.setImageURI(avatarUri);
+
+        db  = FirebaseFirestore.getInstance();
+        docRef = db.collection("profiles").document(userId);
+        docRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    txvFollowing.setText(((Long)document.get("following")).toString());
+                    txvFollowers.setText(((Long)document.get("followers")).toString());
+                    txvLikes.setText(((Long)document.get("likes")).toString());
+                    txvUserName.setText("@" + document.getString(USERNAME_LABEL));
+                    Log.d("name123","vao1");
+
+                    oldBioText = document.getString("bio");
+                    edtBio.setText(oldBioText);
+
+                } else { }
+            } else { }
+        });
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -143,24 +164,24 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
 
 
 
-                db  = FirebaseFirestore.getInstance();
-                docRef = db.collection("profiles").document(userId);
-                docRef.get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            txvFollowing.setText(((Long)document.get("following")).toString());
-                            txvFollowers.setText(((Long)document.get("followers")).toString());
-                            txvLikes.setText(((Long)document.get("likes")).toString());
-                            txvUserName.setText("@" + document.getString(USERNAME_LABEL));
-                            Log.d("name123","vao1");
-
-                            oldBioText = document.getString("bio");
-                            edtBio.setText(oldBioText);
-
-                        } else { }
-                    } else { }
-                });
+//                db  = FirebaseFirestore.getInstance();
+//                docRef = db.collection("profiles").document(userId);
+//                docRef.get().addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        DocumentSnapshot document = task.getResult();
+//                        if (document.exists()) {
+//                            txvFollowing.setText(((Long)document.get("following")).toString());
+//                            txvFollowers.setText(((Long)document.get("followers")).toString());
+//                            txvLikes.setText(((Long)document.get("likes")).toString());
+//                            txvUserName.setText("@" + document.getString(USERNAME_LABEL));
+//                            Log.d("name123","vao1");
+//
+//                            oldBioText = document.getString("bio");
+//                            edtBio.setText(oldBioText);
+//
+//                        } else { }
+//                    } else { }
+//                });
                 oldBioText = edtBio.getText().toString();
                 edtBio.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
@@ -195,25 +216,7 @@ boolean isFollowed = false;
         //bio cần set lại là text vỉew
         btn = (Button)findViewById(R.id.button_follow);
         btn.setVisibility(View.VISIBLE);
-        db  = FirebaseFirestore.getInstance();
-        docRef = db.collection("profiles").document(userId);
-        docRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
 
-//                    txvFollowing.setText(((Long)document.get("following")).toString());
-//                    txvFollowers.setText(((Long)document.get("followers")).toString());
-//                    txvLikes.setText(((Long)document.get("likes")).toString());
-                    txvUserName.setText("@" + document.getString(USERNAME_LABEL));
-
-                    Log.d("name123","vao2");
-//                        oldBioText = document.getString("bio");
-//                        edtBio.setText(oldBioText);
-
-                } else { }
-            } else { }
-        });
         if (user !=null)
         {
             DocumentReference docRef = db.collection("profiles").document(currentUserID)
@@ -397,16 +400,21 @@ boolean isFollowed = false;
             if (current != null) current.clearFocus();
         }
         if (v.getId() == llFollowers.getId()) {
-            Intent intent = new Intent(ProfileActivity.this, FollowListActivity.class);
-            intent.putExtra("pageIndex", 1);
-
-            startActivity(intent);
+            if(currentUserID==userId)
+            {
+                Intent intent = new Intent(ProfileActivity.this, FollowListActivity.class);
+                intent.putExtra("pageIndex", 1);
+                startActivity(intent);
+            }
         }
         if (v.getId() == llFollowing.getId()) {
+
+            if(currentUserID==userId) {
             Intent intent = new Intent(ProfileActivity.this, FollowListActivity.class);
             intent.putExtra("pageIndex", 0);
-
             startActivity(intent);
+            }
+
         }
     }
 

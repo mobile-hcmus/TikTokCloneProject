@@ -61,7 +61,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
 // inflate res/layout_blue.xml to make GUI holding a TextView and a ListView
         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_navigation, null);
         btnHome = (Button) layout.findViewById(R.id.btnHome);
-        btnFriend = (Button) layout.findViewById(R.id.btnFriend);
+      //  btnFriend = (Button) layout.findViewById(R.id.btnFriend);
         btnAddVideo = (Button) layout.findViewById(R.id.btnAddVideo);
         btnInbox = (Button) layout.findViewById(R.id.btnInbox);
         btnProfile = (Button) layout.findViewById(R.id.btnProfile);

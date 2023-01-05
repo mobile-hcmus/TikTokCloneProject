@@ -92,15 +92,17 @@
                 android:textColor="@color/tiktok_white"
                 android:textSize="10dp" />
 
-            <Button
-                android:id="@+id/btnFriend"
+
+
+            <ImageButton
+                android:id="@+id/btnSearch"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
                 android:background="@color/transparent"
-                android:drawableTop="@drawable/ic_friend"
+                android:src="@drawable/icon_search"
                 android:fontFamily="@font/montserrat_medium"
                 android:inputType="textCapSentences"
                 android:onClick="onClick"

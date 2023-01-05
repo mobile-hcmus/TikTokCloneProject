@@ -111,9 +111,14 @@ public class FollowingListFragment extends Fragment {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        followingList.add(document.getId());
+                        if (document.getId().equals("dump"))
+                        {}
+                        else {
+                            followingList.add(document.getId());
+                        }
 //                        Log.d("followers", followerList.toString());
                     }
+                    if (!followingList.isEmpty())
                     db.collection("users").whereIn(FieldPath.documentId(), followingList).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -128,6 +133,10 @@ public class FollowingListFragment extends Fragment {
                             }
                         }
                     });
+
+
+
+
                 } else {
                     String[] message = {"Không tìm thấy"};
                     lvFollowing.setAdapter(new ArrayAdapter<>(contentView.getContext(), android.R.layout.simple_list_item_1,message));

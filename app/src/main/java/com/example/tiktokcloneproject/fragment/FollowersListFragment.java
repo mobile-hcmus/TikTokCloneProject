@@ -93,14 +93,23 @@ public class FollowersListFragment extends Fragment {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
 
+
+
+
+
         db.collection("profiles").document(user.getUid()).collection("followers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        followerList.add(document.getId());
+                        if (document.getId().equals("dump"))
+                        {}
+                        else {
+                            followerList.add(document.getId());
+                        }
 //                        Log.d("followers", followerList.toString());
                     }
+                    if (!followerList.isEmpty())
                     db.collection("users").whereIn(FieldPath.documentId(), followerList).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {

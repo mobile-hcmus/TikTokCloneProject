@@ -36,7 +36,7 @@ import java.util.ArrayList;
 
 public class VideoFragment extends Fragment implements View.OnClickListener {
     private Context context = null;
-    private ImageButton btnSearch;
+
     private TextView tvVideo; // DE TEST. Sau nay sua thanh clip de xem
     private ViewPager2 viewPager2;
     ArrayList<Video> videos;
@@ -74,10 +74,10 @@ public class VideoFragment extends Fragment implements View.OnClickListener {
         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_video, null);
         tvVideo = (TextView) layout.findViewById(R.id.tvVideo);
 
-        btnSearch=(ImageButton) layout.findViewById(R.id.btnSearch);
 
 
-        btnSearch.setOnClickListener(this);
+
+
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
@@ -136,11 +136,7 @@ public class VideoFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == btnSearch.getId())
-        {
-            Intent intent = new Intent(context, SearchActivity.class);
-            startActivity(intent);
-        }
+
 
     }//on click
 
