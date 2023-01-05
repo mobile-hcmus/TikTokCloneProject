@@ -73,4 +73,16 @@ public class VideoActivity extends Activity {
                 });
 
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        videoAdapter.pauseVideo(0);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        videoAdapter.pauseVideo(0);
+    }
 }
