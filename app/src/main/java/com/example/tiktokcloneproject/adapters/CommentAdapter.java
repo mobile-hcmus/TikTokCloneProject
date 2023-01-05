@@ -1,9 +1,11 @@
 package com.example.tiktokcloneproject.adapters;
 
 import android.app.Activity;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,10 +55,14 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
 
         }
 
+
+
         ImageView imvAvatarInComment = (ImageView) row.findViewById(R.id.imvAvatarInComment);
         TextView txvUsernameInComment = (TextView) row.findViewById(R.id.txvUsernameInComment);
         TextView txvComment = (TextView) row.findViewById(R.id.txvComment);
         TextView txvTotalLikeComment = (TextView) row.findViewById(R.id.txvTotalLikeComment);
+
+
 
         DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(comments.get(position).getAuthorId());
         final String TAG = "CommentAdapter";
@@ -78,6 +85,22 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
         loadAvatar(comments.get(position).getAuthorId(), imvAvatarInComment);
 
         txvComment.setText(comments.get(position).getContent());
+
+        if(!row.hasOnClickListeners()) {
+            row.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                        final android.content.ClipboardManager clipboardManager = (android.content.ClipboardManager) context
+                                .getSystemService(Context.CLIPBOARD_SERVICE);
+                        final android.content.ClipData clipData = android.content.ClipData
+                                .newPlainText("copy comment", txvComment.getText().toString());
+                        clipboardManager.setPrimaryClip(clipData);
+
+                    Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
         txvTotalLikeComment.setText(comments.get(position).getTotalLikes() + "");
 
         return (row);
