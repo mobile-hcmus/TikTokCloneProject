@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tiktokcloneproject.R;
@@ -45,6 +46,7 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
         this.context = context;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     public View getView(int position, @Nullable View convertView, ViewGroup parent) {
         View row = convertView;
@@ -86,20 +88,22 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
 
         txvComment.setText(comments.get(position).getContent());
 
-        if(!row.hasOnClickListeners()) {
-            row.setOnClickListener(new View.OnClickListener() {
+        if(!row.hasOnLongClickListeners()) {
+            row.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
-                public void onClick(View view) {
-                        final android.content.ClipboardManager clipboardManager = (android.content.ClipboardManager) context
-                                .getSystemService(Context.CLIPBOARD_SERVICE);
-                        final android.content.ClipData clipData = android.content.ClipData
-                                .newPlainText("copy comment", txvComment.getText().toString());
-                        clipboardManager.setPrimaryClip(clipData);
+                public boolean onLongClick(View view) {
+                    final android.content.ClipboardManager clipboardManager = (android.content.ClipboardManager) context
+                            .getSystemService(Context.CLIPBOARD_SERVICE);
+                    final android.content.ClipData clipData = android.content.ClipData
+                            .newPlainText("copy comment", txvComment.getText().toString());
+                    clipboardManager.setPrimaryClip(clipData);
 
                     Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show();
+                    return false;
                 }
             });
         }
+
 
         txvTotalLikeComment.setText(comments.get(position).getTotalLikes() + "");
 

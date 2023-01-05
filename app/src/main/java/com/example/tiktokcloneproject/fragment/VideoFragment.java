@@ -125,6 +125,7 @@ public class VideoFragment extends Fragment implements View.OnClickListener {
 
             }
         });
+
         loadVideos();
         return layout;
     }
