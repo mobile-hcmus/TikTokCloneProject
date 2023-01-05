@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -33,6 +34,7 @@ import android.widget.Toast;
 import com.example.tiktokcloneproject.R;
 import com.example.tiktokcloneproject.adapters.VideoSummaryAdapter;
 import com.example.tiktokcloneproject.helper.StaticVariable;
+import com.example.tiktokcloneproject.model.Notification;
 import com.example.tiktokcloneproject.model.VideoSummary;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -223,7 +225,7 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
                         if (document.exists()) {
                             Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                             handleFollowed();
-
+                            notifyFollow();
 
                         } else {
                             Log.d(TAG, "No such document");
@@ -249,6 +251,27 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
         }
 
     }
+
+    public void notifyFollow() {
+            db.collection("users").document(user.getUid())
+                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    String username = document.get("username", String.class);
+                                    Notification.pushNotification(username, userId, StaticVariable.FOLLOW);
+                                    Log.d(ContentValues.TAG, "DocumentSnapshot data: " + document.getData());
+                                } else {
+                                    Log.d(ContentValues.TAG, "No such document");
+                                }
+                            } else {
+                                Log.d(ContentValues.TAG, "get failed with ", task.getException());
+                            }
+                        }
+                    });
+        }
 
     protected void setVideoSummaries() {
         db.collection("profiles").document(userId).collection("public_videos")

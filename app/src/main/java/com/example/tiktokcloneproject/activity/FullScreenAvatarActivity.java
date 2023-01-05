@@ -53,7 +53,7 @@ public class FullScreenAvatarActivity extends AppCompatActivity{
     }
 
     private void getImage() {
-        StorageReference download = storageReference.child(user.getUid().toString());
+        StorageReference download = storageReference.child("/user_avatars").child(user.getUid());
 
         long MAX_BYTE = 1024*1024;
         download.getBytes(MAX_BYTE)
