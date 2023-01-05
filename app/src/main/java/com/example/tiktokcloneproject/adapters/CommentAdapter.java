@@ -3,9 +3,11 @@ package com.example.tiktokcloneproject.adapters;
 import android.app.Activity;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tiktokcloneproject.R;
+import com.example.tiktokcloneproject.activity.ProfileActivity;
 import com.example.tiktokcloneproject.helper.StaticVariable;
 import com.example.tiktokcloneproject.model.Comment;
 import com.example.tiktokcloneproject.model.Notification;
@@ -87,6 +90,20 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
         loadAvatar(comments.get(position).getAuthorId(), imvAvatarInComment);
 
         txvComment.setText(comments.get(position).getContent());
+
+        if (!row.hasOnClickListeners()) {
+            row.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String authorId = comments.get(position).getAuthorId();
+                    Intent intent=new Intent(view.getContext(), ProfileActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("id",authorId);
+                    intent.putExtras(bundle);
+                    view.getContext().startActivity(intent);
+                }
+            });
+        }
 
         if(!row.hasOnLongClickListeners()) {
             row.setOnLongClickListener(new View.OnLongClickListener() {
