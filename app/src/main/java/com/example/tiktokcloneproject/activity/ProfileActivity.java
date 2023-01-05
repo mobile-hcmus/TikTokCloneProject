@@ -515,6 +515,7 @@ boolean isFollowed = false;
 
 
 //    public Integer val;
+
 //    private int readFollow(String id,String type)
 //    {
 //
