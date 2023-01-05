@@ -104,12 +104,19 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         dialog = builder.create();
         dialog.show();
 
+
+
+    }//on create
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         if (user != null) {
-            if(user.getPhoneNumber().isEmpty()) {
+            if (user.getPhoneNumber().isEmpty()) {
                 llPhone.setVisibility(View.GONE);
                 llEmail.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 llPhone.setVisibility(View.VISIBLE);
                 llEmail.setVisibility(View.GONE);
             }
@@ -136,9 +143,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
                 }
             });
         }
-
-
-    }//on create
+    }
 
     private String getData(Object data) {
         return data == null ? "" : data.toString();
@@ -191,7 +196,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
             startActivityForResult(Intent.createChooser(intent, "Title"), SELECT_IMAGE_CODE);
         }
         if (v.getId() == imvBackToProfile.getId()){
-            onBackPressed();
+
             finish();
         }
 
@@ -211,5 +216,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         bundle.putString("content", content);
         intent.putExtras(bundle);
         startActivity(intent);
+        finish();
+
     }
 }
