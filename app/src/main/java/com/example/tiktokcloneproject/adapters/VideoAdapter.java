@@ -12,11 +12,13 @@ import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
@@ -28,6 +30,8 @@ import android.widget.VideoView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.dynamicanimation.animation.DynamicAnimation;
+import androidx.dynamicanimation.animation.FlingAnimation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tiktokcloneproject.activity.CommentActivity;
@@ -50,6 +54,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -81,7 +86,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     private static FirebaseUser user = null;
     private List<VideoViewHolder> videoViewHolders;
     private int currentPosition;
-
+    int numberOfClick = 0;
+    float volume;
 
     public VideoAdapter(Context context, List<Video> videos) {
         this.context = context;
@@ -152,7 +158,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
         StyledPlayerView videoView;
         ExoPlayer exoPlayer;
-        ImageView imvAvatar, imvPause, imvMore;
+        ImageView imvAvatar, imvPause, imvMore, imvAppear;
         TextView txvDescription, tvTitle;
         TextView tvComment, tvFavorites;
         ProgressBar pgbWait;
@@ -177,7 +183,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             imvPause = itemView.findViewById(R.id.imvPause);
             pgbWait = itemView.findViewById(R.id.pgbWait);
             imvMore = itemView.findViewById(R.id.imvMore);
-
+            imvAppear = itemView.findViewById(R.id.imv_appear);
             db = FirebaseFirestore.getInstance();
 
 //            videoView.setOnTouchListener(new View.OnTouchListener() {
@@ -195,6 +201,64 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 //                }
 //            });
 
+            videoView.setControllerAutoShow(false);
+            videoView.setUseController(false);
+            videoView.getVideoSurfaceView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    numberOfClick++;
+
+                    float currentVolume = exoPlayer.getVolume();
+                    boolean isMuted = (currentVolume == 0);
+                    if (!isMuted) {
+                        volume = exoPlayer.getVolume();
+                    }
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (numberOfClick == 1) {
+                                if (isMuted) {
+                                    exoPlayer.setVolume(volume);
+                                    appearImage(R.drawable.ic_baseline_volume_up_24);
+                                } else {
+                                    exoPlayer.setVolume(0);
+                                    appearImage(R.drawable.ic_baseline_volume_off_24);
+                                }
+                            } else if (numberOfClick == 2) {
+                                handleTymClick(view);
+                                appearImage(R.drawable.ic_fill_favorite);
+                            }
+                            numberOfClick = 0;
+                        }
+                    }, 500);
+                }
+            });
+            videoView.setOnClickListener(this);
+//            videoView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Log.d("test123", "ok");
+//
+//                    numberOfClick++;
+//
+//                    Handler handler = new Handler();
+//                    handler.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            if (numberOfClick == 1) {
+//                                Log.d("single", "ok");
+//                            } else if (numberOfClick == 2) {
+//                                Log.d("double", "ok");
+//                            }
+//                            numberOfClick = 0;
+//                        }
+//                    }, 500);
+//                }
+//            });
+//
+  ///
             imvAvatar.setOnClickListener(this);
             tvTitle.setOnClickListener(this);
             tvComment.setOnClickListener(this);
@@ -224,6 +288,17 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 exoPlayer.stop();
                 exoPlayer.seekTo(0);
             }
+        }
+
+        public void appearImage(int src) {
+            imvAppear.setImageResource(src);
+            imvAppear.setVisibility(View.VISIBLE);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    imvAppear.setVisibility(View.GONE);
+                }
+            },  1000);
         }
 
         @SuppressLint("ClickableViewAccessibility")
@@ -304,7 +379,25 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 handleTymClick(view);
 
             }
-        }
+            if (view.getId() == videoView.getId()) {
+                        Log.d("test123", "ok");
+
+                        numberOfClick++;
+
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (numberOfClick == 1) {
+                                    Log.d("single", "ok");
+                                } else if (numberOfClick == 2) {
+                                    Log.d("double", "ok");
+                                }
+                                numberOfClick = 0;
+                            }
+                        }, 500);
+                    }
+            }
 
         private void notifyLike(){
             db.collection("users").document(user.getUid())
