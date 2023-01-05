@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.tiktokcloneproject.R;
@@ -30,6 +31,7 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
     ProfileFragment profileFragment;
     InboxFragment inboxFragment;
 
+    private ImageButton btnSearch;
     private long pressedTime;
     private String message = "";
     private Button btnHome, btnFriend, btnAddVideo, btnInbox, btnProfile;
@@ -56,10 +58,13 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
         ft.commit();
 
         btnHome = (Button)findViewById(R.id.btnHome);
-        btnFriend = (Button) findViewById(R.id.btnFriend);
+      //  btnFriend = (Button) findViewById(R.id.btnFriend);
         btnAddVideo = (Button)findViewById(R.id.btnAddVideo);
         btnInbox = (Button)findViewById(R.id.btnInbox);
         btnProfile = (Button) findViewById(R.id.btnProfile);
+
+        btnSearch=(ImageButton) findViewById(R.id.btnSearch);
+        btnSearch.setOnClickListener(this);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         db = FirebaseFirestore.getInstance();
@@ -83,6 +88,8 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
         pressedTime = System.currentTimeMillis();
     }
 
+
+
     @Override
     public void onClick(View view) {
 //        if (view.getId() == btnProfile.getId()) {
@@ -92,6 +99,12 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
 //            ft.commit();
 //            return;
 //        }
+
+        if (view.getId() == btnSearch.getId())
+        {
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
+        }
         if(view.getId() == btnProfile.getId()) {
             handleProfileClick();
         }
@@ -104,9 +117,7 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
         if(view.getId() == btnInbox.getId()) {
             handleInboxClick();
         }
-        if(view.getId() == btnFriend.getId()) {
 
-        }
     }//on click
 
     private void handleProfileClick() {
