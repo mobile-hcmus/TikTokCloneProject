@@ -25,7 +25,8 @@ public class FullScreenAvatarActivity extends AppCompatActivity{
     StorageReference storageReference;
     FirebaseUser user;
     Bitmap bitmap;
-
+    String folderPath;
+    String fileName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +54,9 @@ public class FullScreenAvatarActivity extends AppCompatActivity{
     }
 
     private void getImage() {
-        StorageReference download = storageReference.child("/user_avatars").child(user.getUid());
+        folderPath = "/user_avatar";
+        fileName = user.getUid();
+        StorageReference download = storageReference.child(folderPath).child(fileName);
 
         long MAX_BYTE = 1024*1024;
         download.getBytes(MAX_BYTE)
