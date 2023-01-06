@@ -9,14 +9,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.tiktokcloneproject.R;
@@ -24,6 +27,7 @@ import com.example.tiktokcloneproject.adapters.VideoAdapter;
 import com.example.tiktokcloneproject.fragment.InboxFragment;
 import com.example.tiktokcloneproject.fragment.ProfileFragment;
 import com.example.tiktokcloneproject.fragment.VideoFragment;
+import com.example.tiktokcloneproject.helper.OnSwipeTouchListener;
 import com.example.tiktokcloneproject.model.Video;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -44,6 +48,7 @@ public class VideoHomeScreenActivity extends Activity implements View.OnClickLis
     private ViewPager2 viewPager2;
     private ArrayList<Video> videos;
     private VideoAdapter videoAdapter;
+    private FrameLayout mainFragment;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private ImageButton btnSearch;
@@ -69,6 +74,7 @@ public class VideoHomeScreenActivity extends Activity implements View.OnClickLis
         btnProfile = (Button) findViewById(R.id.btnProfile);
 
         btnSearch=(ImageButton) findViewById(R.id.btnSearch);
+        mainFragment = (FrameLayout) findViewById(R.id.main_fragment);
 
         viewPager2 = findViewById(R.id.viewPager);
         videos = new ArrayList<>();
@@ -88,6 +94,8 @@ public class VideoHomeScreenActivity extends Activity implements View.OnClickLis
                 videoAdapter.pauseVideo(videoAdapter.getCurrentPosition());
                 videoAdapter.playVideo(position);
                 Log.e("Selected_Page", String.valueOf(videoAdapter.getCurrentPosition()));
+                Log.e("Selected_Page", videos.get(position).getAuthorId());
+
                 videoAdapter.updateCurrentPosition(position);
             }
 
@@ -110,8 +118,11 @@ public class VideoHomeScreenActivity extends Activity implements View.OnClickLis
             }
         });
 
+
         loadVideos();
         intentMain = new Intent(this, HomeScreenActivity.class);
+
+
     }
 
     private void loadVideos() {
@@ -191,7 +202,6 @@ public class VideoHomeScreenActivity extends Activity implements View.OnClickLis
         if(view.getId() == btnInbox.getId()) {
             handleInboxClick();
         }
-
     }//on click
 
     private void handleProfileClick() {

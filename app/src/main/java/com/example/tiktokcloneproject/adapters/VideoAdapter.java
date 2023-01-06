@@ -30,6 +30,7 @@ import android.widget.VideoView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.dynamicanimation.animation.DynamicAnimation;
 import androidx.dynamicanimation.animation.FlingAnimation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -172,6 +173,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         final String LIKE_COLLECTION = "likes";
         String userId;
         boolean isPaused = false;
+        boolean isLiked = false;
 
         public VideoViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -201,56 +203,56 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 //                }
 //            });
 
-            videoView.setControllerAutoShow(false);
-            videoView.setUseController(false);
-            videoView.getVideoSurfaceView().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    numberOfClick++;
-
-                    float currentVolume = exoPlayer.getVolume();
-                    boolean isMuted = (currentVolume == 0);
-                    if (!isMuted) {
-                        volume = exoPlayer.getVolume();
-                    }
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (numberOfClick == 1) {
-                                if (isMuted) {
-                                    exoPlayer.setVolume(volume);
-                                    appearImage(R.drawable.ic_baseline_volume_up_24);
-                                } else {
-                                    exoPlayer.setVolume(0);
-                                    appearImage(R.drawable.ic_baseline_volume_off_24);
-                                }
-                            } else if (numberOfClick == 2) {
-                                handleTymClick(view);
-                                appearImage(R.drawable.ic_fill_favorite);
-                            }
-                            numberOfClick = 0;
-                        }
-                    }, 500);
-                }
-            });
-            videoView.getVideoSurfaceView().setOnTouchListener(new OnSwipeTouchListener(itemView.getContext()){
-//                public void onSwipeTop() {
-//                    Toast.makeText(itemView.getContext(), "top", Toast.LENGTH_SHORT).show();
+//            videoView.setControllerAutoShow(false);
+//            videoView.setUseController(false);
+//            videoView.getVideoSurfaceView().setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//
+//                    numberOfClick++;
+//
+//                    float currentVolume = exoPlayer.getVolume();
+//                    boolean isMuted = (currentVolume == 0);
+//                    if (!isMuted) {
+//                        volume = exoPlayer.getVolume();
+//                    }
+//                    Handler handler = new Handler();
+//                    handler.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            if (numberOfClick == 1) {
+//                                if (isMuted) {
+//                                    exoPlayer.setVolume(volume);
+//                                    appearImage(R.drawable.ic_baseline_volume_up_24);
+//                                } else {
+//                                    exoPlayer.setVolume(0);
+//                                    appearImage(R.drawable.ic_baseline_volume_off_24);
+//                                }
+//                            } else if (numberOfClick == 2) {
+//                                handleTymClick(view);
+//                                appearImage(R.drawable.ic_fill_favorite);
+//                            }
+//                            numberOfClick = 0;
+//                        }
+//                    }, 500);
 //                }
-//                public void onSwipeRight() {
-//                    Toast.makeText(itemView.getContext(), "right", Toast.LENGTH_SHORT).show();
+//            });
+//            videoView.getVideoSurfaceView().setOnTouchListener(new OnSwipeTouchListener(itemView.getContext()){
+////                public void onSwipeTop() {
+////                    Toast.makeText(itemView.getContext(), "top", Toast.LENGTH_SHORT).show();
+////                }
+////                public void onSwipeRight() {
+////                    Toast.makeText(itemView.getContext(), "right", Toast.LENGTH_SHORT).show();
+////                }
+//                public void onSwipeLeft() {
+//                    Toast.makeText(itemView.getContext(), authorId, Toast.LENGTH_SHORT).show();
+//
+//                    moveToProfile(videoView.getContext(), authorId);
 //                }
-                public void onSwipeLeft() {
-                    Toast.makeText(itemView.getContext(), authorId, Toast.LENGTH_SHORT).show();
-
-                    moveToProfile(videoView.getContext(), authorId);
-                }
-//                public void onSwipeBottom() {
-//                    Toast.makeText(itemView.getContext(), "bottom", Toast.LENGTH_SHORT).show();
-//                }
-            });
+////                public void onSwipeBottom() {
+////                    Toast.makeText(itemView.getContext(), "bottom", Toast.LENGTH_SHORT).show();
+////                }
+//            });
             videoView.setOnClickListener(this);
             imvAvatar.setOnClickListener(this);
             tvTitle.setOnClickListener(this);
@@ -258,6 +260,12 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             imvMore.setOnClickListener(this);
             tvFavorites.setOnClickListener(this);
 
+            videoView.setOnTouchListener(new OnSwipeTouchListener(itemView.getContext()){
+                @Override
+                public void onSwipeLeft() {
+                    moveToProfile(videoView.getContext(), authorId);
+                }
+            });
         }
 
         public void playVideo() {
@@ -373,23 +381,29 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
             }
             if (view.getId() == videoView.getId()) {
-                        Log.d("test123", "ok");
-
-                        numberOfClick++;
-
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (numberOfClick == 1) {
-                                    Log.d("single", "ok");
-                                } else if (numberOfClick == 2) {
-                                    Log.d("double", "ok");
+                numberOfClick++;
+                float currentVolume = exoPlayer.getVolume();
+                boolean isMuted = (currentVolume == 0);
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (numberOfClick == 1) {
+                                if (isMuted) {
+                                    exoPlayer.setVolume(volume);
+                                    appearImage(R.drawable.ic_baseline_volume_up_24);
+                                } else {
+                                    exoPlayer.setVolume(0);
+                                    appearImage(R.drawable.ic_baseline_volume_off_24);
                                 }
-                                numberOfClick = 0;
+                            } else if (numberOfClick == 2) {
+                                handleTymClick(view);
+                                appearImage(R.drawable.ic_fill_favorite);
                             }
-                        }, 500);
-                    }
+                            numberOfClick = 0;
+                            }
+                    }, 500);
+                }
             }
 
         private void notifyLike(){
@@ -445,7 +459,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                     });
         }
 
-        boolean isLiked = false;
+
 
         private void setLikes (String videoId, String userId){
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
