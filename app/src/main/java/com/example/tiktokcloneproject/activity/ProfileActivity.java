@@ -18,6 +18,8 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -184,6 +186,27 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
 //                    } else { }
 //                });
                 oldBioText = edtBio.getText().toString();
+
+                edtBio.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        if (charSequence == "⠀") {
+                            edtBio.setText("");
+                        }
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        if (charSequence == "") {
+                            edtBio.setText("⠀");
+                        }
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
                 edtBio.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
                     public void onFocusChange(View view, boolean b) {
@@ -253,6 +276,7 @@ boolean isFollowed = false;
                 @Override
                 public void onClick(View view) {
                     Intent intentMain = new Intent(ProfileActivity.this, MainActivity.class);
+
                     startActivity(intentMain);
                 }
             });

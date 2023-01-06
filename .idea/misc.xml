@@ -33,6 +33,7 @@
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/share_account_layout.xml" value="0.33" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/layout/video_container.xml" value="0.16770833333333332" />
         <entry key="..\:/AndroidStudioProjects/TikTokCloneProject/app/src/main/res/menu/main_menu.xml" value="0.16770833333333332" />
+        <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/drawable-anydpi/ic_stat_name.xml" value="0.136" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/drawable-v24/button_state_list_anim.xml" value="0.1535" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/drawable-v24/button_state_list_anim_shrink.xml" value="0.136" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/drawable/btn_add_shape.xml" value="0.1535" />
@@ -54,7 +55,9 @@
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/drawable/ic_send.xml" value="0.136" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/drawable/ic_upload.xml" value="0.1535" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/drawable/red_button.xml" value="0.136" />
+        <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/drawable/splash_background.xml" value="0.136" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/drawable/stop_button.xml" value="0.136" />
+        <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/drawable/toptopfull.xml" value="0.1" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_camera.xml" value="0.264" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_comment.xml" value="0.25" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_delete_account.xml" value="0.25" />
@@ -68,11 +71,14 @@
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_phone_signup.xml" value="0.25" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_profile.xml" value="0.264" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_searching.xml" value="0.25" />
+        <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_share_account.xml" value="0.20260416666666667" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_video.xml" value="0.146875" />
+        <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_video_home_screen.xml" value="0.14166666666666666" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/activity_video_summary.xml" value="0.2" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.25" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/dialog_progress.xml" value="0.25" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/fragment_navigation.xml" value="0.14375" />
+        <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/fragment_profile.xml" value="0.25" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/fragment_video.xml" value="0.146875" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/fragment_waiting.xml" value="0.25" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/item_user.xml" value="0.1" />
@@ -81,6 +87,7 @@
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/share_account_layout.xml" value="0.25" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/video_container.xml" value="0.136" />
         <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/layout/video_summary_item.xml" value="0.16990291262135923" />
+        <entry key="..\:/C3MCJ/Git/TikTokCloneProject/app/src/main/res/menu/main_menu.xml" value="0.25" />
         <entry key="..\:/C3MCJ/Mobile/Android/TikTokCloneProject/app/src/main/res/layout/activity_share_account.xml" value="0.10625" />
         <entry key="..\:/Mobile/Final_project/app/src/main/res/drawable/btn_login_shape.xml" value="0.176" />
         <entry key="..\:/Mobile/Final_project/app/src/main/res/drawable/btn_shape.xml" value="0.11" />
@@ -106,7 +113,6 @@
         <entry key="..\:/TikTok/app/src/main/res/drawable/btn_normal_shape.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/btn_red_shape.xml" value="0.1485" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/btn_rounded_shape.xml" value="0.1" />
-        <entry key="..\:/TikTok/app/src/main/res/drawable/btn_stop_record.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/btn_white_shape.xml" value="0.1485" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/click_shape.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/edt_shape.xml" value="0.1485" />
@@ -126,7 +132,6 @@
         <entry key="..\:/TikTok/app/src/main/res/drawable/ic_phone.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/ic_profile.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/ic_search.xml" value="0.1" />
-        <entry key="..\:/TikTok/app/src/main/res/drawable/ic_send.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/ic_share.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/ic_test.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/drawable/ic_upload.xml" value="0.1485" />
@@ -155,7 +160,6 @@
         <entry key="..\:/TikTok/app/src/main/res/layout/activity_signup_choice.xml" value="0.16666666666666666" />
         <entry key="..\:/TikTok/app/src/main/res/layout/activity_video.xml" value="0.11145833333333334" />
         <entry key="..\:/TikTok/app/src/main/res/layout/bottom_sheet_comment.xml" value="0.17447916666666666" />
-        <entry key="..\:/TikTok/app/src/main/res/layout/bottom_sheet_layout.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/layout/fragment_inbox.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/layout/fragment_navigation.xml" value="0.1" />
         <entry key="..\:/TikTok/app/src/main/res/layout/fragment_profile.xml" value="0.1" />

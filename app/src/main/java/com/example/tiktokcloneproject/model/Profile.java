@@ -20,7 +20,7 @@ public class Profile implements Serializable {
         this.username = userName;
         followers = following = likes = 0;
         avatarUri = "";
-        bio = "Adđ your bio.";
+        bio = "Add your bio.";
         isPrivate = false;
 //        followers = new ArrayList<>();
 //        following = new ArrayList<>();

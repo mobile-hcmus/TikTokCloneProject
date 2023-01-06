@@ -36,6 +36,10 @@
             android:name=".activity.VideoActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.VideoHomeScreenActivity"
+            android:exported="false"
+            android:launchMode="singleTask"/>
+        <activity
             android:name=".activity.EditActivity"
             android:exported="false" />
         <activity
@@ -46,7 +50,8 @@
             android:exported="false" />
         <activity
             android:name=".activity.HomeScreenActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".activity.EmailSignInActivity"
             android:exported="false" />

@@ -69,6 +69,12 @@ public class VideoFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 // inflate res/layout_blue.xml to make GUI holding a TextView and a ListView
         LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.fragment_video, null);

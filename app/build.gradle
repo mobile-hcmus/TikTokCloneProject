@@ -62,6 +62,7 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer-core:2.18.0'
     implementation 'com.google.android.exoplayer:exoplayer-dash:2.18.0'
     implementation 'com.google.android.exoplayer:exoplayer-ui:2.18.0'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.17'
 
 
 }

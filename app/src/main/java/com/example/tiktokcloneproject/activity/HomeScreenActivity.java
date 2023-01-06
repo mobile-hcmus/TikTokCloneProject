@@ -3,6 +3,7 @@ package com.example.tiktokcloneproject.activity;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -27,6 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class HomeScreenActivity extends FragmentActivity implements View.OnClickListener{
 
     FragmentTransaction ft;
+    Fragment fragment;
     VideoFragment videoFragment;
     ProfileFragment profileFragment;
     InboxFragment inboxFragment;
@@ -39,7 +41,7 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
     private FirebaseFirestore db;
     private static long pressedBackTime = 0;
     private final static String TAG = "NavigationFragment";
-    Intent profileIdIntent = null;
+    Intent fragmentIntent = null;
     Boolean openAppFromLink = false;
 
     @Override
@@ -47,14 +49,20 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
         setTheme(R.style.Theme_TikTokCloneProject);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
-        profileIdIntent = getIntent();
-        if (profileIdIntent.getExtras() != null) {
-            openAppFromLink = profileIdIntent.hasExtra("id");
+        fragmentIntent = getIntent();
+        if (fragmentIntent.getExtras() != null) {
+            if (fragmentIntent.hasExtra("id")) {
+                openAppFromLink = true;
+            }
+            if (fragmentIntent.hasExtra("fragment_inbox")) {
+                fragment = InboxFragment.newInstance("inbox");
+            } else  if (fragmentIntent.hasExtra("fragment_profile")) {
+                fragment = ProfileFragment.newInstance("profile", "");
+            }
         }
 
         ft = getSupportFragmentManager().beginTransaction();
-        videoFragment = VideoFragment.newInstance("video");
-        ft.replace(R.id.main_fragment, videoFragment);
+        ft.replace(R.id.main_fragment, fragment);
         ft.commit();
 
         btnHome = (Button)findViewById(R.id.btnHome);
@@ -134,7 +142,7 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
 
         if (openAppFromLink) {
             Intent intent = new Intent(this, ProfileActivity.class);
-            intent.putExtras(profileIdIntent.getExtras());
+            intent.putExtras(fragmentIntent.getExtras());
             startActivity(intent);
         } else {
             ft = getSupportFragmentManager().beginTransaction();
@@ -176,10 +184,9 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
 //        }
 //        Intent intent = new Intent(context, HomeScreenActivity.class);
 //        startActivity(intent);
-        ft = getSupportFragmentManager().beginTransaction();
-        videoFragment = VideoFragment.newInstance("inbox");
-        ft.replace(R.id.main_fragment, videoFragment);
-        ft.commit();
+            Intent intent = new Intent(this, VideoHomeScreenActivity.class);
+            startActivity(intent);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     }
 
     private void showNiceDialogBox(Context context, @Nullable String title, @Nullable String message) {

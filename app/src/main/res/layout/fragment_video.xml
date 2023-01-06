@@ -12,6 +12,19 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/background_video"
+                android:scaleType="centerCrop"
+                android:layout_centerInParent="true"
+                ></ImageView>
+
+            <pl.droidsonroids.gif.GifImageView
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/loading" />
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPager"

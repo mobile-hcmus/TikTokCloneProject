@@ -182,11 +182,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             tvFavorites = itemView.findViewById(R.id.tvFavorites);
             imvAvatar = itemView.findViewById(R.id.imvAvatar);
             imvPause = itemView.findViewById(R.id.imvPause);
-            pgbWait = itemView.findViewById(R.id.pgbWait);
+//            pgbWait = itemView.findViewById(R.id.pgbWait);
             imvMore = itemView.findViewById(R.id.imvMore);
             imvAppear = itemView.findViewById(R.id.imv_appear);
             db = FirebaseFirestore.getInstance();
-
 //            videoView.setOnTouchListener(new View.OnTouchListener() {
 //                @Override
 //                public boolean onTouch(View v, MotionEvent event) {
