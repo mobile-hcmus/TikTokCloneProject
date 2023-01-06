@@ -14,12 +14,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.tiktokcloneproject.R;
 import com.example.tiktokcloneproject.fragment.InboxFragment;
 import com.example.tiktokcloneproject.fragment.ProfileFragment;
+import com.example.tiktokcloneproject.fragment.SearchFragment;
 import com.example.tiktokcloneproject.fragment.VideoFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,15 +28,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class HomeScreenActivity extends FragmentActivity implements View.OnClickListener{
 
     FragmentTransaction ft;
-    Fragment fragment;
     VideoFragment videoFragment;
+    SearchFragment searchFragment;
     ProfileFragment profileFragment;
     InboxFragment inboxFragment;
-
-    private ImageButton btnSearch;
     private long pressedTime;
     private String message = "";
-    private Button btnHome, btnFriend, btnAddVideo, btnInbox, btnProfile;
+    private Button btnHome, btnAddVideo, btnInbox, btnProfile, btnSearch;
     private FirebaseUser user;
     private FirebaseFirestore db;
     private static long pressedBackTime = 0;
@@ -50,19 +48,31 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
         fragmentIntent = getIntent();
+        ft = getSupportFragmentManager().beginTransaction();
+
+
         if (fragmentIntent.getExtras() != null) {
             if (fragmentIntent.hasExtra("id")) {
                 openAppFromLink = true;
             }
             if (fragmentIntent.hasExtra("fragment_inbox")) {
-                fragment = InboxFragment.newInstance("inbox");
-            } else  if (fragmentIntent.hasExtra("fragment_profile")) {
-                fragment = ProfileFragment.newInstance("profile", "");
-            }
-        }
+                inboxFragment = InboxFragment.newInstance("inbox");
+                ft.add(R.id.main_fragment, inboxFragment);
 
-        ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.main_fragment, fragment);
+            } else  if (fragmentIntent.hasExtra("fragment_profile")) {
+                profileFragment = ProfileFragment.newInstance("profile", "");
+                ft.add(R.id.main_fragment, profileFragment);
+            } else if (fragmentIntent.hasExtra("fragment_search")) {
+                searchFragment = SearchFragment.newInstance("search");
+                ft.add(R.id.main_fragment, searchFragment);
+            } else {
+                videoFragment = VideoFragment.newInstance("fragment_video");
+                ft.add(R.id.main_fragment, videoFragment);
+            }
+        } else {
+            videoFragment = VideoFragment.newInstance("fragment_video");
+            ft.add(R.id.main_fragment, videoFragment);
+        }
         ft.commit();
 
         btnHome = (Button)findViewById(R.id.btnHome);
@@ -71,7 +81,7 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
         btnInbox = (Button)findViewById(R.id.btnInbox);
         btnProfile = (Button) findViewById(R.id.btnProfile);
 
-        btnSearch=(ImageButton) findViewById(R.id.btnSearch);
+        btnSearch=(Button) findViewById(R.id.btnSearch);
         btnSearch.setOnClickListener(this);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -96,7 +106,16 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
         pressedTime = System.currentTimeMillis();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopVideoFragment();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     @Override
     public void onClick(View view) {
@@ -110,8 +129,13 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
 
         if (view.getId() == btnSearch.getId())
         {
-            Intent intent = new Intent(this, SearchActivity.class);
-            startActivity(intent);
+            ft = getSupportFragmentManager().beginTransaction();
+            if (searchFragment == null)  {
+                searchFragment = SearchFragment.newInstance("search");
+                ft.add(R.id.main_fragment, searchFragment);
+            }
+            showFragments(1);
+            ft.commit();
         }
         if(view.getId() == btnProfile.getId()) {
             handleProfileClick();
@@ -136,18 +160,17 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
             return;
         }
 
-        if(getSupportFragmentManager().findFragmentById(R.id.main_fragment) instanceof ProfileFragment) {
-            return;
-        }
-
         if (openAppFromLink) {
             Intent intent = new Intent(this, ProfileActivity.class);
             intent.putExtras(fragmentIntent.getExtras());
             startActivity(intent);
         } else {
             ft = getSupportFragmentManager().beginTransaction();
-            profileFragment = ProfileFragment.newInstance("profile", "");
-            ft.replace(R.id.main_fragment, profileFragment);
+            if (profileFragment == null) {
+                profileFragment = ProfileFragment.newInstance("profile", "");
+                ft.add(R.id.main_fragment, profileFragment);
+            }
+            showFragments(3);
             ft.commit();
         }
     }
@@ -166,12 +189,13 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
             showNiceDialogBox(this, null, null);
             return;
         }
-        if(getSupportFragmentManager().findFragmentById(R.id.main_fragment) instanceof InboxFragment) {
-            return;
-        }
+
         ft = getSupportFragmentManager().beginTransaction();
-        inboxFragment = InboxFragment.newInstance("inbox");
-        ft.replace(R.id.main_fragment, inboxFragment);
+        if (inboxFragment == null) {
+            inboxFragment = InboxFragment.newInstance("inbox");
+            ft.add(R.id.main_fragment, inboxFragment);
+        }
+        showFragments(2);
         ft.commit();
     }
 
@@ -184,8 +208,13 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
 //        }
 //        Intent intent = new Intent(context, HomeScreenActivity.class);
 //        startActivity(intent);
-            Intent intent = new Intent(this, VideoHomeScreenActivity.class);
-            startActivity(intent);
+        ft = getSupportFragmentManager().beginTransaction();
+        if (videoFragment == null) {
+            inboxFragment = InboxFragment.newInstance("video");
+            ft.add(R.id.main_fragment, videoFragment);
+        }
+        showFragments(0);
+        ft.commit();
 //            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     }
 
@@ -224,6 +253,76 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
         }
         catch (Exception e) { Log.e("Error DialogBox", e.getMessage() ); }
     }
+
+    private void showFragments(int position) { // search, inbox, profile
+        if (position == 0) {
+            if (!videoFragment.isVisible()) {
+                ft.show(videoFragment);
+                continueVideoFragment();
+            }
+        }
+
+        if (position == 1) {
+            if (!searchFragment.isVisible()) {
+                ft.show(searchFragment);
+            }
+        }
+
+        if (position == 2) {
+            if (!inboxFragment.isVisible()) {
+                ft.show(inboxFragment);
+            }
+        }
+
+        if (position == 3) {
+            if (!profileFragment.isVisible()) {
+                ft.show(profileFragment);
+            }
+        }
+
+        if (videoFragment != null && position != 0) {
+            if (videoFragment.isVisible()) {
+                ft.hide(videoFragment);
+                stopVideoFragment();
+            }
+        }
+
+        if (searchFragment != null && position != 1) {
+            if (searchFragment.isVisible()) {
+                ft.hide(searchFragment);
+            }
+        }
+
+        if (inboxFragment != null && position != 2) {
+            if (inboxFragment.isVisible()) {
+                ft.hide(inboxFragment);
+            }
+        }
+
+        if (profileFragment != null && position != 3) {
+            if (profileFragment.isVisible()) {
+                ft.hide(profileFragment);
+            }
+        }
+
+    }
+    public void stopVideoFragment() {
+        if (videoFragment != null) {
+                videoFragment.pauseVideo();
+        }
+    }
+
+    public void continueVideoFragment() {
+        if (videoFragment != null) {
+                videoFragment.continueVideo();
+        } else {
+            ft = getSupportFragmentManager().beginTransaction();
+            videoFragment = VideoFragment.newInstance("fragment_video");
+            ft.add(R.id.main_fragment, videoFragment);
+            ft.commit();
+        }
+    }
+
 
 
 }// activity

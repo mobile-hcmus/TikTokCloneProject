@@ -51,10 +51,9 @@ public class VideoHomeScreenActivity extends Activity implements View.OnClickLis
     private FrameLayout mainFragment;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
-    private ImageButton btnSearch;
     private long pressedTime;
     private String message = "";
-    private Button btnHome, btnAddVideo, btnInbox, btnProfile;
+    private Button btnHome, btnAddVideo, btnInbox, btnProfile, btnSearch;
     private static long pressedBackTime = 0;
     private Intent intentMain = null;
     boolean mainFragmentsCreated = false;
@@ -73,7 +72,7 @@ public class VideoHomeScreenActivity extends Activity implements View.OnClickLis
         btnInbox = (Button)findViewById(R.id.btnInbox);
         btnProfile = (Button) findViewById(R.id.btnProfile);
 
-        btnSearch=(ImageButton) findViewById(R.id.btnSearch);
+        btnSearch= (Button)findViewById(R.id.btnSearch);
         mainFragment = (FrameLayout) findViewById(R.id.main_fragment);
 
         viewPager2 = findViewById(R.id.viewPager);
@@ -187,8 +186,9 @@ public class VideoHomeScreenActivity extends Activity implements View.OnClickLis
 
         if (view.getId() == btnSearch.getId())
         {
-            Intent intent = new Intent(this, SearchActivity.class);
-            startActivity(intent);
+            intentMain.putExtra("fragment_search", "");
+            intentMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intentMain);
         }
         if(view.getId() == btnProfile.getId()) {
             handleProfileClick();

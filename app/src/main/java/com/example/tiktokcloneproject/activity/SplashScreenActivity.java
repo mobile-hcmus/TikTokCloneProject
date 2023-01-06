@@ -29,8 +29,7 @@ public class SplashScreenActivity extends Activity {
             @Override
             public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
-                Intent mainIntent = new Intent(SplashScreenActivity.this, VideoHomeScreenActivity.class);
-                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Intent mainIntent = new Intent(SplashScreenActivity.this, HomeScreenActivity.class);
                 startActivity(mainIntent);
                 finish();
             }

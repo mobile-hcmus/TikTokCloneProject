@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,7 +41,7 @@ public class VideoFragment extends Fragment implements View.OnClickListener {
     private TextView tvVideo; // DE TEST. Sau nay sua thanh clip de xem
     private ViewPager2 viewPager2;
     ArrayList<Video> videos;
-    VideoAdapter videoAdapter;
+    public VideoAdapter videoAdapter;
 
     FirebaseAuth mAuth;
     FirebaseUser user;
@@ -146,6 +147,22 @@ public class VideoFragment extends Fragment implements View.OnClickListener {
 
     }//on click
 
+    public void pauseVideo() {
+        SharedPreferences currentPosPref = context.getSharedPreferences("position", Context.MODE_PRIVATE);
+        SharedPreferences.Editor positionEditor = currentPosPref.edit();
+        int currentPosition = videoAdapter.getCurrentPosition();
+        positionEditor.putInt("position", currentPosition);
+        videoAdapter.pauseVideo(currentPosition);
+        positionEditor.apply();
+    }
+
+    public void continueVideo() {
+        SharedPreferences currentPosPref = context.getSharedPreferences("position", Context.MODE_PRIVATE);
+        int currentPosition = currentPosPref.getInt("position", -1);
+        if (currentPosition != -1) {
+            videoAdapter.playVideo(currentPosition);
+        }
+    }
 
     private void loadVideos() {
         db.collection("videos")
