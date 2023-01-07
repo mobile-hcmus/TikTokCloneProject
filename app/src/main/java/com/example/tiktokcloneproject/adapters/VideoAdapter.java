@@ -93,7 +93,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     private int currentPosition;
     int numberOfClick = 0;
     float volume;
-    boolean isPlaying;
+    boolean isPlaying = true;
 
     public VideoAdapter(Context context, List<Video> videos) {
         this.context = context;
@@ -150,7 +150,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     @Override
     public void onViewDetachedFromWindow(VideoViewHolder holder) {
         holder.pauseVideo();
-        isPlaying = false;
     }
 
 
