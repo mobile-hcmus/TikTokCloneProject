@@ -44,6 +44,7 @@ import com.example.tiktokcloneproject.activity.SettingsAndPrivacyActivity;
 import com.example.tiktokcloneproject.activity.VideoActivity;
 import com.example.tiktokcloneproject.helper.OnSwipeTouchListener;
 import com.example.tiktokcloneproject.helper.StaticVariable;
+import com.example.tiktokcloneproject.model.Comment;
 import com.example.tiktokcloneproject.model.Notification;
 import com.example.tiktokcloneproject.model.Video;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -65,12 +66,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -174,6 +177,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         String userId;
         boolean isPaused = false;
         boolean isLiked = false;
+
+        Handler handler = new Handler();
 
         public VideoViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -307,7 +312,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             tvTitle.setText("@" + videoObject.getUsername());
             txvDescription.setText(videoObject.getDescription());
             tvComment.setText(String.valueOf(videoObject.getTotalComments()));
-            tvFavorites.setText(String.valueOf(videoObject.getTotalLikes()));
+//            tvFavorites.setText(String.valueOf(videoObject.getTotalLikes()));
 //            videoView.setVideoPath(videoObject.getVideoUri());
 
             MediaItem mediaItem = MediaItem.fromUri(videoObject.getVideoUri());
@@ -334,6 +339,27 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             }
 
             showAvt(imvAvatar, videoObject.getAuthorId());
+
+
+            db.collection("videos").document(videoId)
+                   .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable DocumentSnapshot document,
+                                            @Nullable FirebaseFirestoreException e) {
+                            if (e != null) {
+                                Log.w(ContentValues.TAG, "listen:error", e);
+//                                Toast.makeText(context, "kkkk", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+
+                            Integer totalLikes = document.get("totalLikes", Integer.class);
+                            Log.d("totalLike", totalLikes + "");
+                            tvFavorites.setText(String.valueOf(totalLikes));
+
+
+                        }
+                    });
+
 
         }
 
@@ -478,6 +504,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                                 isLiked = false;
                             }
                         } else {
+                            setFillLiked(false);
+                            isLiked = false;
                             Log.d(TAG, "No such document");
                         }
                     } else {
@@ -529,13 +557,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 return;
             }
 
-            setFillLiked(isLiked);
-            if (isLiked) {
-                totalLikes-=1;
-            }else  {
-                totalLikes+=1;
-            }
-            isLiked = !isLiked;
+            setFillLiked(!isLiked);
+
+
 
 
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -545,7 +569,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                            if (isLiked) {
+                            if (document.contains(userId)) {
 //                                if (totalLikes!=0){
 //                                    totalLikes -= 1;
 //                                }
@@ -555,7 +579,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                                 docRef.update(updates);
 
 
-                                notifyLike();
+
                             }
                             else {
                                 //totalLikes += 1;
@@ -563,7 +587,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                                 Map<String, Object> updates = new HashMap<>();
                                 updates.put(userId, null);
                                 db.collection("likes").document(videoId).update(updates);
-
+                                notifyLike();
 
                             }
 
@@ -576,13 +600,26 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
                             notifyLike();
                         }
-                        db.collection("videos").document(videoId)
-                                .update("totalLikes", totalLikes);
+
                     } else {
                         Log.d(TAG, "get failed with ", task.getException());
                     }
                 }
             });
+
+            if(isLiked) {
+                totalLikes -= 1;
+            }
+             else {
+                 totalLikes += 1;
+            }
+            isLiked = !isLiked;
+            updateTotalLike(totalLikes);
+        }
+
+        private void updateTotalLike(int totalLikes) {
+            db.collection("videos").document(videoId)
+                    .update("totalLikes", totalLikes);
         }
 
         private void setFillLiked(boolean isLiked) {
