@@ -93,6 +93,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     private int currentPosition;
     int numberOfClick = 0;
     float volume;
+    boolean isPlaying;
 
     public VideoAdapter(Context context, List<Video> videos) {
         this.context = context;
@@ -143,11 +144,13 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     @Override
     public void onViewAttachedToWindow(VideoViewHolder holder) {
         holder.playVideo();
+        isPlaying = true;
     }
 
     @Override
     public void onViewDetachedFromWindow(VideoViewHolder holder) {
         holder.pauseVideo();
+        isPlaying = false;
     }
 
 
@@ -433,14 +436,24 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                         @Override
                         public void run() {
                             if (numberOfClick == 1) {
-                                if (isMuted) {
-                                    exoPlayer.setVolume(volume);
-                                    appearImage(R.drawable.ic_baseline_volume_up_24);
+                                if (isPlaying) {
+                                    pauseVideo();
+                                    isPlaying = false;
+                                    imvAppear.setImageResource(R.drawable.ic_baseline_play_arrow_24);
+                                    imvAppear.setVisibility(View.VISIBLE);
                                 } else {
-                                    volume = exoPlayer.getVolume();
-                                    exoPlayer.setVolume(0);
-                                    appearImage(R.drawable.ic_baseline_volume_off_24);
+                                    playVideo();
+                                    isPlaying = true;
+                                    imvAppear.setVisibility(View.GONE);
                                 }
+//                                if (isMuted) {
+//                                    exoPlayer.setVolume(volume);
+//                                    appearImage(R.drawable.ic_baseline_volume_up_24);
+//                                } else {
+//                                    volume = exoPlayer.getVolume();
+//                                    exoPlayer.setVolume(0);
+//                                    appearImage(R.drawable.ic_baseline_volume_off_24);
+//                                }
                             } else if (numberOfClick == 2) {
                                 handleTymClick(view);
                                 if (isLiked){
@@ -480,6 +493,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
 
         private void moveToProfile(Context context, String authorId) {
+            isPlaying = false;
             Intent intent=new Intent(context, ProfileActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString("id", authorId);
