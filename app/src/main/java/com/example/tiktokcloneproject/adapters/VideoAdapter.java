@@ -356,11 +356,26 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                             Log.d("totalLike", totalLikes + "");
                             tvFavorites.setText(String.valueOf(totalLikes));
 
-
                         }
                     });
 
 
+            db.collection("profiles").document(authorId)
+                    .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable DocumentSnapshot document,
+                                            @Nullable FirebaseFirestoreException e) {
+                            if (e != null) {
+                                Log.w(ContentValues.TAG, "listen:error", e);
+//                                Toast.makeText(context, "kkkk", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+
+                            tvTitle.setText(document.get("username", String.class));
+
+
+                        }
+                    });
         }
 
         @Override

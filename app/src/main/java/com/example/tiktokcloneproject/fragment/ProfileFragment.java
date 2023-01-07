@@ -175,20 +175,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
                 db  = FirebaseFirestore.getInstance();
                 docRef = db.collection("profiles").document(userId);
-                docRef.get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            txvFollowing.setText(((Long)document.get("following")).toString());
-                            txvFollowers.setText(((Long)document.get("followers")).toString());
-                            txvLikes.setText(((Long)document.get("likes")).toString());
-                            txvUserName.setText("@" + document.getString(USERNAME_LABEL));
-                            oldBioText = document.getString("bio");
-                            edtBio.setText(oldBioText);
 
-                        } else { }
-                    } else { }
-                });
                 oldBioText = edtBio.getText().toString();
                 edtBio.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
@@ -243,6 +230,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 } else { }
             } else { }
         });
+
         if (user !=null)
         {
             DocumentReference docRef = db.collection("profiles").document(currentUserID)
@@ -343,7 +331,23 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override public void onStart() {
+
         super.onStart();
+//        Toast.makeText(context, "start", Toast.LENGTH_SHORT).show();
+        docRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    txvFollowing.setText(((Long)document.get("following")).toString());
+                    txvFollowers.setText(((Long)document.get("followers")).toString());
+                    txvLikes.setText(((Long)document.get("likes")).toString());
+                    txvUserName.setText("@" + document.getString(USERNAME_LABEL));
+                    oldBioText = document.getString("bio");
+                    edtBio.setText(oldBioText);
+
+                } else { }
+            } else { }
+        });
     }
 
     void updateBio() {

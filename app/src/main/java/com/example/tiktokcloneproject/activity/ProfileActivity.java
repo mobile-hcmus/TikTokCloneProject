@@ -61,12 +61,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ProfileActivity extends FragmentActivity implements View.OnClickListener{
+public class ProfileActivity extends FragmentActivity implements View.OnClickListener {
     final String USERNAME_LABEL = "username";
     private TextView txvFollowing, txvFollowers, txvLikes, txvUserName;
     private EditText edtBio;
     private Button btn, btnEditProfile, btnUpdateBio, btnCancelUpdateBio;
-    private LinearLayout llFollowing, llFollowers,llInfor;
+    private LinearLayout llFollowing, llFollowers, llInfor;
     ImageView imvAvatarProfile;
     Uri avatarUri;
     FirebaseFirestore db;
@@ -78,10 +78,11 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
     String userId;
     DocumentReference docRef;
     String oldBioText, currentUserID;
-    String TAG="test";
+    String TAG = "test";
     RecyclerView recVideoSummary;
     ArrayList<VideoSummary> videoSummaries;
     private int totalLikes = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,22 +101,22 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
                 userId = segmentsList.get(segmentsList.size() - 1);
             }
         } else {
-            userId =  user.getUid();
+            userId = user.getUid();
 
         }
         setContentView(R.layout.activity_profile);
-        txvFollowing = (TextView)findViewById(R.id.text_following);
-        txvFollowers = (TextView)findViewById(R.id.text_followers);
-        txvLikes = (TextView)findViewById(R.id.text_likes);
-        txvUserName = (TextView)findViewById(R.id.txv_username);
-        edtBio = (EditText)findViewById(R.id.edt_bio);
-        btnEditProfile =(Button)findViewById(R.id.button_edit_profile);
+        txvFollowing = (TextView) findViewById(R.id.text_following);
+        txvFollowers = (TextView) findViewById(R.id.text_followers);
+        txvLikes = (TextView) findViewById(R.id.text_likes);
+        txvUserName = (TextView) findViewById(R.id.txv_username);
+        edtBio = (EditText) findViewById(R.id.edt_bio);
+        btnEditProfile = (Button) findViewById(R.id.button_edit_profile);
         imvAvatarProfile = (ImageView) findViewById(R.id.imvAvatarProfile);
         llFollowers = (LinearLayout) findViewById(R.id.ll_followers);
         llFollowing = (LinearLayout) findViewById(R.id.ll_following);
-        llInfor= (LinearLayout) findViewById(R.id.info);
+        llInfor = (LinearLayout) findViewById(R.id.info);
 
-        recVideoSummary = (RecyclerView)findViewById(R.id.recycle_view_video_summary);
+        recVideoSummary = (RecyclerView) findViewById(R.id.recycle_view_video_summary);
         btnUpdateBio = (Button) findViewById(R.id.btn_update_bio);
         btnCancelUpdateBio = (Button) findViewById(R.id.btn_cancel_update_bio);
 
@@ -127,44 +128,23 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
 
         imvAvatarProfile.setImageURI(avatarUri);
 
-        db  = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
         setLikes(userId);
         docRef = db.collection("profiles").document(userId);
-        docRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    txvFollowing.setText(((Long)document.get("following")).toString());
-                    txvFollowers.setText(((Long)document.get("followers")).toString());
-                    txvLikes.setText(((Long)document.get("likes")).toString());
-                    txvUserName.setText("@" + document.getString(USERNAME_LABEL));
-                    Log.d("name123","vao1");
-
-                    oldBioText = document.getString("bio");
-                    edtBio.setText(oldBioText);
-
-                } else { }
-            } else { }
-        });
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         //set nút follow/edit profile
-        if (user==null)
-        {//chưa đăng nhập (vào profile thông qua search)
+        if (user == null) {//chưa đăng nhập (vào profile thông qua search)
             handleFollow();
-        }
-        else
-        {
-            currentUserID=user.getUid();
-            if (userId.equals(user.getUid()))
-            {
+        } else {
+            currentUserID = user.getUid();
+            if (userId.equals(user.getUid())) {
 
                 //vào profile của mình
-                btn = (Button)findViewById(R.id.button_edit_profile);
+                btn = (Button) findViewById(R.id.button_edit_profile);
                 edtBio.setVisibility(View.VISIBLE);
                 btn.setVisibility(View.VISIBLE);
-
 
 
 //                db  = FirebaseFirestore.getInstance();
@@ -218,15 +198,12 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
                     }
                 });
                 btnEditProfile.setOnClickListener(this);
-            }
-            else
-            {//vào profile người khác
+            } else {//vào profile người khác
                 handleFollow();
 
             }
 
         }
-
 
 
         videoSummaries = new ArrayList<VideoSummary>();
@@ -235,14 +212,35 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
         recVideoSummary.addItemDecoration(new GridSpacingItemDecoration(3, 10, true));
         setVideoSummaries();
     }//on create
-boolean isFollowed = false;
+
+    boolean isFollowed = false;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Toast.makeText(this, "start", Toast.LENGTH_SHORT).show();
+        docRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    txvFollowing.setText(((Long)document.get("following")).toString());
+                    txvFollowers.setText(((Long)document.get("followers")).toString());
+                    txvLikes.setText(((Long)document.get("likes")).toString());
+                    txvUserName.setText("@" + document.getString(USERNAME_LABEL));
+//                        oldBioText = document.getString("bio");
+//                        edtBio.setText(oldBioText);
+
+                } else { }
+            } else { }
+        });
+    }
+
     private void handleFollow() {
         //bio cần set lại là text vỉew
-        btn = (Button)findViewById(R.id.button_follow);
+        btn = (Button) findViewById(R.id.button_follow);
         btn.setVisibility(View.VISIBLE);
 
-        if (user !=null)
-        {
+        if (user != null) {
             DocumentReference docRef = db.collection("profiles").document(currentUserID)
                     .collection("following").document(userId);
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -269,9 +267,7 @@ boolean isFollowed = false;
                 }
             });
 
-        }
-        else
-        {
+        } else {
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -285,25 +281,25 @@ boolean isFollowed = false;
     }
 
     public void notifyFollow() {
-            db.collection("users").document(user.getUid())
-                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                    String username = document.get("username", String.class);
-                                    Notification.pushNotification(username, userId, StaticVariable.FOLLOW);
-                                    Log.d(ContentValues.TAG, "DocumentSnapshot data: " + document.getData());
-                                } else {
-                                    Log.d(ContentValues.TAG, "No such document");
-                                }
+        db.collection("users").document(user.getUid())
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                String username = document.get("username", String.class);
+                                Notification.pushNotification(username, userId, StaticVariable.FOLLOW);
+                                Log.d(ContentValues.TAG, "DocumentSnapshot data: " + document.getData());
                             } else {
-                                Log.d(ContentValues.TAG, "get failed with ", task.getException());
+                                Log.d(ContentValues.TAG, "No such document");
                             }
+                        } else {
+                            Log.d(ContentValues.TAG, "get failed with ", task.getException());
                         }
-                    });
-        }
+                    }
+                });
+    }
 
     protected void setVideoSummaries() {
         db.collection("profiles").document(userId).collection("public_videos")
@@ -315,12 +311,12 @@ boolean isFollowed = false;
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 videoSummaries.add(new VideoSummary(document.getString("videoId"),
                                         document.getString("thumbnailUri"),
-                                        (Long)document.get("watchCount")));
+                                        (Long) document.get("watchCount")));
                             }
                             if (videoSummaries.size() == 0) {
                                 return;
                             }
-                            VideoSummaryAdapter videoSummaryAdapter =new VideoSummaryAdapter(getApplicationContext(), videoSummaries);
+                            VideoSummaryAdapter videoSummaryAdapter = new VideoSummaryAdapter(getApplicationContext(), videoSummaries);
                             recVideoSummary.setAdapter(videoSummaryAdapter);
                         } else {
                             Log.d("error", "Error getting documents: ", task.getException());
@@ -396,37 +392,36 @@ boolean isFollowed = false;
             startActivity(intent);
             return;
         }
-        if(v.getId() == btnEditProfile.getId()) {
+        if (v.getId() == btnEditProfile.getId()) {
 //            Toast.makeText(this, "YYY", Toast.LENGTH_SHORT).show();
             moveToAnotherActivity(EditProfileActivity.class);
             finish();
 
         }
-        if(v.getId() == R.id.btnBackProfile) {
+        if (v.getId() == R.id.btnBackProfile) {
 
             finish();
 
         }
 
-        if(v.getId() == btnUpdateBio.getId()) {
+        if (v.getId() == btnUpdateBio.getId()) {
             updateBio();
             findViewById(R.id.layout_bio).setVisibility(View.GONE);
             View current = getCurrentFocus();
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(current.getWindowToken(), 0);
             if (current != null) current.clearFocus();
         }
-        if(v.getId() == btnCancelUpdateBio.getId()) {
+        if (v.getId() == btnCancelUpdateBio.getId()) {
             edtBio.setText(oldBioText);
             findViewById(R.id.layout_bio).setVisibility(View.GONE);
             View current = getCurrentFocus();
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(current.getWindowToken(), 0);
             if (current != null) current.clearFocus();
         }
         if (v.getId() == llFollowers.getId()) {
-            if(currentUserID==userId)
-            {
+            if (currentUserID == userId) {
                 Intent intent = new Intent(ProfileActivity.this, FollowListActivity.class);
                 intent.putExtra("pageIndex", 1);
                 startActivity(intent);
@@ -434,10 +429,10 @@ boolean isFollowed = false;
         }
         if (v.getId() == llFollowing.getId()) {
 
-            if(currentUserID==userId) {
-            Intent intent = new Intent(ProfileActivity.this, FollowListActivity.class);
-            intent.putExtra("pageIndex", 0);
-            startActivity(intent);
+            if (currentUserID == userId) {
+                Intent intent = new Intent(ProfileActivity.this, FollowListActivity.class);
+                intent.putExtra("pageIndex", 0);
+                startActivity(intent);
             }
 
         }
@@ -520,25 +515,23 @@ boolean isFollowed = false;
 
     }
 
-    public void signOut (View v)
-        {
-            FirebaseAuth.getInstance().signOut();
-            if(user.getPhoneNumber() == null)
-            {
-                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken(getString(R.string.default_web_client_id))
-                        .requestEmail()
-                        .build();
+    public void signOut(View v) {
+        FirebaseAuth.getInstance().signOut();
+        if (user.getPhoneNumber() == null) {
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build();
 
-                GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-                mGoogleSignInClient.signOut();
-            }
-
-            Intent intent = new Intent(ProfileActivity.this, HomeScreenActivity.class);
-            startActivity(intent);
-
-            finish();
+            GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+            mGoogleSignInClient.signOut();
         }
+
+        Intent intent = new Intent(ProfileActivity.this, HomeScreenActivity.class);
+        startActivity(intent);
+
+        finish();
+    }
 
     private void moveToAnotherActivity(Class<?> cls) {
         Intent intent = new Intent(ProfileActivity.this, cls);
@@ -588,12 +581,12 @@ boolean isFollowed = false;
             @Override
             public void onClick(View view) {
 
-                if(isFollowed) return;
+                if (isFollowed) return;
                 isFollowed = true;
 
                 Log.d(TAG, "follow clicked");
                 Map<String, Object> Data = new HashMap<>();
-                Data.put("userID",userId);
+                Data.put("userID", userId);
                 //thêm following
                 db.collection("profiles").document(currentUserID)
                         .collection("following").document(userId)
@@ -610,11 +603,13 @@ boolean isFollowed = false;
                                         DocumentSnapshot document = task.getResult();
                                         if (document.exists()) {
 
-                                            txvFollowing.setText(((Long)document.get("following")).toString());
-                                            txvFollowers.setText(((Long)document.get("followers")).toString());
+                                            txvFollowing.setText(((Long) document.get("following")).toString());
+                                            txvFollowers.setText(((Long) document.get("followers")).toString());
 
-                                        } else { }
-                                    } else { }
+                                        } else {
+                                        }
+                                    } else {
+                                    }
                                 });
 
                                 handleFollowed();
@@ -630,8 +625,8 @@ boolean isFollowed = false;
                 //thêm follower
 
                 Map<String, Object> Data1 = new HashMap<>();
-                Data1.put("userID",currentUserID);
-                Log.d(TAG,currentUserID);
+                Data1.put("userID", currentUserID);
+                Log.d(TAG, currentUserID);
                 db.collection("profiles").document(userId)
                         .collection("followers").document(currentUserID)
                         .set(Data1)
@@ -648,7 +643,7 @@ boolean isFollowed = false;
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "follower fail",e);
+                                Log.w(TAG, "follower fail", e);
                             }
                         });
 
@@ -663,10 +658,9 @@ boolean isFollowed = false;
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!isFollowed) return;
+                if (!isFollowed) return;
                 isFollowed = false;
                 Log.d(TAG, "unfollow clicked");
-
 
 
                 //xóa following
@@ -686,14 +680,14 @@ boolean isFollowed = false;
                                         DocumentSnapshot document = task.getResult();
                                         if (document.exists()) {
 
-                                txvFollowing.setText(((Long)document.get("following")).toString());
-                                txvFollowers.setText(((Long)document.get("followers")).toString());
+                                            txvFollowing.setText(((Long) document.get("following")).toString());
+                                            txvFollowers.setText(((Long) document.get("followers")).toString());
 
-                                        } else { }
-                                    } else { }
+                                        } else {
+                                        }
+                                    } else {
+                                    }
                                 });
-
-
 
 
                                 handleUnfollowed();
@@ -726,7 +720,6 @@ boolean isFollowed = false;
                         });
 
 
-
             }
         });
     }
@@ -743,7 +736,7 @@ boolean isFollowed = false;
                 .addOnSuccessListener(new OnSuccessListener<byte[]>() {
                     @Override
                     public void onSuccess(byte[] bytes) {
-                        bitmap = BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);
+                        bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                         imvAvatarProfile.setImageBitmap(bitmap);
                     }
                 })
@@ -799,7 +792,7 @@ boolean isFollowed = false;
 
                 }
             });
-        } catch(Exception exception) {
+        } catch (Exception exception) {
             Log.d("exception", exception.toString());
         }
     }
