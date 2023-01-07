@@ -13,20 +13,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="right">
-            <ImageView
-                android:src="@drawable/ic_baseline_volume_up_24"
-                android:padding="6dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="18dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:onClick="onClick"/>
-        </LinearLayout>
+
         <com.google.android.exoplayer2.ui.StyledPlayerView
             android:id="@+id/videoView"
             android:layout_width="match_parent"
@@ -53,8 +40,22 @@
                     android:visibility="gone" />
             </LinearLayout>
         </com.google.android.exoplayer2.ui.StyledPlayerView>
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="right">
+            <ImageView
+                android:src="@drawable/ic_baseline_volume_up_24"
+                android:padding="6dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="18dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:onClick="onClick"/>
+        </LinearLayout>
     </FrameLayout>
+
     <ProgressBar
         android:id="@+id/pgbWait"
         android:layout_width="wrap_content"
@@ -69,80 +70,85 @@
         android:layout_centerInParent="true"
         android:src="@drawable/ic_continue"
         android:visibility="gone"/>
+
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-       >
+        android:orientation="horizontal">
+
         <LinearLayout
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="bottom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginBottom="40dp"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:fontFamily="@font/montserrat_bold"
                 android:paddingStart="9dp"
                 android:paddingTop="5dp"
                 android:paddingEnd="5dp"
-                android:text="@string/app_name"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                android:textStyle="bold"
                 android:shadowDx="0"
                 android:shadowDy="0"
                 android:shadowRadius="15"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_bold"
-                android:clickable="true"
-                />
+                android:text="@string/app_name"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:paddingStart="5dp"
                 android:paddingTop="5dp"
                 android:paddingEnd="5dp">
-            <TextView
-                android:id="@+id/txvDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:shadowDx="0"
-                android:shadowDy="0"
-                android:shadowRadius="15"
-                android:text="@string/app_name"
-                android:textColor="#fff"
-                android:textSize="14dp"
-                android:fontFamily="@font/montserrat_medium"/>
+
+                <TextView
+                    android:id="@+id/txvDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="9dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:shadowDx="0"
+                    android:shadowDy="0"
+                    android:shadowRadius="15"
+                    android:text="@string/app_name"
+                    android:textColor="#fff"
+                    android:textSize="14dp" />
             </ScrollView>
 
         </LinearLayout>
+
         <LinearLayout
-            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:gravity="end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:orientation="vertical">
+
             <androidx.cardview.widget.CardView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                app:cardCornerRadius="50dp"
                 android:layout_marginEnd="18dp"
                 android:layout_marginBottom="10dp"
                 android:elevation="10dp"
-                >
+                app:cardCornerRadius="50dp">
+
                 <ImageView
+                    android:id="@+id/imvAvatar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/imvAvatar"
-                    android:src="@mipmap/ic_launcher"
                     android:layout_gravity="end"
-                    android:scaleType="centerCrop"/>
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/ic_launcher" />
             </androidx.cardview.widget.CardView>
 
             <TextView
@@ -159,43 +165,44 @@
                 android:gravity="center_horizontal"
                 android:text="0"
                 android:textColor="@color/tiktok_white" />
+
             <TextView
                 android:id="@+id/tvComment"
-                android:drawableTop="@drawable/ic_comment"
-                android:layout_gravity="end"
-                android:padding="2dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="18dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="18dp"
                 android:clickable="true"
-                android:text="0"
+                android:drawableTop="@drawable/ic_comment"
+                android:fontFamily="@font/montserrat_medium"
                 android:gravity="center_horizontal"
-                android:textColor="@color/tiktok_white"
-                android:fontFamily="@font/montserrat_medium"/>
-            <ImageView
-                android:src="@drawable/ic_share"
-                android:layout_gravity="end"
-                android:padding="6dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="18dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"/>
-            <ImageView
-                android:id="@+id/imvMore"
-                android:src="@drawable/ic_more"
-                android:layout_gravity="end"
                 android:padding="2dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="18dp"
+                android:text="0"
+                android:textColor="@color/tiktok_white" />
+
+            <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="18dp"
+                android:padding="6dp"
+                android:src="@drawable/ic_share" />
+
+            <ImageView
+                android:id="@+id/imvMore"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="18dp"
                 android:clickable="true"
-                />
+                android:padding="2dp"
+                android:src="@drawable/ic_more" />
 
 
         </LinearLayout>
-
 
 
     </LinearLayout>
