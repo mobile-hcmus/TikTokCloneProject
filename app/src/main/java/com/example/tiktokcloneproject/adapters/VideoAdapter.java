@@ -424,7 +424,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                                 }
                             } else if (numberOfClick == 2) {
                                 handleTymClick(view);
-                                appearImage(R.drawable.ic_fill_favorite);
+                                if (isLiked){
+                                    appearImage(R.drawable.ic_fill_favorite);
+                                }else{
+                                    appearImage(R.drawable.ic_favorite);
+                                }
                             }
                             numberOfClick = 0;
                             }
