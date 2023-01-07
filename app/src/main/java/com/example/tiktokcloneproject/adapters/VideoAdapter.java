@@ -434,6 +434,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                                     exoPlayer.setVolume(volume);
                                     appearImage(R.drawable.ic_baseline_volume_up_24);
                                 } else {
+                                    volume = exoPlayer.getVolume();
                                     exoPlayer.setVolume(0);
                                     appearImage(R.drawable.ic_baseline_volume_off_24);
                                 }

@@ -16,6 +16,7 @@ public class AccountSettingActivity extends AppCompatActivity implements View.On
 
     private ImageView imvBackToSettings;
     private FrameLayout flDeleteAccountOption;
+    private FrameLayout flChangePasswordOption;
     private TextView txvChangePassword;
 
     @Override
@@ -32,6 +33,7 @@ public class AccountSettingActivity extends AppCompatActivity implements View.On
 
         imvBackToSettings = (ImageView) findViewById(R.id.imvBackToSettings);
         flDeleteAccountOption = (FrameLayout) findViewById(R.id.flDeleteAccountOption);
+        flChangePasswordOption = (FrameLayout) findViewById(R.id.flChangePasswordOption);
 
         imvBackToSettings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,12 +53,12 @@ public class AccountSettingActivity extends AppCompatActivity implements View.On
             }
         });
 
-        txvChangePassword.setOnClickListener(this);
+        flChangePasswordOption.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == txvChangePassword.getId()) {
+        if(v.getId() == flChangePasswordOption.getId()) {
             Intent intent = new Intent(AccountSettingActivity.this, ChangePasswordActivity.class);
             startActivity(intent);
         }
