@@ -93,42 +93,47 @@ public class FollowersListFragment extends Fragment {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
 
+        followerList.clear();
+        followerUserNameList.clear();
 
 
-
-
-        db.collection("profiles").document(user.getUid()).collection("followers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        if (document.getId().equals("dump"))
-                        {}
-                        else {
-                            followerList.add(document.getId());
-                        }
-//                        Log.d("followers", followerList.toString());
-                    }
-                    if (!followerList.isEmpty())
-                    db.collection("users").whereIn(FieldPath.documentId(), followerList).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()){
-                                for (QueryDocumentSnapshot document: task.getResult()) {
-                                    followerUserNameList.add(document.get("username", String.class));
-                                    Log.d("followers", followerUserNameList.toString());
-                                }
-                                showList(contentView, lvFollowers);
-
+        try {
+            db.collection("profiles").document(user.getUid()).collection("followers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            if (document.getId().equals("dump"))
+                            {}
+                            else {
+                                followerList.add(document.getId());
                             }
                         }
-                    });
-                } else {
-                    Log.d("followers", "Error getting documents: ", task.getException());
-                }
-            }
-        });
+                        Log.d("followers", followerList.toString());
+                        if (!followerList.isEmpty()) {
+                            db.collection("users").whereIn(FieldPath.documentId(), followerList).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()){
+                                        for (QueryDocumentSnapshot document: task.getResult()) {
+                                            followerUserNameList.add(document.get("username", String.class));
+                                            Log.d("followersName", followerUserNameList.toString());
+                                        }
 
+                                        showList(contentView, lvFollowers);
+                                    }
+                                }
+                            });
+                        }
+                    } else {
+                        //Log.d("followers", "Error getting documents: ", task.getException());
+                    }
+                }
+            });
+        } catch (Exception exception) {
+            // Do nothing
+            Log.d("followers", exception.toString());
+        }
 
 //        ArrayAdapter<String> adapter = new ArrayAdapter<String>(contentView.getContext(),
 //                android.R.layout.simple_list_item_1,
@@ -147,6 +152,11 @@ public class FollowersListFragment extends Fragment {
 //        ArrayAdapter<String> adapter = new ArrayAdapter<String>(contentView.getContext(),
 //                android.R.layout.simple_list_item_1,
 //                followerUserNameList);
+        if (followerList.isEmpty() && followerUserNameList.isEmpty()) {
+            return;
+        }
+
+
         FollowerAdapter followerAdapter = new FollowerAdapter(contentView.getContext(), followerList, followerUserNameList);
         lvFollowers.setAdapter(followerAdapter);
     }

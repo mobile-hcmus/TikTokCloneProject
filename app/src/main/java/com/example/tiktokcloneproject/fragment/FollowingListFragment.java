@@ -150,9 +150,7 @@ public class FollowingListFragment extends Fragment {
     }
 
     void showList(View contentView, ListView lvFollowers) {
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(contentView.getContext(),
-//                android.R.layout.simple_list_item_1,
-//                followerUserNameList);
+
         FollowingAdapter followingAdapter = new FollowingAdapter(contentView.getContext(), followingList, followingUserNameList);
         lvFollowers.setAdapter(followingAdapter);
     }

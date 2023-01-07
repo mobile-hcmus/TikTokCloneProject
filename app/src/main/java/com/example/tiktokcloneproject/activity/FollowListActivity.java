@@ -45,10 +45,10 @@ public class FollowListActivity extends AppCompatActivity {
                     public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
 
                         if (position == 0) {
-                            tab.setText("Followers");
+                            tab.setText("Following");
                         }
                         if (position == 1) {
-                            tab.setText("Following");
+                            tab.setText("Followers");
                         }
                     }
                 }).attach();
