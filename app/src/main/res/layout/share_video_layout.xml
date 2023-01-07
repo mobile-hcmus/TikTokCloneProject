@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorPrimary">
+    <TextView
+        android:layout_marginTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Share this video"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        ></TextView>
+
+    <LinearLayout
+        android:id="@+id/share_options"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginTop="20dp">
+
+            <Button
+                android:id="@+id/btnCopyURL"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                style="@style/tiktok_button_red"
+                android:text="Copy URL"></Button>
+            <TextView
+                android:id="@+id/txvCancelInSharedPlace"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="Cancel"
+                android:textStyle="bold"
+                android:clickable="true"
+                ></TextView>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

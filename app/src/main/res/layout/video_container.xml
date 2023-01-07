@@ -184,6 +184,7 @@
                 android:textColor="@color/tiktok_white" />
 
             <ImageView
+                android:id="@+id/imvShare"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="end"

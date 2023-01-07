@@ -3,22 +3,30 @@ package com.example.tiktokcloneproject.adapters;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.Animation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
@@ -37,6 +45,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tiktokcloneproject.activity.CommentActivity;
 import com.example.tiktokcloneproject.activity.DeleteVideoSettingActivity;
+import com.example.tiktokcloneproject.activity.FullScreenAvatarActivity;
 import com.example.tiktokcloneproject.activity.MainActivity;
 import com.example.tiktokcloneproject.activity.ProfileActivity;
 import com.example.tiktokcloneproject.R;
@@ -166,7 +175,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
         StyledPlayerView videoView;
         ExoPlayer exoPlayer;
-        ImageView imvAvatar, imvPause, imvMore, imvAppear, imvVolume;
+        ImageView imvAvatar, imvPause, imvMore, imvAppear, imvVolume, imvShare;
         TextView txvDescription, tvTitle;
         TextView tvComment, tvFavorites;
         ProgressBar pgbWait;
@@ -196,6 +205,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             imvMore = itemView.findViewById(R.id.imvMore);
             imvAppear = itemView.findViewById(R.id.imv_appear);
             imvVolume = itemView.findViewById(R.id.imvVolume);
+            imvShare = itemView.findViewById(R.id.imvShare);
             db = FirebaseFirestore.getInstance();
 
             videoView.setOnClickListener(this);
@@ -205,6 +215,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             imvMore.setOnClickListener(this);
             tvFavorites.setOnClickListener(this);
             imvVolume.setOnClickListener(this);
+            imvShare.setOnClickListener(this);
 
             videoView.setOnTouchListener(new OnSwipeTouchListener(itemView.getContext()){
                 @Override
@@ -418,9 +429,42 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                     appearImage(R.drawable.ic_baseline_volume_off_24);
                 }
             }
+            if (view.getId() == imvShare.getId()) {
+                showShareVideoDialog(view);
+            }
         }
 
+        private void showShareVideoDialog(View view) {
+            final Dialog dialog = new Dialog(view.getContext());
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.share_video_layout);
 
+            Button btnCopyURL = dialog.findViewById(R.id.btnCopyURL);
+            TextView txvCancelInSharedPlace = dialog.findViewById(R.id.txvCancelInSharedPlace);
+
+
+            btnCopyURL.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ClipboardManager clipboard = (ClipboardManager) view.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("toptop-link", "http://toptoptoptop.com/videos/" + videoId.toString());
+                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(view.getContext(), "Video link has been saved to clipboard", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            txvCancelInSharedPlace.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.cancel();
+                }
+            });
+            dialog.show();
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+            dialog.getWindow().setGravity(Gravity.BOTTOM);
+        }
 
         private void notifyLike(){
             db.collection("users").document(user.getUid())
