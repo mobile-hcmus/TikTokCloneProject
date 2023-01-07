@@ -145,6 +145,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     public void onViewAttachedToWindow(VideoViewHolder holder) {
         holder.playVideo();
         isPlaying = true;
+
     }
 
     @Override
@@ -165,7 +166,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
         StyledPlayerView videoView;
         ExoPlayer exoPlayer;
-        ImageView imvAvatar, imvPause, imvMore, imvAppear;
+        ImageView imvAvatar, imvPause, imvMore, imvAppear, imvVolume;
         TextView txvDescription, tvTitle;
         TextView tvComment, tvFavorites;
         ProgressBar pgbWait;
@@ -194,78 +195,16 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 //            pgbWait = itemView.findViewById(R.id.pgbWait);
             imvMore = itemView.findViewById(R.id.imvMore);
             imvAppear = itemView.findViewById(R.id.imv_appear);
+            imvVolume = itemView.findViewById(R.id.imvVolume);
             db = FirebaseFirestore.getInstance();
-//            videoView.setOnTouchListener(new View.OnTouchListener() {
-//                @Override
-//                public boolean onTouch(View v, MotionEvent event) {
-//                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//                        // start your timer
-//                        pauseVideo();
-//
-//                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
-//                        playVideo();
-//
-//                    }
-//                    return true;
-//                }
-//            });
 
-//            videoView.setControllerAutoShow(false);
-//            videoView.setUseController(false);
-//            videoView.getVideoSurfaceView().setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//
-//                    numberOfClick++;
-//
-//                    float currentVolume = exoPlayer.getVolume();
-//                    boolean isMuted = (currentVolume == 0);
-//                    if (!isMuted) {
-//                        volume = exoPlayer.getVolume();
-//                    }
-//                    Handler handler = new Handler();
-//                    handler.postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            if (numberOfClick == 1) {
-//                                if (isMuted) {
-//                                    exoPlayer.setVolume(volume);
-//                                    appearImage(R.drawable.ic_baseline_volume_up_24);
-//                                } else {
-//                                    exoPlayer.setVolume(0);
-//                                    appearImage(R.drawable.ic_baseline_volume_off_24);
-//                                }
-//                            } else if (numberOfClick == 2) {
-//                                handleTymClick(view);
-//                                appearImage(R.drawable.ic_fill_favorite);
-//                            }
-//                            numberOfClick = 0;
-//                        }
-//                    }, 500);
-//                }
-//            });
-//            videoView.getVideoSurfaceView().setOnTouchListener(new OnSwipeTouchListener(itemView.getContext()){
-////                public void onSwipeTop() {
-////                    Toast.makeText(itemView.getContext(), "top", Toast.LENGTH_SHORT).show();
-////                }
-////                public void onSwipeRight() {
-////                    Toast.makeText(itemView.getContext(), "right", Toast.LENGTH_SHORT).show();
-////                }
-//                public void onSwipeLeft() {
-//                    Toast.makeText(itemView.getContext(), authorId, Toast.LENGTH_SHORT).show();
-//
-//                    moveToProfile(videoView.getContext(), authorId);
-//                }
-////                public void onSwipeBottom() {
-////                    Toast.makeText(itemView.getContext(), "bottom", Toast.LENGTH_SHORT).show();
-////                }
-//            });
             videoView.setOnClickListener(this);
             imvAvatar.setOnClickListener(this);
             tvTitle.setOnClickListener(this);
             tvComment.setOnClickListener(this);
             imvMore.setOnClickListener(this);
             tvFavorites.setOnClickListener(this);
+            imvVolume.setOnClickListener(this);
 
             videoView.setOnTouchListener(new OnSwipeTouchListener(itemView.getContext()){
                 @Override
@@ -465,7 +404,23 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                             }
                     }, 500);
                 }
+            if (view.getId() == imvVolume.getId()) {
+                float currentVolume = exoPlayer.getVolume();
+                boolean isMuted = (currentVolume == 0);
+                if (isMuted) {
+                    exoPlayer.setVolume(volume);
+                    imvVolume.setImageResource(R.drawable.ic_baseline_volume_up_24);
+                    appearImage(R.drawable.ic_baseline_volume_up_24);
+                } else {
+                    volume = exoPlayer.getVolume();
+                    exoPlayer.setVolume(0);
+                    imvVolume.setImageResource(R.drawable.ic_baseline_volume_off_24);
+                    appearImage(R.drawable.ic_baseline_volume_off_24);
+                }
             }
+        }
+
+
 
         private void notifyLike(){
             db.collection("users").document(user.getUid())

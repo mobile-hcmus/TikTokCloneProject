@@ -46,13 +46,15 @@
             android:orientation="horizontal"
             android:gravity="right">
             <ImageView
+                android:id="@+id/imvVolume"
                 android:src="@drawable/ic_baseline_volume_up_24"
                 android:padding="6dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="18dp"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:onClick="onClick"/>
+                android:onClick="onClick"
+                />
         </LinearLayout>
     </FrameLayout>
 
