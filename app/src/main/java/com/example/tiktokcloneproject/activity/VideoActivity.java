@@ -7,7 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -77,12 +79,36 @@ public class VideoActivity extends Activity {
     @Override
     public void onPause() {
         super.onPause();
-        videoAdapter.pauseVideo(0);
+        pauseVideo();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        videoAdapter.pauseVideo(0);
+        continueVideo();
+    }
+
+    public void pauseVideo() {
+        SharedPreferences currentPosPref = this.getSharedPreferences("position", Context.MODE_PRIVATE);
+        SharedPreferences.Editor positionEditor = currentPosPref.edit();
+        int currentPosition = videoAdapter.getCurrentPosition();
+        positionEditor.putInt("position", currentPosition);
+        videoAdapter.pauseVideo(currentPosition);
+        positionEditor.apply();
+    }
+
+    public void continueVideo() {
+        SharedPreferences currentPosPref = this.getSharedPreferences("position", Context.MODE_PRIVATE);
+        int currentPosition = currentPosPref.getInt("position", -1);
+        if (currentPosition != -1) {
+            videoAdapter.playVideo(currentPosition);
+        }
+    }
+
+    public void onClick(View v) {
+        if (v.getId() == R.id.btnBackVideo) {
+            this.finish();
+            return;
+        }
     }
 }

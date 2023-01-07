@@ -274,17 +274,20 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         }
 
         public void playVideo() {
+            if (!exoPlayer.isPlaying()) {
+                exoPlayer.play();
+            }
+            if (exoPlayer.getPlaybackState() == Player.STATE_READY
+                || exoPlayer.getPlaybackState() == Player.STATE_IDLE) {
+                    exoPlayer.setPlayWhenReady(true);
+                }
             exoPlayer.play();
         }
 
         public void pauseVideo() {
-//            if (!isPaused) {
-//                if (exoPlayer.getPlaybackState() == Player.STATE_READY) {
-//                    exoPlayer.setPlayWhenReady(false);
-//                }
-//                isPaused = true;
-//            }
-            exoPlayer.pause();
+            if (exoPlayer.getPlaybackState() == Player.STATE_READY) {
+                    exoPlayer.setPlayWhenReady(false);
+                }
         }
 
         public void stopVideo() {

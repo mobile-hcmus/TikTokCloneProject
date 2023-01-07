@@ -1,14 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/tiktok_black"
+    android:orientation="vertical"
+    android:theme="@style/ThemeOverlay.TikTokCloneProject.FullscreenContainer"
     tools:context=".activity.VideoActivity">
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" />
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btnBackVideo"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/ic_back"
+                android:onClick="onClick"/>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/background_video"></ImageView>
+
+        <pl.droidsonroids.gif.GifImageView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/loading" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/txvFollwing"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_alignTop="@+id/space"-->
+        <!--                android:layout_toStartOf="@id/space"-->
+        <!--                android:fontFamily="@font/montserrat_medium"-->
+        <!--                android:text="@string/following"-->
+        <!--                android:textColor="@color/tiktok_white"-->
+        <!--                android:textSize="20dp" />-->
+
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/txvForYou"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_alignTop="@+id/space"-->
+        <!--                android:layout_toEndOf="@id/space"-->
+        <!--                android:clickable="true"-->
+        <!--                android:text="@string/for_you"-->
+        <!--                android:textColor="@color/tiktok_white"-->
+        <!--                android:textSize="20dp" />-->
+
+
+
+
+    </RelativeLayout>
 </LinearLayout>
