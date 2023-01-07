@@ -108,7 +108,7 @@ public class EditActivity extends Activity implements View.OnClickListener {
         if(view.getId() == btnSave.getId()) {
             DocumentReference userDoc = db.collection("users").document(user.getUid());
 
-
+            setEnableSave(false);
             userDoc.update(mode, edtInput.getText().toString())
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override

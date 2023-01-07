@@ -371,7 +371,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                                 return;
                             }
 
-                            tvTitle.setText(document.get("username", String.class));
+                            tvTitle.setText("@"+document.get("username", String.class));
 
 
                         }

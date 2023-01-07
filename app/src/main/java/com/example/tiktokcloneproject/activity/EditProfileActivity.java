@@ -127,7 +127,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            Toast.makeText(EditProfileActivity.this, "success", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(EditProfileActivity.this, "success", Toast.LENGTH_SHORT).show();
                             tvUsername.setText(getData(document.get("username")));
                             tvPhone.setText(getData(document.get("phone")));
                             tvEmail.setText(getData(document.get("email")));
