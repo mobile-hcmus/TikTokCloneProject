@@ -12,13 +12,14 @@
         android:textSize="16dp"
         android:textStyle="bold"
         android:layout_gravity="center"
+        android:textColor="?attr/colorOnPrimary"
         ></TextView>
 
     <LinearLayout
         android:id="@+id/share_options"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="130dp"
         android:gravity="center">
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,6 +44,8 @@
                 android:text="Cancel"
                 android:textStyle="bold"
                 android:clickable="true"
+                android:textColor="?attr/colorOnPrimary"
+
                 ></TextView>
         </LinearLayout>
     </LinearLayout>

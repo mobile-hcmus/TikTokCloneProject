@@ -66,7 +66,6 @@ public class SearchActivity extends Activity implements View.OnClickListener {
         userArrayList.clear();
         db = FirebaseFirestore.getInstance();
 
-        imbBackToHome = (ImageButton) findViewById(R.id.imbBackToHome);
         tvSubmitSearch = (TextView) findViewById(R.id.tvSubmitSearch);
 
 

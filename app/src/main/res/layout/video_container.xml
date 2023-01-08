@@ -94,6 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
+                android:layout_marginLeft="10dp"
                 android:fontFamily="@font/montserrat_bold"
                 android:paddingStart="9dp"
                 android:paddingTop="5dp"
@@ -111,19 +112,20 @@
                 android:layout_height="40dp"
                 android:paddingStart="5dp"
                 android:paddingTop="5dp"
-                android:paddingEnd="5dp">
+                android:paddingEnd="5dp"
+                android:layout_marginLeft="10dp">
 
                 <TextView
                     android:id="@+id/txvDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="9dp"
                     android:fontFamily="@font/montserrat_medium"
                     android:shadowDx="0"
                     android:shadowDy="0"
                     android:shadowRadius="15"
                     android:text="@string/app_name"
                     android:textColor="#fff"
+                    android:layout_marginLeft="10dp"
                     android:textSize="14dp" />
             </ScrollView>
 
@@ -134,7 +136,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:gravity="end"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginBottom="40dp">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="40dp"
@@ -150,7 +153,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="end"
                     android:scaleType="centerCrop"
-                    android:src="@mipmap/ic_launcher" />
+                    android:src="@drawable/default_avatar" />
             </androidx.cardview.widget.CardView>
 
             <TextView

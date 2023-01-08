@@ -3,26 +3,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingVertical="8dp"
+    android:paddingHorizontal="15dp"
     >
 
     <TextView
         android:id="@+id/txvUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="\@123"
+        android:layout_marginTop="15dp"
+        android:layout_alignParentTop="true"
         android:fontFamily="@font/montserrat_bold"
-        android:textSize="15dp"
-        android:layout_alignParentTop="true"/>
-    
+        android:text="\@123"
+        android:textColor="?attr/colorOnPrimary"
+        android:textSize="15dp" />
+
     <TextView
         android:id="@+id/txvContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/montserrat_medium"
-        android:textSize="15dp"
-        android:text="dhakdhalsdjlsadjfjk"
         android:layout_below="@+id/txvUsername"
-        android:textColor="?android:attr/textColorPrimary"/>
+        android:fontFamily="@font/montserrat_medium"
+        android:text="dhakdhalsdjlsadjfjk"
+        android:textColor="?attr/colorOnPrimary"
+        android:textSize="15dp" />
     <TextView
         android:id="@+id/txvTime"
         android:layout_width="wrap_content"

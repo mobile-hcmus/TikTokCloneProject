@@ -18,7 +18,8 @@
         android:id="@+id/btnEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/ic_btnNext"/>
+        android:text="@string/ic_btnNext"
+        style="@style/tiktok_button_red" />
 
 
 </LinearLayout>

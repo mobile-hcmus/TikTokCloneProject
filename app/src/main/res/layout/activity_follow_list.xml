@@ -11,9 +11,10 @@
         android:id="@+id/tabs"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="54dp"
-        android:layout_marginTop="20dp">
+        >
 
     </com.google.android.material.tabs.TabLayout>
 

@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -64,7 +65,7 @@ public class InboxActivity extends FragmentActivity {
                 Notification notification = dataSnapshot.getValue(Notification.class);
 //                Toast.makeText(InboxActivity.this, notification.getTimestamp() + "", Toast.LENGTH_SHORT).show();
 
-
+                findViewById(R.id.blank_notification).setVisibility(View.GONE);
                 adapter.insert(notification, 0);
 
 

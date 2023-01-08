@@ -2,7 +2,9 @@ package com.example.tiktokcloneproject.adapters;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -25,7 +27,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -339,6 +344,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 
                         }
                     });
+            if (userId != authorId) {
+                imvMore.setVisibility(View.GONE);
+            }
         }
 
         @Override
@@ -413,12 +421,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
 //                                }
                             } else if (numberOfClick == 2) {
                                 handleTymClick(view);
-                                if (isLiked){
+                                    imvAppear.setVisibility(View.GONE);
                                     appearImage(R.drawable.ic_fill_favorite);
-                                }else{
-                                    appearImage(R.drawable.ic_favorite);
                                 }
-                            }
                             numberOfClick = 0;
                             }
                     }, 500);
@@ -721,8 +726,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         }
 
     } // class ViewHolder
-
-
 
 
 }// class adapter

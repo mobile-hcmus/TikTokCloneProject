@@ -98,7 +98,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         userArrayList.clear();
         db = FirebaseFirestore.getInstance();
 
-        imbBackToHome = (ImageButton) layout.findViewById(R.id.imbBackToHome);
         tvSubmitSearch = (TextView) layout.findViewById(R.id.tvSubmitSearch);
 
 

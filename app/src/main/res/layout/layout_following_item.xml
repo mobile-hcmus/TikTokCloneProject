@@ -4,11 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     >
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imv_following_avatar"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_margin="15dp"/>
+        android:layout_margin="15dp"
+        android:src="@drawable/default_avatar"></de.hdodenhof.circleimageview.CircleImageView>
+
 
     <TextView
         android:id="@+id/tv_following_userMame"
@@ -18,7 +20,8 @@
         android:layout_margin="15dp"
         android:text="aaaaaaa"
         android:textSize="15sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textColor="?attr/colorOnPrimary"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="35dp"
@@ -27,5 +30,5 @@
         android:layout_gravity="center"
         android:textSize="10sp"
         android:text="Following"
-        android:background="@color/tiktok_red"/>
+        style="@style/tiktok_button_transparent"/>
 </LinearLayout>

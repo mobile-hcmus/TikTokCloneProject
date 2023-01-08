@@ -10,5 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="user1"
+        android:fontFamily="@font/montserrat_medium"
+        android:textColor="?attr/colorOnPrimary"
+        android:padding="15dp"
         />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/tiktok_grey"
+        android:layout_marginVertical="12dp"
+        android:layout_marginHorizontal="20dp"/>
+
 </LinearLayout>

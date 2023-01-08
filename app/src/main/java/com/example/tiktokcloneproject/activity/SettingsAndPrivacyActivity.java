@@ -34,7 +34,6 @@ public class SettingsAndPrivacyActivity extends AppCompatActivity {
 
         imvBackToProfile = (ImageView) findViewById(R.id.imvBackToProfile);
         flAccountOption = (FrameLayout) findViewById(R.id.flAccountOption);
-        flPrivacyOption = (FrameLayout) findViewById(R.id.flPrivacyOption);
         flShareProfileOption = (FrameLayout) findViewById(R.id.flShareProfileOption);
 
         auth = FirebaseAuth.getInstance();

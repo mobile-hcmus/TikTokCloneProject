@@ -80,6 +80,7 @@ public class InboxFragment extends Fragment implements View.OnClickListener {
 
 
                 adapter.insert(notification, 0);
+                layout.findViewById(R.id.blank_notification).setVisibility(View.GONE);
 
 
                 // ...

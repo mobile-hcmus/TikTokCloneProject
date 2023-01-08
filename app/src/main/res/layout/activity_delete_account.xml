@@ -20,49 +20,49 @@
             android:text="Delete your account?"
             android:textSize="20sp"
             android:layout_marginBottom="10dp"
-            android:textColor="@color/black"/>
+            android:textColor="?attr/colorOnPrimary"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Your account will be deactivated and won't be visible to the public."
             android:textSize="15sp"
             android:layout_marginBottom="10dp"
-            android:textColor="@color/black"/>
+            android:textColor="?attr/colorOnPrimary"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="If you delete your account:"
             android:textSize="15sp"
             android:layout_marginBottom="5dp"
-            android:textColor="@color/black"/>
+            android:textColor="?attr/colorOnPrimary"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="\t&#183; You won't be able to log in and use any TopTop services with that account."
             android:textSize="15sp"
             android:layout_marginBottom="5dp"
-            android:textColor="@color/black"/>
+            android:textColor="?attr/colorOnPrimary"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="\t&#183; You will lose access to all your videos."
             android:textSize="15sp"
             android:layout_marginBottom="5dp"
-            android:textColor="@color/black"/>
+            android:textColor="?attr/colorOnPrimary"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="\t&#183; Information that isn't stored in your account, such as direct messages, may still be visible to others."
             android:textSize="15sp"
             android:layout_marginBottom="10dp"
-            android:textColor="@color/black"/>
+            android:textColor="?attr/colorOnPrimary"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Do you want to continue?"
             android:textSize="15sp"
-            android:textColor="@color/black"/>
+            android:textColor="?attr/colorOnPrimary"/>
 
     </LinearLayout>
 
@@ -73,6 +73,8 @@
         android:layout_gravity="bottom"
         android:text="Continue"
         android:textStyle="bold"
+        android:fontFamily="@font/montserrat_bold"
         android:textColor="@color/tiktok_white"
-        android:background="@color/tiktok_red"/>
+        android:background="@color/tiktok_red"
+        android:textAllCaps="false"/>
 </FrameLayout>

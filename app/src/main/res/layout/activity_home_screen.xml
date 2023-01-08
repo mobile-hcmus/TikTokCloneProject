@@ -91,7 +91,6 @@
                 android:onClick="onClick"
                 android:textColor="@color/tiktok_white"
                 android:textSize="10dp" />
-
             <Button
                 style="?android:attr/buttonBarButtonStyle"
                 android:id="@+id/btnSearch"
@@ -100,13 +99,14 @@
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
                 android:background="@color/transparent"
-                android:drawableTop="@drawable/icon_search"
+                android:drawableTop="@drawable/ic_search"
                 android:fontFamily="@font/montserrat_medium"
                 android:inputType="textCapSentences"
                 android:text="Search"
                 android:onClick="onClick"
                 android:textColor="@color/tiktok_white"
                 android:textSize="10dp" />
+
 
             <LinearLayout
                 android:layout_width="0dp"

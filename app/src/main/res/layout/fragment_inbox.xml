@@ -6,16 +6,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="?android:attr/colorBackground"
+    android:background="?android:attr/colorPrimary"
     tools:context="com.example.tiktokcloneproject.activity.InboxActivity">
 
-    <ListView
-        android:id="@+id/lvNotifications"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:divider="@null"
-        android:layout_weight="1"
-        android:scrollbarSize="3dp"
-        android:padding="8dp"
-        />
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:id="@+id/blank_notification">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/ic_blank"></ImageView>
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="?attr/colorOnPrimary"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="You don't have any notification yet"
+            android:textSize="14dp"></TextView>
+        </LinearLayout>
+        <ListView
+            android:id="@+id/lvNotifications"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:divider="@null"
+            android:layout_weight="1"
+            android:scrollbarSize="3dp"
+            android:padding="8dp"
+            />
+
+    </FrameLayout>
 </LinearLayout>

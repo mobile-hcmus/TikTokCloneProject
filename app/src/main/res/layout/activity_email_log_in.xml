@@ -19,7 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter your Email"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <!-- Edit text for password -->
     <EditText
@@ -28,11 +29,13 @@
         android:layout_height="wrap_content"
         android:hint="Enter your Password"
         android:inputType="textPassword"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/montserrat_medium"/>
 
     <!-- Button for Login with text "Login" -->
     <Button
         android:id="@+id/btnLogin"
+        style="@style/tiktok_button_red"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Đăng nhập" />

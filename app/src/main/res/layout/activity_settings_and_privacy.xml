@@ -6,13 +6,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activity.SettingsAndPrivacyActivity"
-    android:background="@color/background">
+    android:background="?attr/colorPrimary">
     <ImageView
         android:id="@+id/imvBackToProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_arrow_back_24"
-        android:layout_margin="5dp"
+        android:layout_margin="10dp"
         android:contentDescription="Go back to ProfileActivity" />
     <TextView
         android:layout_width="match_parent"
@@ -20,20 +20,17 @@
         android:text="Settings and privacy"
         android:textSize="25sp"
         android:textStyle="bold"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorOnPrimary"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"/>
+        android:layout_marginLeft="20dp"
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Account"
-        android:layout_margin="20dp"/>
+        android:layout_marginBottom="60dp"/>
+
+
     <FrameLayout
         android:id="@+id/flAccountOption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/tiktok_white"
         android:padding="15dp">
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:text="Account"
                 android:layout_gravity="center"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnPrimary"
                 android:layout_marginStart="10dp"
                 android:textStyle="bold"/>
         </LinearLayout>
@@ -60,42 +57,12 @@
                 android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
                 android:layout_gravity="end" />
     </FrameLayout>
-    <FrameLayout
-        android:id="@+id/flPrivacyOption"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/tiktok_white"
-        android:padding="15dp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_lock_24"
-                android:layout_gravity="center"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Privacy"
-                android:layout_gravity="center"
-                android:textColor="@color/black"
-                android:layout_marginStart="10dp"
-                android:textStyle="bold"/>
-        </LinearLayout>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
-                android:layout_gravity="end" />
-    </FrameLayout>
+
     <FrameLayout
         android:id="@+id/flShareProfileOption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/tiktok_white"
+
         android:padding="15dp">
         <LinearLayout
             android:layout_width="match_parent"
@@ -112,15 +79,11 @@
                 android:layout_height="wrap_content"
                 android:text="Share profile"
                 android:layout_gravity="center"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnPrimary"
                 android:layout_marginStart="10dp"
                 android:textStyle="bold"/>
         </LinearLayout>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
-                android:layout_gravity="end" />
+
     </FrameLayout>
 
 </LinearLayout>
