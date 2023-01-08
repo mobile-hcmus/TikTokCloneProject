@@ -112,11 +112,8 @@ public class CommentActivity extends Activity implements View.OnClickListener{
         imvBack.setOnClickListener(this);
         imbSendComment.setOnClickListener(this);
 
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+
         db.collection("users").document(user.getUid())
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -206,6 +203,12 @@ public class CommentActivity extends Activity implements View.OnClickListener{
             Intent intent1 = new Intent(CommentActivity.this, HomeScreenActivity.class);
             startActivity(intent1);
         }
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
     }
 
