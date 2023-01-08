@@ -92,6 +92,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
 
@@ -443,6 +445,14 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         public void updateWatchCount() {
             db.collection("profiles").document(authorId)
                     .collection("public_videos").document(videoId).update("watchCount", FieldValue.increment(1));
+            final String REGEX_HASHTAG = "#([A-Za-z0-9_-]+)";
+            Matcher matcher = Pattern.compile(REGEX_HASHTAG).matcher(txvDescription.getText().toString());
+            while(matcher.find()) {
+                String hashtag = matcher.group(0);
+                db.collection("hashtags").document(hashtag).collection("video_summaries")
+                        .document(videoId).update("watchCount", FieldValue.increment(1));
+            }
+
         }
 
         private void showShareVideoDialog(View view) {
