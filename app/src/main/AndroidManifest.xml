@@ -62,7 +62,7 @@
         <activity
             android:name=".activity.HomeScreenActivity"
             android:exported="false"
-            android:launchMode="singleTask"/>
+           />
         <activity
             android:name=".activity.EmailSignInActivity"
             android:exported="false" />
