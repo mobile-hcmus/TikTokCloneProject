@@ -601,10 +601,11 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
                                 docRef.get().addOnCompleteListener(task -> {
                                     if (task.isSuccessful()) {
                                         DocumentSnapshot document = task.getResult();
-                                        if (document.exists()) {
+
 
                                             txvFollowing.setText(((Long) document.get("following")).toString());
                                             txvFollowers.setText(((Long) document.get("followers")).toString());
+                                        if (document.exists()) {
 
                                         } else {
                                         }
@@ -678,10 +679,11 @@ public class ProfileActivity extends FragmentActivity implements View.OnClickLis
                                 docRef.get().addOnCompleteListener(task -> {
                                     if (task.isSuccessful()) {
                                         DocumentSnapshot document = task.getResult();
-                                        if (document.exists()) {
+
 
                                             txvFollowing.setText(((Long) document.get("following")).toString());
                                             txvFollowers.setText(((Long) document.get("followers")).toString());
+                                        if (document.exists()) {
 
                                         } else {
                                         }
