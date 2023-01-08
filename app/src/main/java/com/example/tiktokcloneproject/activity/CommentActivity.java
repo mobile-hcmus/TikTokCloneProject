@@ -14,6 +14,8 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -68,16 +70,19 @@ public class CommentActivity extends Activity implements View.OnClickListener{
     String username;
     String authorVideoId;
     int totalComments;
+    CommentAdapter adapter;
 
     Handler handler = new Handler();
 
     ArrayList<Comment> comments;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_comment);
+
 
         llComment = (LinearLayout) findViewById(R.id.llComment);
         imvBack = (ImageView) llComment.findViewById(R.id.imvBackToHomeScreen);
@@ -98,9 +103,20 @@ public class CommentActivity extends Activity implements View.OnClickListener{
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
         comments = new ArrayList<>();
-        CommentAdapter adapter = new CommentAdapter(this, R.layout.layout_row_comment, comments);
+        adapter = new CommentAdapter(this, R.layout.layout_row_comment, comments);
         lvComment.setAdapter(adapter);
 
+
+
+
+        imvBack.setOnClickListener(this);
+        imbSendComment.setOnClickListener(this);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         db.collection("users").document(user.getUid())
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -164,20 +180,20 @@ public class CommentActivity extends Activity implements View.OnClickListener{
             StorageReference download = storageRef.child("/user_avatars").child(userId.toString());
 //                        StorageReference download = storageRef.child(userId.toString());
 
-                        download.getBytes(StaticVariable.MAX_BYTES_AVATAR)
-                                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                    @Override
-                                    public void onSuccess(byte[] bytes) {
-                                        bitmap = BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);
-                                        imvMyAvatarInComment.setImageBitmap(bitmap);
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        // Do nothing
-                                    }
-                                });
+            download.getBytes(StaticVariable.MAX_BYTES_AVATAR)
+                    .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            bitmap = BitmapFactory.decodeByteArray(bytes, 0 , bytes.length);
+                            imvMyAvatarInComment.setImageBitmap(bitmap);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // Do nothing
+                        }
+                    });
 //                    }
 //                    else { }
 //                }
@@ -191,19 +207,12 @@ public class CommentActivity extends Activity implements View.OnClickListener{
             startActivity(intent1);
         }
 
-
-
-        imvBack.setOnClickListener(this);
-        imbSendComment.setOnClickListener(this);
-
     }
-
 
     @Override
     public void onClick(View v){
         if (v.getId() == imvBack.getId()){
             onBackPressed();
-            finish();
         }
         if (v.getId() == imbSendComment.getId()){
             String cmt = edtComment.getText().toString().trim();
@@ -252,5 +261,12 @@ public class CommentActivity extends Activity implements View.OnClickListener{
                         Log.w(TAG, "Error updating document", e);
                     }
                 });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.slide_left_to_right, R.anim.slide_out_bottom);
     }
 }

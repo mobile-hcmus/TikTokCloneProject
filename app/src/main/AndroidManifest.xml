@@ -162,7 +162,7 @@
             android:exported="false" />
         <activity
             android:name=".activity.CommentActivity"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".activity.ShareAccountActivity"
             android:exported="false"

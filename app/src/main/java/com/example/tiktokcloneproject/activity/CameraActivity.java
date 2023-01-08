@@ -273,6 +273,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
             btnStopRecording.setVisibility(View.VISIBLE);
             btnPause.setVisibility(View.VISIBLE);
             btnFlip.setVisibility(View.GONE);
+            findViewById(R.id.tv_flip_camera).setVisibility(View.GONE);
             btnUploadVideo.setVisibility(View.GONE);
             btnStartRecording.setVisibility(View.GONE);
             btnClose.setVisibility(View.GONE);
@@ -312,6 +313,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
                 btnStartRecording.setVisibility(View.VISIBLE);
                 isRecording = false;
                 btnFlip.setVisibility(View.VISIBLE);
+                findViewById(R.id.tv_flip_camera).setVisibility(View.VISIBLE);
             btnPause.setVisibility(View.GONE);
                 btnUploadVideo.setVisibility(View.VISIBLE);
                 btnStopRecording.setVisibility(View.GONE);
@@ -325,6 +327,7 @@ public class CameraActivity extends Activity implements View.OnClickListener {
 
         if (view.getId() == R.id.button_close) {
             finish();
+            overridePendingTransition(R.anim.slide_right_to_left, R.anim.slide_out_bottom);
         }
     }
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

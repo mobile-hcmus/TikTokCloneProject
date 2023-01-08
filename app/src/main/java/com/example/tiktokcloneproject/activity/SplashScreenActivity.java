@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.example.tiktokcloneproject.R;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
@@ -31,6 +32,7 @@ public class SplashScreenActivity extends Activity {
                 /* Create an Intent that will start the Menu-Activity. */
                 Intent mainIntent = new Intent(SplashScreenActivity.this, HomeScreenActivity.class);
                 startActivity(mainIntent);
+                overridePendingTransition(R.anim.slide_right_to_left, R.anim.fade_in);
                 finish();
             }
         }, SPLASH_DISPLAY_LENGTH);

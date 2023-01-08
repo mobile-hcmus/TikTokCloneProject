@@ -60,6 +60,7 @@
                         android:text="Flip"
                         android:textColor="@color/tiktok_white"
                         android:textSize="10sp"
+                        android:id="@+id/tv_flip_camera"
                         android:textAlignment="center"/>
                 </LinearLayout>
             </LinearLayout>

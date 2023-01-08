@@ -182,6 +182,7 @@ public class HomeScreenActivity extends FragmentActivity implements View.OnClick
         }
         Intent intent = new Intent(this, CameraActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_right_to_left, R.anim.fade_in);
     }
 
     private void handleInboxClick() {
