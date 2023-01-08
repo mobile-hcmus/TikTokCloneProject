@@ -61,7 +61,41 @@ public class VideoActivity extends Activity {
         videoAdapter = new VideoAdapter(this, videos);
         VideoAdapter.setUser(user);
         viewPager2.setAdapter(videoAdapter);
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
 
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                videoAdapter.pauseVideo(videoAdapter.getCurrentPosition());
+                videoAdapter.playVideo(position);
+                videoAdapter.updateWatchCount(position);
+                Log.e("Selected_Page", String.valueOf(videoAdapter.getCurrentPosition()));
+                videoAdapter.updateCurrentPosition(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                super.onPageScrollStateChanged(state);
+            }
+        });
+        viewPager2.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View view) {
+
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View view) {
+//                Log.i("position", viewPager2.getVerticalScrollbarPosition() + "");
+                videoAdapter.pauseVideo(videoAdapter.getCurrentPosition());
+
+            }
+        });
         db = FirebaseFirestore.getInstance();
         db.collection("videos").document(videoId)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
