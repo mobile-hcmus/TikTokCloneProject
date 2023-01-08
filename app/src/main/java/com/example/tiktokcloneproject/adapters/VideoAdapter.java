@@ -150,6 +150,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         videoViewHolders.get(position).playVideo();
     }
 
+    public void updateWatchCount(int position) {
+        videoViewHolders.get(position).updateWatchCount();
+    }
+
     @Override
     public void onViewAttachedToWindow(VideoViewHolder holder) {
         holder.playVideo();
@@ -434,6 +438,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             if (view.getId() == imvShare.getId()) {
                 showShareVideoDialog(view);
             }
+        }
+
+        public void updateWatchCount() {
+            db.collection("profiles").document(authorId)
+                    .collection("public_videos").document(videoId).update("watchCount", FieldValue.increment(1));
         }
 
         private void showShareVideoDialog(View view) {

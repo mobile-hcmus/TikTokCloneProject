@@ -109,6 +109,7 @@ public class VideoFragment extends Fragment implements View.OnClickListener {
                 super.onPageSelected(position);
                 videoAdapter.pauseVideo(videoAdapter.getCurrentPosition());
                 videoAdapter.playVideo(position);
+                videoAdapter.updateWatchCount(position);
                 Log.e("Selected_Page", String.valueOf(videoAdapter.getCurrentPosition()));
                 videoAdapter.updateCurrentPosition(position);
             }
