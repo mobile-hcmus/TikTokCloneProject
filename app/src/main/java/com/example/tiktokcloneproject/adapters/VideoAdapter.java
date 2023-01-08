@@ -153,13 +153,14 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
     @Override
     public void onViewAttachedToWindow(VideoViewHolder holder) {
         holder.playVideo();
-        isPlaying = true;
+        //isPlaying = true;
 
     }
 
     @Override
     public void onViewDetachedFromWindow(VideoViewHolder holder) {
         holder.pauseVideo();
+        isPlaying = false;
     }
 
 
@@ -447,7 +448,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                 @Override
                 public void onClick(View view) {
                     ClipboardManager clipboard = (ClipboardManager) view.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                    ClipData clip = ClipData.newPlainText("toptop-link", "http://toptoptoptop.com/videos/" + videoId.toString());
+                    ClipData clip = ClipData.newPlainText("toptop-link", "http://video.toptoptoptop.com/" + videoId.toString());
                     clipboard.setPrimaryClip(clip);
                     Toast.makeText(view.getContext(), "Video link has been saved to clipboard", Toast.LENGTH_SHORT).show();
                 }

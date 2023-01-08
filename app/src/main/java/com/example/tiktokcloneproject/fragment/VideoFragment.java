@@ -85,7 +85,6 @@ public class VideoFragment extends Fragment implements View.OnClickListener {
 
 
 
-
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
