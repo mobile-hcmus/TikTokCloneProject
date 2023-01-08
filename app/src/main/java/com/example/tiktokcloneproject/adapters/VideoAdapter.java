@@ -309,9 +309,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                             }
 
                             Integer totalLikes = document.get("totalLikes", Integer.class);
+                            Integer totalComments = document.get("totalComments", Integer.class);
                             Log.d("totalLike", totalLikes + "");
                             tvFavorites.setText(String.valueOf(totalLikes));
-
+                            tvComment.setText(String.valueOf(totalComments));
                         }
                     });
 

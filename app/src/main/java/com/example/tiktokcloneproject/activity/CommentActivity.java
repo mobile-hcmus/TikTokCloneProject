@@ -202,7 +202,7 @@ public class CommentActivity extends Activity implements View.OnClickListener{
         }
         else
         {
-            Toast.makeText(this, "You have to sign in to comment.", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "You have to sign in to comment.", Toast.LENGTH_SHORT).show();
             Intent intent1 = new Intent(CommentActivity.this, HomeScreenActivity.class);
             startActivity(intent1);
         }
@@ -218,7 +218,7 @@ public class CommentActivity extends Activity implements View.OnClickListener{
             String cmt = edtComment.getText().toString().trim();
             if (TextUtils.isEmpty(cmt))
             {
-                Toast.makeText(this, "Comment is empty...", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Comment is empty...", Toast.LENGTH_SHORT).show();
                 return;
             }
             String timeStamp = String.valueOf(System.currentTimeMillis());
@@ -237,7 +237,7 @@ public class CommentActivity extends Activity implements View.OnClickListener{
                 if (task.isSuccessful()){
                     Notification.pushNotification(username, authorVideoId, StaticVariable.COMMENT);
                     handler.post(CommentActivity.this::updateTotal);
-                    Toast.makeText(CommentActivity.this, "Comment successfully!", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(CommentActivity.this, "Comment successfully!", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     Toast.makeText(CommentActivity.this, "Comment fail!", Toast.LENGTH_SHORT).show();

@@ -114,7 +114,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         if (userId == "") {
             if (user != null) {
                 userId = user.getUid();
-                Toast.makeText(getActivity().getApplicationContext(), "id: " + userId, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity().getApplicationContext(), "id: " + userId, Toast.LENGTH_SHORT).show();
             } else {
 //                Intent intent = new Intent(context, SignupChoiceActivity.class);
 //                startActivity(intent);
