@@ -89,5 +89,5 @@ We would like to express our gratitude to the following resources, which have be
 
 -   **Create Dynamic Lists with RecyclerView:** [RecyclerView documentation](https://developer.android.com/develop/ui/views/layout/recyclerview).
 
-[contributors-shield]: https://img.shields.io/github/contributors/github_username/repo_name.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/mobile-hcmus/TikTokCloneProject.svg?style=for-the-badge
 [contributors-url]: https://github.com/mobile-hcmus/TikTokCloneProject/graphs/contributors
