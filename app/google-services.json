@@ -1,42 +1,38 @@
 {
   "project_info": {
-    "project_number": "398191591772",
-    "firebase_url": "https://toptop-android-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "project_id": "toptop-android",
-    "storage_bucket": "toptop-android.appspot.com"
+    "project_number": "YOUR_PROJECT_NUMBER",
+    "firebase_url": "https://YOUR_FIREBASE_URL.firebaseio.com",
+    "project_id": "YOUR_PROJECT_ID",
+    "storage_bucket": "YOUR_STORAGE_BUCKET.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:398191591772:android:424521bf8f5068c4ef0199",
+        "mobilesdk_app_id": "YOUR_APP_ID",
         "android_client_info": {
-          "package_name": "com.example.tiktokcloneproject"
+          "package_name": "YOUR_PACKAGE_NAME"
         }
       },
       "oauth_client": [
         {
-          "client_id": "398191591772-sd6l1nvpgqud79upo7c0arn2vsi3e9j6.apps.googleusercontent.com",
+          "client_id": "YOUR_CLIENT_ID_1",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.tiktokcloneproject",
-            "certificate_hash": "3c67e76dcc03c703717571cac61360edd421758a"
+            "package_name": "YOUR_PACKAGE_NAME",
+            "certificate_hash": "YOUR_CERTIFICATE_HASH_1"
           }
-        },
-        {
-          "client_id": "398191591772-2gj7h81fnet4shgit5nams0mm0mdv8np.apps.googleusercontent.com",
-          "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCw3skNIVM2TWGJ45FbuNzuzZ5EeyEW_FM"
+          "current_key": "YOUR_API_KEY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "398191591772-2gj7h81fnet4shgit5nams0mm0mdv8np.apps.googleusercontent.com",
+              "client_id": "YOUR_CLIENT_ID_3",
               "client_type": 3
             }
           ]
